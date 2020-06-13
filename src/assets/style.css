@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+.style-red-text{
+  color: #e53935!important;
+}
+.style-fixed-toolbar{
+  position:sticky!important;
+  top:0px!important;
+}
