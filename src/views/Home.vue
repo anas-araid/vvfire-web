@@ -1,5 +1,5 @@
 <template>
-<div class="page-container">
+<div class="page-container" style="background:#fafafa;height:100%">
   <md-app md-waterfall md-mode="fixed">
     <md-app-toolbar class="style-fixed-toolbar md-dense">
       <md-button class="md-icon-button" @click="showNavigation = true">
@@ -8,7 +8,7 @@
       <span class="md-title style-red-text"><b>VVF</b>ire</span>
     </md-app-toolbar>
 
-    <md-app-drawer :md-active.sync="showNavigation" md-swipeable md-fixed>
+    <md-app-drawer :md-active.sync="showNavigation" md-swipeable md-fixed style="background-color:white">
       <md-toolbar class="md-transparent" md-elevation="0">
         <span class="md-title style-red-text"><b>VVF</b>ire</span>
       </md-toolbar>
@@ -35,8 +35,15 @@
         </md-list-item>
       </md-list>
     </md-app-drawer>
-    <md-app-content>
-
+    <md-app-content style="height:100%">
+      <div class="md-layout md-alignment-center-center" style="background:#fafafa; min-height:500px;height:100%">
+        <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:left">
+          <span class="md-display-2" style="font-weight:200">Changing the way we <i>rescue</i>...</span>
+        </div>
+        <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
+          <span class="md-display-3">Display 3</span>
+        </div>
+      </div>
     </md-app-content>
   </md-app>
   </div>
