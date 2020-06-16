@@ -14,7 +14,7 @@ body{
   max-width: calc(100vw - 125px)!important;
 }
 .md-app {
-  max-height: calc(100vh - 64px);;
+  /*max-height: calc(100vh - 64px);*/
   border: 1px solid rgba(#000, .12);
 }
 .md-drawer {
