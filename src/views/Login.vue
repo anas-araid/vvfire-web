@@ -7,7 +7,7 @@
       </md-button>
       <span class="md-title style-red-text"><b>VVF</b>ire</span>
       <div class="md-toolbar-section-end">
-        <md-button to="/login" class="style-red-text">Accedi</md-button>
+        <md-button to="/" class="style-red-text">Home</md-button>
       </div>
     </md-app-toolbar>
 
@@ -17,7 +17,7 @@
       </md-toolbar>
 
       <md-list>
-        <md-list-item href="/#home">
+        <md-list-item to="/">
           <md-icon>home</md-icon>
           <span class="md-list-item-text">Home</span>
         </md-list-item>
@@ -41,7 +41,7 @@
     <md-app-content style="height:100%">
       <div class="md-layout md-alignment-center-center" style="background:#fafafa; min-height:500px;height:100%">
         <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:left">
-          <span class="md-display-2" style="font-weight:200">Changing the way we <i class="style-red-text">rescue</i></span>
+          
         </div>
         <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
           <span class="md-display-3">[screen app]</span>
@@ -56,7 +56,7 @@
   // @ is an alias to /src
   
   export default {
-    name: 'Home',
+    name: 'Layout',
     data: () => ({
       showNavigation: false
     })
