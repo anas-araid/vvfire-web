@@ -40,9 +40,9 @@
     <md-app-content style="height:100%">
       <div class="md-layout md-alignment-center-center" style="min-height:500px;height:100%">
         <div class="md-layout-item md-medium-size-66 md-small-size-50 md-xsmall-size-100" style="text-align:center">
-          <md-progress-bar v-if="this.loading" class="md-accent" md-mode="indeterminate"></md-progress-bar>
-          <form novalidate class="md-layout" @submit.prevent="auth()">
+          <form class="md-layout" @submit.prevent="auth()">
             <md-card class="md-layout-item md-size-50 md-small-size-100" >
+              <md-progress-bar v-if="this.loading" class="md-accent" md-mode="indeterminate"></md-progress-bar>
               <md-card-header>
                 <div class="md-title">Accedi</div>
               </md-card-header>
@@ -52,10 +52,11 @@
                     <md-field>
                       <label for="email">Email</label>
                       <md-input type="email" name="email" id="email" autocomplete="email" v-model="email" :disabled="loading" required/>
+                      <span class="md-error">The last name is required</span>
                    </md-field>
                    <md-field>
                       <label for="password">Password</label>
-                      <md-input v-model="password" type="password" name="password" id="password" required></md-input>
+                      <md-input v-model="password" type="password" name="password" id="password" :disabled="loading" required></md-input>
                     </md-field>
                   </div>
                 </div>
