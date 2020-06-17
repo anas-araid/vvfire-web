@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="page-container" id="app">
     <router-view/>
   </div>
 </template>
@@ -7,7 +7,7 @@
 <style>
   @import './assets/style.css';
   #app {
-    background-color:#fafafa!important;
+    /*background-color:#fafafa!important;*/
     text-align: center;
     color: #2c3e50;
     height: 100%!important;

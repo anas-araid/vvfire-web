@@ -1,5 +1,4 @@
 <template>
-<div class="page-container" style="background:#fafafa;height:100%">
   <md-app md-waterfall md-mode="fixed">
     <md-app-toolbar class="style-fixed-toolbar md-dense">
       <md-button class="md-icon-button" @click="showNavigation = true">
@@ -11,7 +10,7 @@
       </div>
     </md-app-toolbar>
 
-    <md-app-drawer :md-active.sync="showNavigation" md-swipeable md-fixed style="background-color:white">
+    <md-app-drawer :md-active.sync="showNavigation" md-swipeable md-fixed>
       <md-toolbar class="md-transparent" md-elevation="0">
         <span class="md-title style-red-text"><b>VVF</b>ire</span>
       </md-toolbar>
@@ -39,9 +38,34 @@
       </md-list>
     </md-app-drawer>
     <md-app-content style="height:100%">
-      <div class="md-layout md-alignment-center-center" style="background:#fafafa; min-height:500px;height:100%">
-        <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:left">
-          
+      <div class="md-layout md-alignment-center-center" style="min-height:500px;height:100%">
+        <div class="md-layout-item md-medium-size-66 md-small-size-50 md-xsmall-size-100" style="text-align:center">
+      
+          <form novalidate class="md-layout" method="POST">
+            <md-card class="md-layout-item md-size-50 md-small-size-100" >
+              <md-card-header>
+                <div class="md-title">Accedi</div>
+              </md-card-header>
+              <md-card-content>
+                <div class="md-layout md-gutter">
+                  <div class="md-layout-item md-small-size-100">
+                    <md-field>
+                      <label for="email">Email</label>
+                      <md-input type="email" name="email" id="email" autocomplete="email" v-model="email" :disabled="loading" required/>
+                   </md-field>
+                   <md-field>
+                      <label for="password">Password</label>
+                      <md-input v-model="password" type="password" name="password" id="password" required></md-input>
+                    </md-field>
+                  </div>
+                </div>
+              </md-card-content>
+              <md-card-actions>
+                <md-button type="submit" class="md-accent" :disabled="loading">Accedi</md-button>
+              </md-card-actions>
+            </md-card>
+          </form>
+
         </div>
         <div class="md-layout-item md-medium-size-33 md-small-size-50 md-xsmall-size-100">
           <span class="md-display-3">[screen app]</span>
@@ -49,7 +73,6 @@
       </div>
     </md-app-content>
   </md-app>
-  </div>
 </template>
 
 <script>
@@ -58,7 +81,20 @@
   export default {
     name: 'Layout',
     data: () => ({
-      showNavigation: false
-    })
+      showNavigation: false,
+      loading: false,
+      email: "",
+      password: ""
+    }),
+    methods: {
+      auth() {
+        this.loading = true;
+      }
+    }
   }
 </script>
+<style lang="scss" scoped>
+  .md-app {
+    max-height: 100vh!important;
+  }
+</style>

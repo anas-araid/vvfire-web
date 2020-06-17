@@ -1,6 +1,6 @@
 @charset "UTF-8";
 body{
-  background-color:#fafafa!important;
+  background-color:white!important;
 }
 .style-red-text{
   color: #e53935!important;
@@ -20,7 +20,7 @@ body{
 .md-drawer {
   width: 230px!important;
   max-width: calc(100vw - 125px)!important;
-  background-color: white!important;
+  /*background-color: white!important;*/
   color:#2c3e50!important;
 }
 .md-list-item-content{
