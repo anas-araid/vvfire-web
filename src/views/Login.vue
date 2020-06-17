@@ -40,8 +40,8 @@
     <md-app-content style="height:100%">
       <div class="md-layout md-alignment-center-center" style="min-height:500px;height:100%">
         <div class="md-layout-item md-medium-size-66 md-small-size-50 md-xsmall-size-100" style="text-align:center">
-      
-          <form novalidate class="md-layout" method="POST">
+          <md-progress-bar v-if="this.loading" class="md-accent" md-mode="indeterminate"></md-progress-bar>
+          <form novalidate class="md-layout" @submit.prevent="auth()">
             <md-card class="md-layout-item md-size-50 md-small-size-100" >
               <md-card-header>
                 <div class="md-title">Accedi</div>
@@ -89,6 +89,7 @@
     methods: {
       auth() {
         this.loading = true;
+        console.log(this.email + this.password);
       }
     }
   }
