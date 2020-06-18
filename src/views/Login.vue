@@ -39,6 +39,13 @@
     </md-app-drawer>
     <md-app-content style="height:100%">
       <div class="md-layout md-alignment-center-center" style="min-height:500px;height:100%">
+        <md-dialog :md-active.sync="error.error">
+          <md-dialog-title>Errore</md-dialog-title>
+          <md-dialog-content>{{this.error.content}}</md-dialog-content>
+          <md-dialog-actions>
+            <md-button class="md-accent" @click="error.error = false">Close</md-button>
+          </md-dialog-actions>
+        </md-dialog>
         <div class="md-layout-item md-medium-size-66 md-small-size-50 md-xsmall-size-100" style="text-align:center">
           <form class="md-layout" @submit.prevent="auth()">
             <md-card class="md-layout-item md-size-50 md-small-size-100" >
@@ -78,19 +85,32 @@
 
 <script>
   // @ is an alias to /src
-  
+  import axios from 'axios';
   export default {
     name: 'Layout',
     data: () => ({
       showNavigation: false,
       loading: false,
+      error: {'error': false, 'content': null},
       email: "",
       password: ""
     }),
     methods: {
       auth() {
         this.loading = true;
-        console.log(this.email + this.password);
+        axios.post('http://localhost:1337/api/v1/corpovvf/login', {
+          email: this.email,
+          password: this.password
+        })
+        .then((response) => {
+          this.loading = false;
+          console.log(response);
+          this.error.error = true;
+          this.error.content = 'Credenziali non valide';
+        }, (error) => {
+          this.loading = false;
+          console.log(error);
+        });
       }
     }
   }
