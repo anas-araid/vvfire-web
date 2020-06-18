@@ -103,9 +103,12 @@
         })
         .then((response) => {
           this.loading = false;
-          console.log(response);
-          this.message.active = true;
-          this.message.content = 'Credenziali non valide';
+          let data = response.data[0];
+          console.log(data);
+          if (data['error'] === "401"){
+            this.message.active = true;
+            this.message.content = 'Credenziali non valide';            
+          }
         }, (error) => {
           this.loading = false;
           console.log(error);
