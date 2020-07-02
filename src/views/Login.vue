@@ -107,6 +107,7 @@
           console.log(data);
           if (data['error'] === "401"){
             this.message.active = true;
+            this.message.title = 'Errore';            
             this.message.content = 'Credenziali non valide';            
           }
         }, (error) => {
