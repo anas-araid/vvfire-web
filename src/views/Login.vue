@@ -110,6 +110,10 @@
             this.message.title = 'Errore';            
             this.message.content = 'Credenziali non valide';            
           }
+          if (!data['error']){
+            // save data in localstorage
+            console.log(data);
+          }
         }, (error) => {
           this.loading = false;
           console.log(error);
