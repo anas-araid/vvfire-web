@@ -81,6 +81,7 @@
   // @ is an alias to /src
   import axios from 'axios';
   import DialogAlert from '../components/Dialog.vue'; 
+  import dataService from '../dataservice.js';
 
   export default {
     name: 'Layout',
@@ -93,6 +94,14 @@
     }),
     components: {
       'Dialog': DialogAlert
+    },
+    created: {
+      // check if there is a token not expired
+      /* 
+      if(isTokenValid()){
+        redirect to dashboard
+      }
+      */
     },
     methods: {
       auth() {
@@ -112,7 +121,7 @@
           }
           if (!data['error']){
             // save data in localstorage
-            console.log(data);
+            dataService.saveData(data.corpovvf[0], data.token);
           }
         }, (error) => {
           this.loading = false;
