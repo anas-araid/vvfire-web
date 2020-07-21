@@ -81,7 +81,7 @@
   // @ is an alias to /src
   import axios from 'axios';
   import DialogAlert from '../components/Dialog.vue'; 
-  import dataService from '../dataservice.js';
+  import loginController from '../controllers/loginController.js';
 
   export default {
     name: 'Layout',
@@ -95,13 +95,13 @@
     components: {
       'Dialog': DialogAlert
     },
-    created: {
+    created() {
       // check if there is a token not expired
-      /* 
-      if(isTokenValid()){
-        redirect to dashboard
+      if(loginController.isTokenValid()){
+        console.log("E valido")
+      }else{
+        console.log("Non valido");
       }
-      */
     },
     methods: {
       auth() {
@@ -121,11 +121,15 @@
           }
           if (!data['error']){
             // save data in localstorage
-            dataService.saveData(data.corpovvf[0], data.token);
+            loginController.saveData(data.corpovvf[0], data.token);
+            // redirect to dashboard
           }
         }, (error) => {
           this.loading = false;
           console.log(error);
+          this.message.active = true;
+          this.message.title = 'Errore';            
+          this.message.content = "Controllare la connessione di rete, se il problema persiste contattare l'amministratore";         
         });
       }
     }
