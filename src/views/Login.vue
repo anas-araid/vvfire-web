@@ -65,7 +65,8 @@
     created() {
       // check if there is a token not expired
       if(loginController.isTokenValid()){
-        console.log("E valido")
+        console.log("E valido");
+        this.$router.push('dashboard');
       }else{
         console.log("Non valido");
       }

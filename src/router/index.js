@@ -3,10 +3,11 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import HomeLayout from '../views/HomeLayout.vue'
 import Login from '../views/Login.vue'
+import Dashboard from '../views/Dashboard.vue'
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'HomeLayout',
@@ -14,14 +15,19 @@ Vue.use(VueRouter)
     children: [{
       path: '/',
       components: {
-        helper: Home
+        homepage: Home
       }
     },{
       path: 'login',
       components: {
-        helper: Login
+        homepage: Login
       }
     }]
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
   },
   {
     path: '/about',

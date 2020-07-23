@@ -39,7 +39,7 @@
     </md-app-drawer>
     <md-app-content style="height:100%">
       <router-view/>
-      <router-view name="homepage"/>
+      <router-view name="dashboard"/>
     </md-app-content>
   </md-app>
 </template>
@@ -47,7 +47,7 @@
 <script>
 
   export default {
-    name: 'HomeLayout',
+    name: 'Dashboard',
     data(){
       return {
         showNavigation: false,
