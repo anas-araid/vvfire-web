@@ -90,7 +90,7 @@
           if (!data['error']){
             // save data in localstorage
             loginController.saveData(data.corpovvf[0], data.token);
-            // redirect to dashboard
+            //this.$router.push('/dashboard');
           }
         }, (error) => {
           this.loading = false;
