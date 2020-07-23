@@ -27,6 +27,9 @@ export default{
   },
   isTokenValid(){
     let token = JSON.parse(localStorage.getItem("vvfire_token"));
+    if (token === false || token === null){
+      return false;
+    }
     let days = this.timeDifference(new Date().getTime(), token.timestamp);
     // se days è maggiore di 0 vuol dire che il token è scaduto
     if (days > 0){

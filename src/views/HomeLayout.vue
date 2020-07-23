@@ -6,7 +6,7 @@
       </md-button>
       <span class="md-title style-red-text"><b>VVF</b>ire</span>
       <div class="md-toolbar-section-end">
-        <md-button to="/" class="style-red-text">Home</md-button>
+        <md-button :to="this.navBarButtonLink" class="style-red-text">{{this.navBarButton}}</md-button>
       </div>
     </md-app-toolbar>
 
@@ -48,9 +48,33 @@
 
   export default {
     name: 'HomeLayout',
-    data: () => ({
-      showNavigation: false,
-    }),
+    data(){
+      return {
+        showNavigation: false,
+        navBarButton: null,
+        navBarButtonLink: null
+      }
+    },
+    created(){
+      this.navbarButton();
+    },
+    updated(){
+      this.navbarButton();
+    },
+    methods: {
+      navbarButton(){
+        if (this.$route.path === '/'){
+          this.navBarButton = 'ACCEDI';
+          this.navBarButtonLink = '/login';
+        }else if (this.$route.path === '/login'){
+          this.navBarButton = 'HOME';
+          this.navBarButtonLink = '/';
+        }else{
+          this.navBarButton = 'HOME';
+          this.navBarButtonLink = '/';
+        }
+      }
+    }
   }
 </script>
 <style lang="scss" scoped>
