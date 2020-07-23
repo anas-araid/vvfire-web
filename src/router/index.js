@@ -12,17 +12,16 @@ Vue.use(VueRouter)
     name: 'HomeLayout',
     component: HomeLayout,
     children: [{
-      path: 'home',
-      component: Home
+      path: '/',
+      components: {
+        helper: Home
+      }
     },{
       path: 'login',
-      component: Login
+      components: {
+        helper: Login
+      }
     }]
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
   },
   {
     path: '/about',
