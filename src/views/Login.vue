@@ -90,7 +90,7 @@
   import loginController from '../controllers/loginController.js';
 
   export default {
-    name: 'Layout',
+    name: 'Login',
     data: () => ({
       showNavigation: false,
       loading: false,
