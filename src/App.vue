@@ -3,7 +3,14 @@
     <router-view/>
   </div>
 </template>
-
+<script>
+  export default {
+    name: 'HomeLayout',
+    created(){
+      this.$session.start()
+    }
+  }
+</script>
 <style>
   @import './assets/style.css';
   #app {
