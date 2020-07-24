@@ -6,11 +6,11 @@
       </md-button>
       <span class="md-title style-red-text"><b>VVF</b>ire</span>
       <div class="md-toolbar-section-end">
-        <md-button :to="this.navBarButtonLink" class="style-red-text">{{this.navBarButton}}</md-button>
+        <md-button @click="logout()" class="style-red-text">LOGOUT</md-button>
       </div>
     </md-app-toolbar>
 
-    <md-app-drawer :md-active.sync="showNavigation" md-swipeable md-fixed>
+    <md-app-drawer :md-active.sync="showNavigation" md-swipeable md-permanent="full">
       <md-toolbar class="md-transparent" md-elevation="0">
         <span class="md-title style-red-text"><b>VVF</b>ire</span>
       </md-toolbar>
@@ -38,6 +38,8 @@
       </md-list>
     </md-app-drawer>
     <md-app-content style="height:100%">
+      <Dialog v-if="this.message.active" :data="this.message"></Dialog>
+
       <router-view/>
       <router-view name="dashboard"/>
     </md-app-content>
@@ -45,6 +47,8 @@
 </template>
 
 <script>
+  import loginController from '../controllers/loginController.js';
+  import DialogAlert from '../components/Dialog.vue'; 
 
   export default {
     name: 'Dashboard',
@@ -52,14 +56,28 @@
       return {
         showNavigation: false,
         navBarButton: null,
-        navBarButtonLink: null
+        navBarButtonLink: null,
+        message: {'active': false, 'content': null}
       }
+    },
+    components: {
+      'Dialog': DialogAlert
     },
     created(){
       this.navbarButton();
+      // check session and if token is saved
+        loginController.logout();
+
+      if (!loginController.isTokenValid()){
+        this.message.active = true;
+        this.message.title = 'Attenzione';            
+        this.message.content = 'Sessione scaduta, è necessario autenticarsi nuovamente'; 
+      }
     },
     updated(){
       this.navbarButton();
+      console.log(this.$session.getAll())
+      console.log(loginController.isTokenValid());
     },
     methods: {
       navbarButton(){
@@ -73,6 +91,10 @@
           this.navBarButton = 'HOME';
           this.navBarButtonLink = '/';
         }
+      },
+      logout(){
+        loginController.logout();
+        this.$router.push({name:'HomeLayout'});
       }
     }
   }

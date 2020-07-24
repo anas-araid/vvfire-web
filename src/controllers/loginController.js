@@ -13,7 +13,7 @@ export default{
     return Vue.prototype.$session.get('vvfire_data');
   },
   isTokenValid(){
-    let token = Vue.prototype.$session.get("vvfire_token");
+    let token = Vue.prototype.$session.get("vvfire_jwt");
     if (token == false || token == null){
       return false;
     }
