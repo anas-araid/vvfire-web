@@ -91,7 +91,6 @@
       checkToken(){
         this.navbarButton();
         // check session and if token is saved
-        
         if (!loginController.isTokenValid()){
           this.message.active = true;
           this.message.title = 'Attenzione';            
@@ -100,7 +99,7 @@
       },
       logout(){
         loginController.logout();
-        this.$router.push({name:'HomeLayout'});
+        window.location.href = '/';
       }
     }
   }
