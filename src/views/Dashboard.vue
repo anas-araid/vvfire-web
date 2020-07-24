@@ -38,7 +38,7 @@
       </md-list>
     </md-app-drawer>
     <md-app-content style="height:100%">
-      <Dialog v-if="this.message.active" :data="this.message"></Dialog>
+      <Dialog v-if="this.message.active" :data="this.message" @clicked="checkExpiredDialog"></Dialog>
 
       <router-view/>
       <router-view name="dashboard"/>
@@ -64,22 +64,18 @@
       'Dialog': DialogAlert
     },
     created(){
-      this.navbarButton();
-      // check session and if token is saved
-        loginController.logout();
-
-      if (!loginController.isTokenValid()){
-        this.message.active = true;
-        this.message.title = 'Attenzione';            
-        this.message.content = 'Sessione scaduta, è necessario autenticarsi nuovamente'; 
-      }
+      this.checkToken();
     },
     updated(){
-      this.navbarButton();
-      console.log(this.$session.getAll())
-      console.log(loginController.isTokenValid());
+      this.checkToken();
     },
     methods: {
+      // wrapper dal dialog che restituisce expired=true se si chiude l'alert
+      checkExpiredDialog(expired){
+        if (expired){
+          this.logout();
+        }
+      },
       navbarButton(){
         if (this.$route.path === '/'){
           this.navBarButton = 'ACCEDI';
@@ -90,6 +86,16 @@
         }else{
           this.navBarButton = 'HOME';
           this.navBarButtonLink = '/';
+        }
+      },
+      checkToken(){
+        this.navbarButton();
+        // check session and if token is saved
+        
+        if (!loginController.isTokenValid()){
+          this.message.active = true;
+          this.message.title = 'Attenzione';            
+          this.message.content = 'Sessione scaduta, è necessario autenticarsi nuovamente'; 
         }
       },
       logout(){

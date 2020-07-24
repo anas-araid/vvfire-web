@@ -3,7 +3,7 @@
     <md-dialog-title>{{this.data.title}}</md-dialog-title>
     <md-dialog-content>{{this.data.content}}</md-dialog-content>
     <md-dialog-actions>
-      <md-button class="md-accent" @click="data.active = false">Close</md-button>
+      <md-button class="md-accent" @click="clicked()">Close</md-button>
     </md-dialog-actions>
   </md-dialog>
 </template>
@@ -14,6 +14,12 @@
     props: {
       data: {
         type: Object
+      }
+    },
+    methods: {
+      clicked(){
+        this.data.active = false;
+        this.$emit('clicked', true);
       }
     }
   }
