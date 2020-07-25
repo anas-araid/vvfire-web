@@ -26,12 +26,12 @@
           <span class="md-list-item-text">Vigili</span>
         </md-list-item>
 
-        <md-list-item href="/reperibilita">
+        <md-list-item to="/reperibilita">
           <md-icon>watch_later</md-icon>
           <span class="md-list-item-text">Reperibilità</span>
         </md-list-item>
 
-        <md-list-item href="/ricercapersona">
+        <md-list-item to="/ricercapersona">
           <md-icon>explore</md-icon>
           <span class="md-list-item-text">Ricerca persona</span>
         </md-list-item>
@@ -41,7 +41,7 @@
       <Dialog v-if="this.message.active" :data="this.message" @clicked="checkExpiredDialog"></Dialog>
 
       <router-view/>
-      <router-view name="dashboard"/>
+      <router-view name="loggedContent"/>
     </md-app-content>
   </md-app>
 </template>

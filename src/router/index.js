@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import HomeLayout from '../views/HomeLayout.vue'
 import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
+import Impostazioni from '../views/Impostazioni.vue'
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,17 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
+    children: [{
+      path: '/impostazioni',
+      components: {
+        loggedContent: Impostazioni
+      }
+    },{
+      path: '/vigili',
+      components: {
+        loggedContent: Impostazioni
+      }
+    }]
   },
   {
     path: '/about',

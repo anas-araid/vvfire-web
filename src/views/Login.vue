@@ -19,8 +19,8 @@
                       <label for="email">Email</label>
                       <md-input type="email" name="email" id="email" autocomplete="email" v-model="email" :disabled="loading" required/>
                       <span class="md-error">The last name is required</span>
-                  </md-field>
-                  <md-field>
+                    </md-field>
+                    <md-field>
                       <label for="password">Password</label>
                       <md-input v-model="password" type="password" name="password" id="password" :disabled="loading" required></md-input>
                     </md-field>
