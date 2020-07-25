@@ -16,24 +16,24 @@
       </md-toolbar>
 
       <md-list>
-        <md-list-item to="/">
-          <md-icon>home</md-icon>
-          <span class="md-list-item-text">Home</span>
+        <md-list-item to="/impostazioni">
+          <md-icon>settings</md-icon>
+          <span class="md-list-item-text">Impostazioni</span>
         </md-list-item>
 
-        <md-list-item to="/login">
-          <md-icon>login</md-icon>
-          <span class="md-list-item-text">Accedi</span>
+        <md-list-item to="/vigili">
+          <md-icon>account_circle</md-icon>
+          <span class="md-list-item-text">Vigili</span>
         </md-list-item>
 
-        <md-list-item href="/#funzionalita">
-          <md-icon>miscellaneous_services</md-icon>
-          <span class="md-list-item-text">Funzionalità</span>
+        <md-list-item href="/reperibilita">
+          <md-icon>watch_later</md-icon>
+          <span class="md-list-item-text">Reperibilità</span>
         </md-list-item>
 
-        <md-list-item href="/#download">
-          <md-icon>get_app</md-icon>
-          <span class="md-list-item-text">Download app</span>
+        <md-list-item href="/ricercapersona">
+          <md-icon>explore</md-icon>
+          <span class="md-list-item-text">Ricerca persona</span>
         </md-list-item>
       </md-list>
     </md-app-drawer>
@@ -68,6 +68,7 @@
     },
     updated(){
       this.checkToken();
+      console.log(this.showNavigation)
     },
     methods: {
       // wrapper dal dialog che restituisce expired=true se si chiude l'alert
@@ -107,5 +108,6 @@
 <style lang="scss" scoped>
   .md-app {
     max-height: 100vh!important;
+    min-height: 100vh!important;
   }
 </style>
