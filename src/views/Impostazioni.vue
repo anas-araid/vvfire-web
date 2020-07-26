@@ -13,19 +13,38 @@
               <div class="md-layout md-gutter">
                 <div class="md-layout-item md-small-size-100">
                   <md-field>
-                    <label for="email">Email</label>
-                    <md-input type="email" name="email" id="email" autocomplete="email" v-model="email" :disabled="loading" required/>
-                    <span class="md-error">The last name is required</span>
+                    <md-icon class="style-red-text">location_city</md-icon>
+                    <label for="caserma">Caserma</label>
+                    <md-input type="text" name="caserma" id="caserma" autocomplete="caserma" v-model="caserma" :disabled="loading" maxlength="50" required/>
+                    <span class="md-error">Inserire il nome della caserma</span>
                   </md-field>
                   <md-field>
+                    <md-icon class="style-red-text">phone</md-icon>
+                    <label for="phone">Numero di telefono</label>
+                    <md-input type="number" name="phone" id="phone" autocomplete="phone" v-model="phone" :disabled="loading" maxlength="50" required/>
+                    <span class="md-error">Inserire il numero di telefono valido</span>
+                  </md-field>
+                  <md-field>
+                    <md-icon class="style-red-text">email</md-icon>
+                    <label for="email">Email</label>
+                    <md-input type="email" name="email" id="email" autocomplete="email" v-model="email" :disabled="loading" maxlength="150" required/>
+                    <span class="md-error">Inserire un'email valida</span>
+                  </md-field>
+                  <md-field>
+                    <md-icon class="style-red-text">vpn_key</md-icon>
                     <label for="password">Password</label>
-                    <md-input v-model="password" type="password" name="password" id="password" :disabled="loading" required></md-input>
+                    <md-input v-model="password" type="password" name="password" id="password" :disabled="loading" maxlength="50" required></md-input>
+                  </md-field>
+                  <md-field>
+                    <md-icon class="style-red-text">vpn_key</md-icon>
+                    <label for="confermaPassword">Conferma password</label>
+                    <md-input v-model="confermaPassword" type="password" name="confermaPassword" id="confermaPassword" :disabled="loading" maxlength="50" required></md-input>
                   </md-field>
                 </div>
               </div>
             </md-card-content>
             <md-card-actions>
-              <md-button type="submit" class="md-accent" :disabled="loading">Salva</md-button>
+              <md-button type="submit" class="md-accent" :disabled="loading">AGGIORNA</md-button>
             </md-card-actions>
           </md-card>
         </form>
@@ -45,7 +64,10 @@
       loading: false,
       message: {'active': false, 'content': null},
       email: "",
-      password: ""
+      password: "",
+      caserma: "",
+      phone:"",
+      confermaPassword:""
     }),
     components: {
       'Dialog': DialogAlert

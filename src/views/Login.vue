@@ -16,11 +16,13 @@
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-small-size-100">
                     <md-field>
+                      <md-icon class="style-red-text">email</md-icon>
                       <label for="email">Email</label>
                       <md-input type="email" name="email" id="email" autocomplete="email" v-model="email" :disabled="loading" required/>
-                      <span class="md-error">The last name is required</span>
+                      <span class="md-error">Inserire l'email</span>
                     </md-field>
                     <md-field>
+                      <md-icon class="style-red-text">vpn_key</md-icon>
                       <label for="password">Password</label>
                       <md-input v-model="password" type="password" name="password" id="password" :disabled="loading" required></md-input>
                     </md-field>
