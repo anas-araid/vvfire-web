@@ -1,7 +1,7 @@
 <template>
   <md-app-content style="height:100%;border:none">
     <div class="md-layout md-alignment-center-center" style="min-height:500px;height:100%">
-      <Dialog v-if="this.message.active" :data="this.message"></Dialog>
+      <Dialog v-if="this.message.active" :data="this.message" @clicked="dialogWrapper"></Dialog>
       <div class="md-layout-item md-large-size-80 md-medium-size-100 md-small-size-50 md-xsmall-size-100" style="text-align:center">
         <form class="md-layout" @submit.prevent="">
           <md-card class="md-layout-item md-size-90 md-small-size-100" >
@@ -79,19 +79,40 @@
       let loggedEmail = loginController.getCorpoVVFData()['email'];
       accountController.getCorpoData(loggedEmail).then((response) => {
         let raw = response.data[0];
-        console.log(raw.corpovvf[0]);
+        console.log(raw);
         if (!raw['error']){
           let data = raw.corpovvf[0];
           this.loading = false;
           this.email = data.email;
           this.caserma = data.name;
           this.phone = data.phone;
-          return true;
+        }else{
+          switch(raw['error']){
+            case '401':
+              this.message.active = true;
+              this.message.title = 'Errore';            
+              this.message.content = 'Accesso non autorizzato, credenziali non valide, rieffettuare l\'accesso'; 
+              break; 
+            case '404':
+              this.message.active = true;
+              this.message.title = 'Errore';            
+              this.message.content = 'Il server non ha restituito i dati, contatta l\' amministratore';  
+              break;
+          }
         }
       }, (error) => {
         console.log(error);
-        return false;  
+        this.message.active = true;
+        this.message.title = 'Errore';            
+        this.message.content = "Controllare la connessione di rete, se il problema persiste contattare l'amministratore";         
       });
+    },
+    methods: {
+      dialogWrapper(data){
+        if (data){
+          window.location.href = '#/dashboard';
+        }
+      }
     }
   }
 </script>

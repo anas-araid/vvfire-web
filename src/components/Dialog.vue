@@ -1,9 +1,12 @@
 <template>
-  <md-dialog :md-active.sync="data.active">
+  <md-dialog 
+    :md-active.sync="data.active"
+    :md-click-outside-to-close="false"
+    :md-close-on-esc="false">
     <md-dialog-title>{{this.data.title}}</md-dialog-title>
     <md-dialog-content>{{this.data.content}}</md-dialog-content>
     <md-dialog-actions>
-      <md-button class="md-accent" @click="clicked()">Close</md-button>
+      <md-button class="md-accent" @click="clicked()">OK</md-button>
     </md-dialog-actions>
   </md-dialog>
 </template>
