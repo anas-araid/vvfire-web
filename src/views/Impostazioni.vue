@@ -56,7 +56,9 @@
 <script>
   // @ is an alias to /src
   import DialogAlert from '../components/Dialog.vue'; 
-  
+  import accountController from '../controllers/accountController.js';
+  import loginController from '../controllers/loginController.js';
+
   export default {
     name: 'Impostazioni',
     data: () => ({
@@ -71,6 +73,25 @@
     }),
     components: {
       'Dialog': DialogAlert
+    },
+    mounted(){
+      this.loading = true;
+      let loggedEmail = loginController.getCorpoVVFData()['email'];
+      accountController.getCorpoData(loggedEmail).then((response) => {
+        let raw = response.data[0];
+        console.log(raw.corpovvf[0]);
+        if (!raw['error']){
+          let data = raw.corpovvf[0];
+          this.loading = false;
+          this.email = data.email;
+          this.caserma = data.name;
+          this.phone = data.phone;
+          return true;
+        }
+      }, (error) => {
+        console.log(error);
+        return false;  
+      });
     }
   }
 </script>

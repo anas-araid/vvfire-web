@@ -29,5 +29,12 @@ export default{
     var difference = time1 - time2;
     var daysDifference = Math.floor(difference/1000/60/60/24);
     return daysDifference;
+  },
+  getToken(){
+    let token = Vue.prototype.$session.get("vvfire_jwt");
+    if (token == false || token == null){
+      return false;
+    }
+    return token;
   }
 }
