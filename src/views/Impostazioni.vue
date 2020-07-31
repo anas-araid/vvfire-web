@@ -79,7 +79,6 @@
       let loggedEmail = loginController.getCorpoVVFData()['email'];
       accountController.getCorpoData(loggedEmail).then((response) => {
         let raw = response.data[0];
-        console.log(raw);
         if (!raw['error']){
           let data = raw.corpovvf[0];
           this.loading = false;
@@ -89,22 +88,16 @@
         }else{
           switch(raw['error']){
             case '401':
-              this.message.active = true;
-              this.message.title = 'Errore';            
-              this.message.content = 'Accesso non autorizzato, credenziali non valide, rieffettuare l\'accesso'; 
+              this.dialog('Errore', 'Accesso non autorizzato, credenziali non valide, rieffettuare l\'accesso');
               break; 
             case '404':
-              this.message.active = true;
-              this.message.title = 'Errore';            
-              this.message.content = 'Il server non ha restituito i dati, contatta l\' amministratore';  
+              this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore');
               break;
           }
         }
       }, (error) => {
         console.log(error);
-        this.message.active = true;
-        this.message.title = 'Errore';            
-        this.message.content = "Controllare la connessione di rete, se il problema persiste contattare l'amministratore";         
+        this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore');
       });
     },
     methods: {
@@ -112,6 +105,11 @@
         if (data){
           window.location.href = '#/dashboard';
         }
+      },
+      dialog(title, message){
+        this.message.active = true;
+        this.message.title = title;            
+        this.message.content = message;         
       }
     }
   }

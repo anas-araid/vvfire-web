@@ -67,10 +67,9 @@
     created() {
       // check if there is a token not expired
       if(loginController.isTokenValid()){
-        console.log("E valido");
         this.$router.push('dashboard');
       }else{
-        console.log("Non valido");
+        console.log("Token non valido");
       }
     },
     methods: {
@@ -85,9 +84,7 @@
           let data = response.data[0];
           console.log(data);
           if (data['error'] === "401"){
-            this.message.active = true;
-            this.message.title = 'Errore';            
-            this.message.content = 'Credenziali non valide';            
+            this.dialog('Errore', 'Credenziali non valide');          
           }
           if (!data['error']){
             // save data in localstorage
@@ -97,10 +94,13 @@
         }, (error) => {
           this.loading = false;
           console.log(error);
-          this.message.active = true;
-          this.message.title = 'Errore';            
-          this.message.content = "Controllare la connessione di rete, se il problema persiste contattare l'amministratore";         
+          this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore');
         });
+      },
+      dialog(title, message){
+        this.message.active = true;
+        this.message.title = title;            
+        this.message.content = message;         
       }
     }
   }
