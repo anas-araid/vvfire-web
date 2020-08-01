@@ -30,15 +30,17 @@
                     <md-input type="email" name="email" id="email" autocomplete="email" v-model="email" :disabled="loading" maxlength="150" required/>
                     <span class="md-error">Inserire un'email valida</span>
                   </md-field>
-                  <md-field>
+                  <md-field v-bind:class="{'md-invalid': checkPassword()}">
                     <md-icon class="style-red-text">vpn_key</md-icon>
                     <label for="password">Password</label>
                     <md-input v-model="password" type="password" name="password" id="password" :disabled="loading" maxlength="50" required></md-input>
+                    <span class="md-error">Le password non corrispondono</span>
                   </md-field>
-                  <md-field>
+                  <md-field v-bind:class="{'md-invalid': checkPassword()}">
                     <md-icon class="style-red-text">vpn_key</md-icon>
                     <label for="confermaPassword">Conferma password</label>
                     <md-input v-model="confermaPassword" type="password" name="confermaPassword" id="confermaPassword" :disabled="loading" maxlength="50" required></md-input>
+                    <span class="md-error">Le password non corrispondono</span>
                   </md-field>
                 </div>
               </div>
@@ -110,7 +112,10 @@
         this.message.active = true;
         this.message.title = title;            
         this.message.content = message;         
+      },
+      checkPassword(){
+        return (this.password !== this.confermaPassword)
       }
-    }
+    },
   }
 </script>
