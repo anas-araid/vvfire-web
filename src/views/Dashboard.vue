@@ -68,7 +68,7 @@
     },
     updated(){
       this.checkToken();
-      console.log(this.showNavigation)
+      //console.log(this.showNavigation)
     },
     methods: {
       // wrapper dal dialog che restituisce expired=true se si chiude l'alert

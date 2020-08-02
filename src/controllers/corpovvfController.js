@@ -14,5 +14,21 @@ export default {
     headers: {
       'Authorization': token
     }})
+  },
+  updateCorpovvf(id, name, phone, email, password){
+    if (!loginController.isTokenValid()){
+      return false;
+    }
+    let token = loginController.getToken()['token']
+    return axios.patch('http://localhost:1337/api/v1/corpovvf/update', {
+      id: id,
+      name: name,
+      phone: phone,
+      email: email,
+      password: password
+    }, {
+    headers: {
+      'Authorization': token
+    }})
   }
 }
