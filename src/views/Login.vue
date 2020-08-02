@@ -58,7 +58,7 @@
     data: () => ({
       showNavigation: false,
       loading: false,
-      message: {'active': false, 'content': null},
+      message: {'active': false, 'content': null, 'url': null},
       email: "",
       password: ""
     }),
@@ -85,7 +85,7 @@
           let data = response.data[0];
           console.log(data);
           if (data['error'] === "401"){
-            this.dialog('Errore', 'Credenziali non valide');          
+            this.dialog('Errore', 'Credenziali non valide', '#/login');          
           }
           if (!data['error']){
             // save data in localstorage
@@ -95,13 +95,14 @@
         }, (error) => {
           this.loading = false;
           console.log(error);
-          this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore');
+          this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/login');
         });
       },
-      dialog(title, message){
+      dialog(title, message, url){
         this.message.active = true;
         this.message.title = title;            
-        this.message.content = message;         
+        this.message.content = message;
+        this.message.url = url;         
       }
     }
   }

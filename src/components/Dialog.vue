@@ -22,7 +22,7 @@
     methods: {
       clicked(){
         this.data.active = false;
-        this.$emit('clicked', true);
+        window.location.href = this.data.url;
       }
     }
   }

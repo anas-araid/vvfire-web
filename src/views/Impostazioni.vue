@@ -1,7 +1,7 @@
 <template>
   <md-app-content style="height:100%;border:none">
     <div class="md-layout md-alignment-center-center" style="min-height:500px;height:100%">
-      <Dialog v-if="this.message.active" :data="this.message" @clicked="dialogWrapper"></Dialog>
+      <Dialog v-if="this.message.active" :data="this.message"></Dialog>
       <div class="md-layout-item md-large-size-80 md-medium-size-100 md-small-size-50 md-xsmall-size-100" style="text-align:center">
         <form class="md-layout" @submit.prevent="sendData()">
           <md-card class="md-layout-item md-size-90 md-small-size-100" >
@@ -66,7 +66,7 @@
     data: () => ({
       showNavigation: false,
       loading: false,
-      message: {'active': false, 'content': null},
+      message: {'active': false, 'content': null, 'url': null},
       email: "",
       password: "",
       caserma: "",
@@ -90,36 +90,31 @@
         }else{
           switch(raw['error']){
             case '401':
-              this.dialog('Errore', 'Accesso non autorizzato, credenziali non valide, rieffettuare l\'accesso');
+              this.dialog('Errore', 'Accesso non autorizzato, credenziali non valide, rieffettuare l\'accesso', '#/dashboard');
               break; 
             case '404':
-              this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore');
+              this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/dashboard');
               break;
           }
         }
       }, (error) => {
         console.log(error);
-        this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore');
+        this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/dashboard');
       });
     },
     methods: {
-      dialogWrapper(data){
-        if (data){
-          window.location.href = '#/dashboard';
-        }
-      },
-      dialog(title, message){
-        this.message.active = true;
-        this.message.title = title;            
-        this.message.content = message;         
-      },
       checkPassword(){
         return (this.password !== this.confermaPassword)
       },
+      dialog(title, message, url){
+        this.message.active = true;
+        this.message.title = title;            
+        this.message.content = message;
+        this.message.url = url;         
+      },
       sendData(){
-        console.log('submit');
         if (this.checkPassword()){
-          this.dialog('Errore', 'Le password non corrispondono');
+          this.dialog('Errore', 'Le password non corrispondono', '#/impostazioni');
           return;
         }
       }
