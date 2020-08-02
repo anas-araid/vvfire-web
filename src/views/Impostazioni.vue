@@ -3,7 +3,7 @@
     <div class="md-layout md-alignment-center-center" style="min-height:500px;height:100%">
       <Dialog v-if="this.message.active" :data="this.message" @clicked="dialogWrapper"></Dialog>
       <div class="md-layout-item md-large-size-80 md-medium-size-100 md-small-size-50 md-xsmall-size-100" style="text-align:center">
-        <form class="md-layout" @submit.prevent="">
+        <form class="md-layout" @submit.prevent="sendData()">
           <md-card class="md-layout-item md-size-90 md-small-size-100" >
             <md-progress-bar v-if="this.loading" class="md-accent" md-mode="indeterminate"></md-progress-bar>
             <md-card-header>
@@ -60,7 +60,7 @@
   import DialogAlert from '../components/Dialog.vue'; 
   import accountController from '../controllers/accountController.js';
   import loginController from '../controllers/loginController.js';
-
+  
   export default {
     name: 'Impostazioni',
     data: () => ({
@@ -115,6 +115,13 @@
       },
       checkPassword(){
         return (this.password !== this.confermaPassword)
+      },
+      sendData(){
+        console.log('submit');
+        if (this.checkPassword()){
+          this.dialog('Errore', 'Le password non corrispondono');
+          return;
+        }
       }
     },
   }

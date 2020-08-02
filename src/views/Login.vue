@@ -51,6 +51,7 @@
   import axios from 'axios';
   import DialogAlert from '../components/Dialog.vue'; 
   import loginController from '../controllers/loginController.js';
+  import md5 from 'md5';
 
   export default {
     name: 'Login',
@@ -77,7 +78,7 @@
         this.loading = true;
         axios.post('http://localhost:1337/api/v1/corpovvf/login', {
           email: this.email,
-          password: this.password
+          password: md5(this.password)
         })
         .then((response) => {
           this.loading = false;
