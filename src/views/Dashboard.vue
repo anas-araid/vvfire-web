@@ -95,7 +95,8 @@
         if (!loginController.isTokenValid()){
           this.message.active = true;
           this.message.title = 'Attenzione';            
-          this.message.content = 'Sessione scaduta, è necessario autenticarsi nuovamente'; 
+          this.message.content = 'Sessione scaduta, è necessario autenticarsi nuovamente';
+          this.message.url = '#/' 
         }
       },
       logout(){

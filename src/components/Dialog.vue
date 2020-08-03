@@ -2,7 +2,8 @@
   <md-dialog 
     :md-active.sync="data.active"
     :md-click-outside-to-close="false"
-    :md-close-on-esc="false">
+    :md-close-on-esc="false"
+    :md-fullscreen="false">
     <md-dialog-title>{{this.data.title}}</md-dialog-title>
     <md-dialog-content>{{this.data.content}}</md-dialog-content>
     <md-dialog-actions>

@@ -30,5 +30,21 @@ export default {
     headers: {
       'Authorization': token
     }})
+  },
+  deleteCorpovvf(id, password){
+    if (!loginController.isTokenValid()){
+      return false;
+    }
+    let token = loginController.getToken()['token']
+    return axios.delete('http://localhost:1337/api/v1/corpovvf/delete', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      data:{
+        id: id,
+        password: password
+      }
+    });
   }
 }

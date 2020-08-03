@@ -61,6 +61,9 @@
               <div class="md-title style-red-text">Elimina account</div>
             </md-card-header>
             <md-card-content>
+              <div style="text-align:center">
+                <p>ATTENZIONE! TUTTI I DATI VERRANNO CANCELLATI DEFINITIVAMENTE, E NON SARA' POI POSSIBILE RECUPERARLI</p>
+              </div>
               <div class="md-layout md-gutter">
                 <div class="md-layout-item md-small-size-100">
                   <md-field>
@@ -187,7 +190,34 @@
         this.confermaPassword = null;
       },
       deleteAccount(){
-        this.dialog('Attenzione', 'I dati verranno cancellati definitivamente, non sarà poi possibile recuperarli.', false);
+        if (this.corpoID === null || this.corpoID === undefined ||
+            this.passwordDeleteForm === null || this.passwordDeleteForm === undefined){
+          this.dialog('Errore', 'Impossibile cancellare il corpo vvf, ricaricare la pagina o rieffetture l\'accesso. Se il problema persiste contattare l\'amministratore', '#/impostazioni');
+          return;
+        }else{
+          corpovvfController.deleteCorpovvf(this.corpoID, md5(this.passwordDeleteForm)).then((response) => {
+            let raw = response.data;
+            if (raw.error === false){
+              loginController.logout();
+              this.dialog('', 'Account rimosso', '#/') 
+            }else if(raw.error === true){
+              this.dialog('Errore', 'Impossibile cancellare l\'account, contattare l\'amministratore', '#/') 
+            }else{
+              switch(raw[0]['error']){
+                case '401':
+                  this.dialog('Errore', 'Accesso non autorizzato, credenziali non valide', '#/impostazioni');
+                  break; 
+                case '404':
+                  this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/impostazioni');
+                  break;
+              }
+            }
+          }, (error) => {
+            console.log(error);
+            this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/impostazioni');
+          });
+        }
+        this.confermaPassword = '';
       }
     },
   }
