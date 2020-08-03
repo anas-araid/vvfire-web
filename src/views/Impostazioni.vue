@@ -132,7 +132,6 @@
           return;
         }
         corpovvfController.updateCorpovvf(this.corpoID, this.caserma, this.phone, this.email, md5(this.password)).then((response) => {
-          console.log(response.data[0])
           let raw = response.data[0];
           if (!raw['error']){
             let data = raw.corpovvf;
