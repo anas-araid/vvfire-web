@@ -1,6 +1,6 @@
 <template>
   <md-app-content style="height:100%;border:none">
-    <div class="md-layout md-alignment-center-center" style="min-height:500px;height:100%">
+    <div class="md-layout md-alignment-center-center">
       <Dialog v-if="this.message.active" :data="this.message"></Dialog>
       <div class="md-layout-item md-large-size-80 md-medium-size-100 md-small-size-50 md-xsmall-size-100" style="text-align:center">
         <form class="md-layout" @submit.prevent="updateData()">
@@ -52,6 +52,32 @@
         </form>
       </div>
     </div>
+    <br>
+    <div class="md-layout md-alignment-center-center">
+      <div class="md-layout-item md-large-size-80 md-medium-size-100 md-small-size-50 md-xsmall-size-100" style="text-align:center">
+        <form class="md-layout" @submit.prevent="">
+          <md-card class="md-layout-item md-size-90 md-small-size-100" >
+            <md-card-header>
+              <div class="md-title style-red-text">Elimina account</div>
+            </md-card-header>
+            <md-card-content>
+              <div class="md-layout md-gutter">
+                <div class="md-layout-item md-small-size-100">
+                  <md-field>
+                    <md-icon class="style-red-text">vpn_key</md-icon>
+                    <label for="passwordDeleteForm">Password</label>
+                    <md-input v-model="passwordDeleteForm" type="password" name="passwordDeleteForm" id="passwordDeleteForm" maxlength="50" required></md-input>
+                  </md-field>
+                </div>
+              </div>
+            </md-card-content>
+            <md-card-actions>
+              <md-button type="submit" class="md-raised md-accent">RIMUOVI DEFINITIVAMENTE</md-button>
+            </md-card-actions>
+          </md-card>
+        </form>
+      </div>
+    </div>
   </md-app-content>
 </template>
 
@@ -73,7 +99,8 @@
       password: "",
       caserma: "",
       phone:"",
-      confermaPassword:""
+      confermaPassword:"",
+      passwordDeleteForm:""
     }),
     components: {
       'Dialog': DialogAlert
