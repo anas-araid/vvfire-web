@@ -55,7 +55,7 @@
     <br>
     <div class="md-layout md-alignment-center-center">
       <div class="md-layout-item md-large-size-80 md-medium-size-100 md-small-size-50 md-xsmall-size-100" style="text-align:center">
-        <form class="md-layout" @submit.prevent="">
+        <form class="md-layout" @submit.prevent="deleteAccount()">
           <md-card class="md-layout-item md-size-90 md-small-size-100" >
             <md-card-header>
               <div class="md-title style-red-text">Elimina account</div>
@@ -78,6 +78,7 @@
         </form>
       </div>
     </div>
+    <br>
   </md-app-content>
 </template>
 
@@ -184,6 +185,9 @@
         // cancello le password dalla form
         this.password = null;
         this.confermaPassword = null;
+      },
+      deleteAccount(){
+        this.dialog('Attenzione', 'I dati verranno cancellati definitivamente, non sarà poi possibile recuperarli.', false);
       }
     },
   }

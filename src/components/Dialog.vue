@@ -22,7 +22,9 @@
     methods: {
       clicked(){
         this.data.active = false;
-        window.location.href = this.data.url;
+        if (this.data.url !== false){
+          window.location.href = this.data.url;
+        }
       }
     }
   }
