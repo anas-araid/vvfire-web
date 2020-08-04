@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import HomeLayout from '../views/HomeLayout.vue'
+import HomeLayout from '../layout/HomeLayout.vue'
 import Login from '../views/Login.vue'
-import Dashboard from '../views/Dashboard.vue'
+import Dashboard from '../layout/DashboardLayout.vue'
 import Impostazioni from '../views/Impostazioni.vue'
 
 Vue.use(VueRouter)

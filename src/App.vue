@@ -5,7 +5,7 @@
 </template>
 <script>
   export default {
-    name: 'HomeLayout',
+    name: 'App',
     created(){
       this.$session.start()
     }
