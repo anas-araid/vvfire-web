@@ -5,6 +5,7 @@ import HomeLayout from '../layout/HomeLayout.vue'
 import Login from '../views/Login.vue'
 import Dashboard from '../layout/DashboardLayout.vue'
 import Impostazioni from '../views/Impostazioni.vue'
+import Vigili from '../views/Vigili.vue'
 
 Vue.use(VueRouter)
 
@@ -37,7 +38,7 @@ const routes = [
     },{
       path: '/vigili',
       components: {
-        loggedContent: Impostazioni
+        loggedContent: Vigili
       }
     }]
   },
