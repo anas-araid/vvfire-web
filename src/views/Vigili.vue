@@ -1,8 +1,41 @@
 <template>
   <md-app-content style="height:100%;border:none">
-    <div class="md-layout md-alignment-center-center">
+    <div class="md-layout md-alignment-center-center" style="margin:10px">
       <Dialog v-if="this.message.active" :data="this.message"></Dialog>
-    
+      <div v-if="this.allVigili.length !== 0 && !this.errored">
+        <md-table md-card style="overflow:auto">
+          <md-progress-bar v-if="this.loading" class="md-accent" md-mode="indeterminate"></md-progress-bar>
+          <md-table-toolbar>
+            <h1 class="md-title">Lista dei vigili</h1>
+          </md-table-toolbar>
+          <md-table-row>
+            <md-table-head md-numeric class="style-table-header"><strong>ID</strong></md-table-head>
+            <md-table-head class="style-table-header">NOME</md-table-head>
+            <md-table-head class="style-table-header">COGNOME</md-table-head>
+            <md-table-head class="style-table-header">NUMERO DI CELLULARE</md-table-head>
+            <md-table-head class="style-table-header">EMAIL</md-table-head>
+            <md-table-head class="style-table-header">AUTISTA</md-table-head>
+            <md-table-head class="style-table-header">GRADO</md-table-head>
+            <md-table-head class="style-table-header">AMMINISTRATORE</md-table-head>
+          </md-table-row>
+          <md-table-row v-for="vigile in this.allVigili" :key="vigile.id">
+            <md-table-head md-label="ID">{{vigile.id}}</md-table-head>
+            <md-table-head md-label="nome">{{vigile.name}}</md-table-head>
+            <md-table-head md-label="cognome">{{vigile.surname}}</md-table-head>
+            <md-table-head md-label="numero">{{vigile.phone}}</md-table-head>
+            <md-table-head md-label="email">{{vigile.email}}</md-table-head>
+            <md-table-head md-label="autista">{{vigile.autista ? 'SI' : 'NO'}}</md-table-head>
+            <md-table-head md-label="grado">{{vigile.fkGrado}}</md-table-head>
+            <md-table-head md-label="admin">{{vigile.admin ? 'SI' : 'NO'}}</md-table-head>
+        </md-table-row>
+      </md-table>
+     </div>
+     <div v-else-if="this.errored" style="text-align:center">
+      <h3>Errore</h3>
+     </div>
+     <div v-else-if="this.allVigili.length === 0 && !this.errored" style="text-align:center">
+      <h3>Dati non presenti</h3>
+     </div>
     </div>
     <br>
   </md-app-content>
@@ -20,15 +53,10 @@
     name: 'Vigili',
     data: () => ({
       showNavigation: false,
-      loading: false,
+      loading: true,
       message: {'active': false, 'content': null, 'url': null},
-      corpoID: "",
-      email: "",
-      password: "",
-      caserma: "",
-      phone:"",
-      confermaPassword:"",
-      passwordDeleteForm:""
+      allVigili:[],
+      errored: false
     }),
     components: {
       'Dialog': DialogAlert
@@ -37,17 +65,10 @@
       this.loading = true;
       let idCorpo = loginController.getCorpoVVFData()['id'];
       vigileController.getVigili(idCorpo).then((response) => {
-        console.log(response)
-      })
-      /*let loggedEmail = loginController.getCorpoVVFData()['email'];
-      corpovvfController.getCorpoData(loggedEmail).then((response) => {
         let raw = response.data[0];
         if (!raw['error']){
-          let data = raw.corpovvf[0];
-          this.corpoID = data.id;
-          this.email = data.email;
-          this.caserma = data.name;
-          this.phone = data.phone;
+          this.allVigili = raw.vigili;
+          console.log(this.allVigili);
           this.loading = false;
         }else{
           switch(raw['error']){
@@ -61,61 +82,17 @@
         }
       }, (error) => {
         console.log(error);
+        this.errored= true;
         this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/dashboard');
-      });*/
+      });
+      this.loading = false;
     },
     methods: {
-      checkPassword(){
-        return (this.password !== this.confermaPassword)
-      },
       dialog(title, message, url){
         this.message.active = true;
         this.message.title = title;            
         this.message.content = message;
         this.message.url = url;         
-      },
-      updateData(){
-        this.loading = true;
-        if (this.checkPassword()){
-          this.dialog('Errore', 'Le password non corrispondono', '#/impostazioni');
-          this.loading = false;
-          return;
-        }
-        if (this.caserma === null  ||
-            this.phone === null    ||
-            this.email === null    ||
-            this.password === null ||
-            this.confermaPassword === null){
-          this.dialog('Errore', 'Inserire tutti i campi', '#/impostazioni');
-          this.loading = false;
-          return;
-        }
-        corpovvfController.updateCorpovvf(this.corpoID, this.caserma, this.phone, this.email, md5(this.password)).then((response) => {
-          let raw = response.data[0];
-          if (!raw['error']){
-            let data = raw.corpovvf;
-            this.corpoID = data.id;
-            this.email = data.email;
-            this.caserma = data.name;
-            this.phone = data.phone;
-            this.loading = false;
-          }else{
-            switch(raw['error']){
-              case '401':
-                this.dialog('Errore', 'Accesso non autorizzato, credenziali non valide, rieffettuare l\'accesso', '#/dashboard');
-                break; 
-              case '404':
-                this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/impostazioni');
-                break;
-            }
-          }
-        }, (error) => {
-          console.log(error);
-          this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/dashboard');
-        });
-        // cancello le password dalla form
-        this.password = null;
-        this.confermaPassword = null;
       },
       deleteAccount(){
         if (this.corpoID === null || this.corpoID === undefined ||

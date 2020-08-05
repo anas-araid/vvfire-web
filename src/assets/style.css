@@ -26,3 +26,7 @@ body{
 .md-list-item-content{
   color:#2c3e50!important;
 }
+.style-table-header{
+  color: black!important;
+  font-family: 'Roboto';
+}
