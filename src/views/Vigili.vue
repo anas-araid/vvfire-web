@@ -2,6 +2,7 @@
   <md-app-content style="height:100%;border:none">
     <div class="md-layout md-alignment-center-center" style="margin:10px">
       <Dialog v-if="this.message.active" :data="this.message"></Dialog>
+      <nuovo-vigile v-if="this.nuovoVigileON" :data="this.nuovoVigileON" @nuovoVigileClosed="closeNuovoVigile()"></nuovo-vigile>
       <div v-if="this.allVigili.length !== 0 && !this.errored">
         <md-table md-card style="overflow:auto">
           <md-progress-bar v-if="this.loading" class="md-accent" md-mode="indeterminate"></md-progress-bar>
@@ -37,17 +38,20 @@
       <h3>Dati non presenti</h3>
      </div>
     </div>
+    <md-button class="md-fab md-fab-bottom-right style-red-bg" @click="openNuovoVigile()">
+      <md-icon>add</md-icon>
+    </md-button>
     <br>
   </md-app-content>
 </template>
 
 <script>
   // @ is an alias to /src
+  // import corpovvfController from '../controllers/corpovvfController.js';
   import DialogAlert from '../components/Dialog.vue'; 
-  import corpovvfController from '../controllers/corpovvfController.js';
   import loginController from '../controllers/loginController.js';
   import vigileController from '../controllers/vigileController.js';
-  import md5 from 'md5';
+  import nuovoVigile from '../components/nuovoVigile.vue';
   
   export default {
     name: 'Vigili',
@@ -57,12 +61,15 @@
       message: {'active': false, 'content': null, 'url': null},
       allVigili:[],
       errored: false,
-      datiPresenti: true
+      datiPresenti: true,
+      nuovoVigileON: false
     }),
     components: {
-      'Dialog': DialogAlert
+      'Dialog': DialogAlert,
+      'nuovo-vigile': nuovoVigile
     },
     mounted(){
+      console.log(this.nuovoVigileON)
       this.loading = true;
       let idCorpo = loginController.getCorpoVVFData()['id'];
       vigileController.getVigili(idCorpo).then((response) => {
@@ -96,35 +103,13 @@
         this.message.content = message;
         this.message.url = url;         
       },
-      deleteAccount(){
-        if (this.corpoID === null || this.corpoID === undefined ||
-            this.passwordDeleteForm === null || this.passwordDeleteForm === undefined){
-          this.dialog('Errore', 'Impossibile cancellare il corpo vvf, ricaricare la pagina o rieffetture l\'accesso. Se il problema persiste contattare l\'amministratore', '#/impostazioni');
-          return;
-        }else{
-          corpovvfController.deleteCorpovvf(this.corpoID, md5(this.passwordDeleteForm)).then((response) => {
-            let raw = response.data;
-            if (raw.error === false){
-              loginController.logout();
-              this.dialog('', 'Account rimosso', '#/') 
-            }else if(raw.error === true){
-              this.dialog('Errore', 'Impossibile cancellare l\'account, contattare l\'amministratore', '#/') 
-            }else{
-              switch(raw[0]['error']){
-                case '401':
-                  this.dialog('Errore', 'Accesso non autorizzato, credenziali non valide', '#/impostazioni');
-                  break; 
-                case '404':
-                  this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/impostazioni');
-                  break;
-              }
-            }
-          }, (error) => {
-            console.log(error);
-            this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/impostazioni');
-          });
-        }
-        this.confermaPassword = '';
+      openNuovoVigile(){
+        this.nuovoVigileON = true;
+        console.log(this.nuovoVigileON);
+      },
+      closeNuovoVigile(){
+        this.nuovoVigileON = false;
+        console.log(this.nuovoVigileON);
       }
     },
   }

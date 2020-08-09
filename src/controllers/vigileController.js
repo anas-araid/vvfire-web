@@ -15,7 +15,7 @@ export default {
       'Authorization': token
     }})
   },
-  updateVigile(id, name, surname, phone, autista, admin, id_grado, password){
+  updateVigile(id, name, surname, phone, email, autista, admin, id_grado, idCorpo, password){
     if (!loginController.isTokenValid()){
       return false;
     }
@@ -27,9 +27,9 @@ export default {
       phone: phone,
       autista: autista,
       fk_grado: id_grado,
-      email: 'test@test.com',
+      email: email,
       password: password,
-      fkCorpovvf: 1
+      fkCorpovvf: idCorpo
     }, {
     headers: {
       'Authorization': token
