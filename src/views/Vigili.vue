@@ -33,7 +33,7 @@
      <div v-else-if="this.errored" style="text-align:center">
       <h3>Errore</h3>
      </div>
-     <div v-else-if="this.allVigili.length === 0 && !this.errored" style="text-align:center">
+     <div v-else-if="!this.datiPresenti" style="text-align:center">
       <h3>Dati non presenti</h3>
      </div>
     </div>
@@ -56,7 +56,8 @@
       loading: true,
       message: {'active': false, 'content': null, 'url': null},
       allVigili:[],
-      errored: false
+      errored: false,
+      datiPresenti: true
     }),
     components: {
       'Dialog': DialogAlert
@@ -68,8 +69,8 @@
         let raw = response.data[0];
         if (!raw['error']){
           this.allVigili = raw.vigili;
+          this.datiPresenti = !(this.allVigili.length === 0);
           console.log(this.allVigili);
-          this.loading = false;
         }else{
           switch(raw['error']){
             case '401':
@@ -80,6 +81,7 @@
               break;
           }
         }
+        this.loading = false;
       }, (error) => {
         console.log(error);
         this.errored= true;

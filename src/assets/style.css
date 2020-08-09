@@ -5,6 +5,9 @@ body{
 .style-red-text{
   color: #e53935!important;
 }
+.style-red-bg{
+  background-color: #e53935!important;
+}
 .style-fixed-toolbar{
   position:sticky!important;
   top:0px!important;
