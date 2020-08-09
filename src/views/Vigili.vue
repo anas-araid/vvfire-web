@@ -3,8 +3,8 @@
     <div class="md-layout md-alignment-center-center" style="margin:10px">
       <Dialog v-if="this.message.active" :data="this.message"></Dialog>
       <nuovo-vigile v-if="this.nuovoVigileON" :data="this.nuovoVigileON" @nuovoVigileClosed="closeNuovoVigile()"></nuovo-vigile>
-      <div v-if="this.allVigili.length !== 0 && !this.errored">
-        <md-table md-card style="overflow:auto">
+      <div v-if="this.allVigili.length !== 0 && !this.errored" style="overflow-x:auto">
+        <md-table md-card>
           <md-progress-bar v-if="this.loading" class="md-accent" md-mode="indeterminate"></md-progress-bar>
           <md-table-toolbar>
             <h1 class="md-title">Lista dei vigili</h1>
