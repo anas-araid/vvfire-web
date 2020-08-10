@@ -3,7 +3,7 @@
     <div class="md-layout md-alignment-center-center" style="margin:10px">
       <Dialog v-if="this.message.active" :data="this.message"></Dialog>
       <nuovo-vigile v-if="this.nuovoVigileON" :data="this.nuovoVigileON" @nuovoVigileClosed="closeNuovoVigile()"></nuovo-vigile>
-      <md-card style="overflow-x:auto">
+      <md-card style="overflow-x:auto" v-if="!this.loading">
         <md-card-content>
         <div v-if="this.allVigili.length !== 0 && !this.errored" style="overflow-x:auto">
           <md-table>
@@ -109,11 +109,9 @@
       },
       openNuovoVigile(){
         this.nuovoVigileON = true;
-        console.log(this.nuovoVigileON);
       },
       closeNuovoVigile(){
         this.nuovoVigileON = false;
-        console.log(this.nuovoVigileON);
       }
     },
   }
