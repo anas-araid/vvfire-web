@@ -3,40 +3,44 @@
     <div class="md-layout md-alignment-center-center" style="margin:10px">
       <Dialog v-if="this.message.active" :data="this.message"></Dialog>
       <nuovo-vigile v-if="this.nuovoVigileON" :data="this.nuovoVigileON" @nuovoVigileClosed="closeNuovoVigile()"></nuovo-vigile>
-      <div v-if="this.allVigili.length !== 0 && !this.errored" style="overflow-x:auto">
-        <md-table md-card>
-          <md-progress-bar v-if="this.loading" class="md-accent" md-mode="indeterminate"></md-progress-bar>
-          <md-table-toolbar>
-            <h1 class="md-title">Lista dei vigili</h1>
-          </md-table-toolbar>
-          <md-table-row>
-            <md-table-head md-numeric class="style-table-header"><strong>ID</strong></md-table-head>
-            <md-table-head class="style-table-header">NOME</md-table-head>
-            <md-table-head class="style-table-header">COGNOME</md-table-head>
-            <md-table-head class="style-table-header">NUMERO DI CELLULARE</md-table-head>
-            <md-table-head class="style-table-header">EMAIL</md-table-head>
-            <md-table-head class="style-table-header">AUTISTA</md-table-head>
-            <md-table-head class="style-table-header">GRADO</md-table-head>
-            <md-table-head class="style-table-header">AMMINISTRATORE</md-table-head>
-          </md-table-row>
-          <md-table-row v-for="vigile in this.allVigili" :key="vigile.id">
-            <md-table-head md-label="ID">{{vigile.id}}</md-table-head>
-            <md-table-head md-label="nome">{{vigile.name}}</md-table-head>
-            <md-table-head md-label="cognome">{{vigile.surname}}</md-table-head>
-            <md-table-head md-label="numero">{{vigile.phone}}</md-table-head>
-            <md-table-head md-label="email">{{vigile.email}}</md-table-head>
-            <md-table-head md-label="autista">{{vigile.autista ? 'SI' : 'NO'}}</md-table-head>
-            <md-table-head md-label="grado">{{vigile.fkGrado}}</md-table-head>
-            <md-table-head md-label="admin">{{vigile.admin ? 'SI' : 'NO'}}</md-table-head>
-        </md-table-row>
-      </md-table>
-     </div>
-     <div v-else-if="this.errored" style="text-align:center">
-      <h3>Errore</h3>
-     </div>
-     <div v-else-if="!this.datiPresenti" style="text-align:center">
-      <h3>Dati non presenti</h3>
-     </div>
+      <md-card style="overflow-x:auto">
+        <md-card-content>
+        <div v-if="this.allVigili.length !== 0 && !this.errored" style="overflow-x:auto">
+          <md-table>
+            <md-progress-bar v-if="this.loading" class="md-accent" md-mode="indeterminate"></md-progress-bar>
+            <md-table-toolbar>
+              <h1 class="md-title">Lista dei vigili</h1>
+            </md-table-toolbar>
+            <md-table-row>
+              <md-table-head md-numeric class="style-table-header"><strong>ID</strong></md-table-head>
+              <md-table-head class="style-table-header">NOME</md-table-head>
+              <md-table-head class="style-table-header">COGNOME</md-table-head>
+              <md-table-head class="style-table-header">NUMERO DI CELLULARE</md-table-head>
+              <md-table-head class="style-table-header">EMAIL</md-table-head>
+              <md-table-head class="style-table-header">AUTISTA</md-table-head>
+              <md-table-head class="style-table-header">GRADO</md-table-head>
+              <md-table-head class="style-table-header">AMMINISTRATORE</md-table-head>
+            </md-table-row>
+            <md-table-row v-for="vigile in this.allVigili" :key="vigile.id">
+              <md-table-head md-label="ID">{{vigile.id}}</md-table-head>
+              <md-table-head md-label="nome">{{vigile.name}}</md-table-head>
+              <md-table-head md-label="cognome">{{vigile.surname}}</md-table-head>
+              <md-table-head md-label="numero">{{vigile.phone}}</md-table-head>
+              <md-table-head md-label="email">{{vigile.email}}</md-table-head>
+              <md-table-head md-label="autista">{{vigile.autista ? 'SI' : 'NO'}}</md-table-head>
+              <md-table-head md-label="grado">{{vigile.fkGrado}}</md-table-head>
+              <md-table-head md-label="admin">{{vigile.admin ? 'SI' : 'NO'}}</md-table-head>
+            </md-table-row>
+          </md-table>
+        </div>
+        <div v-else-if="this.errored" style="text-align:center">
+          <h3>Errore</h3>
+        </div>
+        <div v-else-if="!this.datiPresenti" style="text-align:center">
+          <h3>Dati non presenti</h3>
+        </div>
+        </md-card-content>
+      </md-card>
     </div>
     <md-button class="md-fab md-fab-bottom-right style-red-bg" @click="openNuovoVigile()">
       <md-icon>add</md-icon>
