@@ -1,4 +1,6 @@
 <template>
+<div>
+  <Dialog v-if="this.message.active" :data="this.message"></Dialog>
   <md-dialog 
     :md-active.sync="this.isActive"
     :md-close-on-esc="false"
@@ -7,7 +9,7 @@
     <md-dialog-title>Aggiungi vigile</md-dialog-title>
     <md-dialog-content class="style-dialog">
       <div class="md-layout md-alignment-center-center">
-       <div class="md-layout-item md-large-size-100 md-medium-size-100 md-small-size-50 md-xsmall-size-100" style="text-align:center">
+       <div class="md-layout-item md-large-size-100 md-medium-size-100 md-small-size-100 md-xsmall-size-100" style="text-align:center">
         <form class="md-layout" @submit.prevent="createVigile()">
           <md-card class="md-layout-item md-size-100 md-small-size-100" >
             <md-card-content>
@@ -62,11 +64,14 @@
     </div>
     </md-dialog-content>
   </md-dialog>
+</div>
 </template>
 
 <script>
   import gradoController from '../controllers/gradoController.js';
-
+  import loginController from '../controllers/loginController.js';
+  import vigileController from '../controllers/vigileController.js';
+  import Dialog from '../components/Dialog.vue';
 
   export default {
     Name: 'nuovoVigile',
@@ -75,8 +80,10 @@
         type: Boolean
       }
     },
+    components: {
+      'Dialog': Dialog
+    },
     data: function(){
-      console.log(this.data);
       return {
         isActive: this.data,
         nome: null,
@@ -92,7 +99,6 @@
     beforeCreate(){
       gradoController.getGradi().then((response) => {
         let data = response.data;
-        console.log(data)
         if (data.length !== 0){
           this.gradi = data.reverse();
         }
@@ -111,9 +117,37 @@
         let cognome = this.cognome;
         let email = this.email;
         let telefono = this.telefono;
-        let autista = this.autista;
+        let autista = (this.autista) ? true : false;
         let idGrado = this.selectedGrado;
         console.log(nome + cognome + email + telefono+ autista + idGrado);
+        if (nome !== null &&
+            cognome !== null &&
+            email !== null &&
+            telefono !== null &&
+            autista !== null &&
+            idGrado !== null){
+          let idCorpo = loginController.getCorpoVVFData()['id'];
+          let admin = false;
+          vigileController.newVigile(nome, cognome, telefono, email, autista, admin, idGrado, idCorpo).then((response) => {
+            if (response.status === 200){
+              this.$emit('addVigile');
+              this.close();
+            }
+          }, (error) => {
+            console.log(error);
+            this.errored= true;
+            this.dialog('Errore', 'Impossibile aggiungere il vigile, se il problema persiste contattare l\'amministratore', '#/dashboard');
+          });
+        }else{
+          this.errored= true;
+          this.dialog('Errore', 'Impossibile aggiungere il vigile, se il problema persiste contattare l\'amministratore', '#/dashboard');
+        }
+      },
+      dialog(title, message, url){
+        this.message.active = true;
+        this.message.title = title;            
+        this.message.content = message;
+        this.message.url = url;         
       }
     }
   }

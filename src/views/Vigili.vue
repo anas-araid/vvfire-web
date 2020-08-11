@@ -2,7 +2,7 @@
   <md-app-content style="height:100%;border:none">
     <div class="md-layout md-alignment-center-center" style="margin:10px">
       <Dialog v-if="this.message.active" :data="this.message"></Dialog>
-      <nuovo-vigile v-if="this.nuovoVigileON" :data="this.nuovoVigileON" @nuovoVigileClosed="closeNuovoVigile()"></nuovo-vigile>
+      <nuovo-vigile v-if="this.nuovoVigileON" :data="this.nuovoVigileON" @nuovoVigileClosed="closeNuovoVigile()" @addVigile="addVigile()"></nuovo-vigile>
       <md-card style="overflow-x:auto" v-if="!this.loading">
         <md-card-content>
         <div v-if="this.allVigili.length !== 0 && !this.errored" style="overflow-x:auto">
@@ -81,7 +81,6 @@
         if (!raw['error']){
           this.allVigili = raw.vigili;
           this.datiPresenti = !(this.allVigili.length === 0);
-          console.log(this.allVigili);
         }else{
           switch(raw['error']){
             case '401':
@@ -112,6 +111,9 @@
       },
       closeNuovoVigile(){
         this.nuovoVigileON = false;
+      },
+      addVigile(){
+        this.dialog('', 'Vigile aggiunto con successo', '#/vigili');
       }
     },
   }

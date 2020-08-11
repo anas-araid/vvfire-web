@@ -25,6 +25,7 @@
         this.data.active = false;
         if (this.data.url !== false){
           window.location.href = this.data.url;
+          window.location.reload(true);
         }
       }
     }

@@ -15,6 +15,26 @@ export default {
       'Authorization': token
     }})
   },
+  newVigile(name, surname, phone, email, autista, admin, id_grado, idCorpo){
+    let password = "asdf"; 
+    if (!loginController.isTokenValid()){
+      return false;
+    }
+    let token = loginController.getToken()['token'];
+    return axios.post('http://localhost:1337/api/v1/vigile/create', {
+      name: name,
+      surname: surname,
+      phone: phone,
+      autista: autista,
+      email: email,
+      password: password,
+      fkGrado: id_grado,
+      fkCorpovvf: idCorpo
+    }, {
+    headers: {
+      'Authorization': token
+    }})
+  },
   updateVigile(id, name, surname, phone, email, autista, admin, id_grado, idCorpo, password){
     if (!loginController.isTokenValid()){
       return false;
