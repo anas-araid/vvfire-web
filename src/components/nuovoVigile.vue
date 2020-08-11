@@ -8,8 +8,8 @@
     <md-dialog-content class="style-dialog">
       <div class="md-layout md-alignment-center-center">
        <div class="md-layout-item md-large-size-100 md-medium-size-100 md-small-size-50 md-xsmall-size-100" style="text-align:center">
-        <form class="md-layout" @submit.prevent="">
-          <md-card class="md-layout-item md-size-80 md-small-size-100" >
+        <form class="md-layout" @submit.prevent="createVigile()">
+          <md-card class="md-layout-item md-size-100 md-small-size-100" >
             <md-card-content>
               <div class="md-layout md-gutter">
                 <div class="md-layout-item md-small-size-100">
@@ -34,13 +34,13 @@
                   <md-field>
                     <md-icon class="style-red-text">email</md-icon>
                     <label for="email">Email</label>
-                    <md-input type="email" name="email" id="email" autocomplete="email" v-model="email"  required/>
+                    <md-input type="email" name="email" id="email" autocomplete="email" v-model="email" required/>
                     <span class="md-error">Inserire l'email</span>
                   </md-field>
                   <md-field>
                     <md-icon class="style-red-text">grade</md-icon>
                     <label for="grado">Grado</label>
-                    <md-select v-model="selectedGrado" name="grado" id="grado" :value="selectedGrado">
+                    <md-select v-model="selectedGrado" name="grado" id="grado" :value="selectedGrado" required>
                       <md-option v-for="selectedGrado in this.gradi" :key="selectedGrado.id" :value="selectedGrado.id">
                         {{selectedGrado.name}}
                       </md-option>
@@ -53,7 +53,7 @@
               </div>
             </md-card-content>
             <md-card-actions>
-              <md-button type="submit" class="md-accent">AGGIORNA</md-button>
+              <md-button type="submit" class="style-red-bg">AGGIUNGI</md-button>
               <md-button class="md-accent" @click="close()">ANNULLA</md-button>
             </md-card-actions>
           </md-card>
@@ -94,7 +94,7 @@
         let data = response.data;
         console.log(data)
         if (data.length !== 0){
-          this.gradi = data;
+          this.gradi = data.reverse();
         }
       });
     },
@@ -105,6 +105,15 @@
       close(){
         this.isActive = false;
         this.$emit('nuovoVigileClosed');
+      },
+      createVigile(){
+        let nome = this.nome;
+        let cognome = this.cognome;
+        let email = this.email;
+        let telefono = this.telefono;
+        let autista = this.autista;
+        let idGrado = this.selectedGrado;
+        console.log(nome + cognome + email + telefono+ autista + idGrado);
       }
     }
   }
@@ -115,4 +124,8 @@
     width:100vw!important;
     height:100vh!important;
   }
+  .md-dialog-container{
+    max-height: 100%!important;
+    max-width: 100%!important;
+  } 
 </style>
