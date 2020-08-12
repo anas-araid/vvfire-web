@@ -9,5 +9,14 @@ export default{
         'Authorization': token
       }
     })
+  },
+  getGradoByID(id){
+    let token = loginController.getToken()['token'];
+    return axios.post('http://localhost:1337/api/v1/grado/find-by-id', {
+      id: id
+    }, {
+    headers: {
+      'Authorization': token
+    }})
   }
 }

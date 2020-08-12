@@ -12,7 +12,6 @@
               <h1 class="md-title">Lista dei vigili</h1>
             </md-table-toolbar>
             <md-table-row>
-              <md-table-head md-numeric class="style-table-header"><strong>ID</strong></md-table-head>
               <md-table-head class="style-table-header">NOME</md-table-head>
               <md-table-head class="style-table-header">COGNOME</md-table-head>
               <md-table-head class="style-table-header">NUMERO DI CELLULARE</md-table-head>
@@ -22,13 +21,12 @@
               <md-table-head class="style-table-header">AMMINISTRATORE</md-table-head>
             </md-table-row>
             <md-table-row v-for="vigile in this.allVigili" :key="vigile.id">
-              <md-table-head md-label="ID">{{vigile.id}}</md-table-head>
               <md-table-head md-label="nome">{{vigile.name}}</md-table-head>
               <md-table-head md-label="cognome">{{vigile.surname}}</md-table-head>
               <md-table-head md-label="numero">{{vigile.phone}}</md-table-head>
               <md-table-head md-label="email">{{vigile.email}}</md-table-head>
               <md-table-head md-label="autista">{{vigile.autista ? 'SI' : 'NO'}}</md-table-head>
-              <md-table-head md-label="grado">{{vigile.fkGrado}}</md-table-head>
+              <md-table-head md-label="grado">{{vigile.gradoName}}</md-table-head>
               <md-table-head md-label="admin">{{vigile.admin ? 'SI' : 'NO'}}</md-table-head>
             </md-table-row>
           </md-table>
@@ -55,6 +53,7 @@
   import DialogAlert from '../components/Dialog.vue'; 
   import loginController from '../controllers/loginController.js';
   import vigileController from '../controllers/vigileController.js';
+  import gradoController from '../controllers/gradoController.js';
   import nuovoVigile from '../components/nuovoVigile.vue';
   
   export default {
@@ -66,36 +65,48 @@
       allVigili:[],
       errored: false,
       datiPresenti: true,
-      nuovoVigileON: false
+      nuovoVigileON: false,
+      grad: []
     }),
     components: {
       'Dialog': DialogAlert,
       'nuovo-vigile': nuovoVigile
     },
     mounted(){
-      console.log(this.nuovoVigileON)
       this.loading = true;
       let idCorpo = loginController.getCorpoVVFData()['id'];
-      vigileController.getVigili(idCorpo).then((response) => {
-        let raw = response.data[0];
-        if (!raw['error']){
-          this.allVigili = raw.vigili;
-          this.datiPresenti = !(this.allVigili.length === 0);
+      gradoController.getGradi().then((response) => {
+        // this.gradi --> array con tutti i gradi + id
+        this.gradi = response.data
+        if (this.gradi !== []){
+          vigileController.getVigili(idCorpo).then((response) => {
+            let raw = response.data[0];
+            if (!raw['error']){
+              this.allVigili = raw.vigili;
+              for (var i=0; i < this.allVigili.length; i++){
+                // per ogni vigili aggiungo gradoName --> che è uguale al nome in this.gradi associato all'id fkGrado in this.allVigili
+                this.allVigili[i].gradoName = this.gradi.filter(a=>a.id=== this.allVigili[i].fkGrado)[0].name;
+              }
+              this.datiPresenti = !(this.allVigili.length === 0);
+            }else{
+              switch(raw['error']){
+                case '401':
+                  this.dialog('Errore', 'Accesso non autorizzato, credenziali non valide, rieffettuare l\'accesso', '#/dashboard');
+                  break; 
+                case '404':
+                  this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/dashboard');
+                  break;
+              }
+            }
+            this.loading = false;
+          }, (error) => {
+            console.log(error);
+            this.errored= true;
+            this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/dashboard');
+          });
         }else{
-          switch(raw['error']){
-            case '401':
-              this.dialog('Errore', 'Accesso non autorizzato, credenziali non valide, rieffettuare l\'accesso', '#/dashboard');
-              break; 
-            case '404':
-              this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/dashboard');
-              break;
-          }
+          this.dialog('Errore', 'Il server non ha restituito i dati relativi ai gradi dei vigili, contatta l\' amministratore', '#/dashboard');
         }
-        this.loading = false;
-      }, (error) => {
-        console.log(error);
-        this.errored= true;
-        this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/dashboard');
       });
       this.loading = false;
     },
