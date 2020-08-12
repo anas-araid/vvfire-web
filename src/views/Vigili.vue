@@ -12,8 +12,8 @@
               <h1 class="md-title">Lista dei vigili</h1>
             </md-table-toolbar>
             <md-table-row>
-              <md-table-head class="style-table-header">NOME</md-table-head>
               <md-table-head class="style-table-header">COGNOME</md-table-head>
+              <md-table-head class="style-table-header">NOME</md-table-head>
               <md-table-head class="style-table-header">NUMERO DI CELLULARE</md-table-head>
               <md-table-head class="style-table-header">EMAIL</md-table-head>
               <md-table-head class="style-table-header">AUTISTA</md-table-head>
@@ -21,8 +21,8 @@
               <md-table-head class="style-table-header">AMMINISTRATORE</md-table-head>
             </md-table-row>
             <md-table-row v-for="vigile in this.allVigili" :key="vigile.id">
-              <md-table-head md-label="nome">{{vigile.name}}</md-table-head>
               <md-table-head md-label="cognome">{{vigile.surname}}</md-table-head>
+              <md-table-head md-label="nome">{{vigile.name}}</md-table-head>
               <md-table-head md-label="numero">{{vigile.phone}}</md-table-head>
               <md-table-head md-label="email">{{vigile.email}}</md-table-head>
               <md-table-head md-label="autista">{{vigile.autista ? 'SI' : 'NO'}}</md-table-head>
