@@ -19,6 +19,8 @@
               <md-table-head class="style-table-header">AUTISTA</md-table-head>
               <md-table-head class="style-table-header">GRADO</md-table-head>
               <md-table-head class="style-table-header">AMMINISTRATORE</md-table-head>
+              <md-table-head class="style-table-header"></md-table-head>
+              <md-table-head class="style-table-header"></md-table-head>
             </md-table-row>
             <md-table-row v-for="vigile in this.allVigili" :key="vigile.id">
               <md-table-head md-label="cognome">{{vigile.surname}}</md-table-head>
@@ -28,6 +30,8 @@
               <md-table-head md-label="autista">{{vigile.autista ? 'SI' : 'NO'}}</md-table-head>
               <md-table-head md-label="grado">{{vigile.gradoName}}</md-table-head>
               <md-table-head md-label="admin">{{vigile.admin ? 'SI' : 'NO'}}</md-table-head>
+              <md-table-head md-label="modifica"><a>MODIFICA</a></md-table-head>
+              <md-table-head md-label="elimina"><a class="style-red-text">RIMUOVI</a></md-table-head>
             </md-table-row>
           </md-table>
         </div>

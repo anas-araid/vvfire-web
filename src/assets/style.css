@@ -2,6 +2,9 @@
 body{
   background-color:white!important;
 }
+a{
+  cursor:pointer!important;
+}
 .style-red-text{
   color: #e53935!important;
 }
@@ -33,4 +36,8 @@ body{
 .style-table-header{
   color: black!important;
   font-family: 'Roboto';
+}
+.md-table-head-label{
+  padding-right:10px!important;
+  padding-left:10px!important;
 }
