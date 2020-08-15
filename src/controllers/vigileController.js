@@ -1,6 +1,7 @@
 //import Vue from 'vue';
 import loginController from '@/controllers/loginController.js';
 import axios from 'axios';
+import md5 from 'md5';
 
 export default {
   getVigili(id_corpo){
@@ -16,7 +17,7 @@ export default {
     }})
   },
   newVigile(name, surname, phone, email, autista, admin, id_grado, idCorpo){
-    let password = "asdf"; 
+    let password = this.generateTemporaryPassword(email); 
     if (!loginController.isTokenValid()){
       return false;
     }
@@ -70,5 +71,8 @@ export default {
         password: password
       }
     });
+  },
+  generateTemporaryPassword(email){
+    return md5(email).substring(0,8);
   }
 }
