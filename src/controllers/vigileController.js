@@ -1,4 +1,3 @@
-//import Vue from 'vue';
 import loginController from '@/controllers/loginController.js';
 import axios from 'axios';
 import md5 from 'md5';
@@ -56,19 +55,25 @@ export default {
       'Authorization': token
     }})
   },
-  deleteCorpovvf(id, password){
+  deleteVigile(id){
     if (!loginController.isTokenValid()){
       return false;
     }
+    let idCorpo = loginController.getCorpoVVFData()['id'];
+    if (idCorpo === null || idCorpo === undefined){
+      return false;
+    }
+    console.log(id)
+    console.log(idCorpo)
     let token = loginController.getToken()['token']
-    return axios.delete('http://localhost:1337/api/v1/corpovvf/delete', {
+    return axios.delete('http://localhost:1337/api/v1/vigile/delete', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': token
       },
       data:{
         id: id,
-        password: password
+        fkCorpovvf: idCorpo
       }
     });
   },

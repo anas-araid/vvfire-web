@@ -17,7 +17,6 @@
               <md-table-head class="style-table-header">EMAIL</md-table-head>
               <md-table-head class="style-table-header">AUTISTA</md-table-head>
               <md-table-head class="style-table-header">GRADO</md-table-head>
-              <md-table-head class="style-table-header">AMMINISTRATORE</md-table-head>
               <md-table-head class="style-table-header"></md-table-head>
               <md-table-head class="style-table-header"></md-table-head>
             </md-table-row>
@@ -28,9 +27,8 @@
               <md-table-head md-label="email">{{vigile.email}}</md-table-head>
               <md-table-head md-label="autista">{{vigile.autista ? 'SI' : 'NO'}}</md-table-head>
               <md-table-head md-label="grado">{{vigile.gradoName}}</md-table-head>
-              <md-table-head md-label="admin">{{vigile.admin ? 'SI' : 'NO'}}</md-table-head>
               <md-table-head md-label="modifica"><a>MODIFICA</a></md-table-head>
-              <md-table-head md-label="elimina"><a class="style-red-text">RIMUOVI</a></md-table-head>
+              <md-table-head md-label="elimina"><a class="style-red-text" @click="deleteVigile(vigile.id)">RIMUOVI</a></md-table-head>
             </md-table-row>
           </md-table>
         </div>
@@ -46,7 +44,7 @@
         <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
       </div>
     </div>
-    <md-button class="md-fab md-fab-bottom-right style-red-bg" @click="openNuovoVigile()">
+    <md-button class="md-fab md-fab-bottom-right" @click="openNuovoVigile()" :disabled="this.loading">
       <md-icon>add</md-icon>
     </md-button>
     <br>
@@ -132,6 +130,28 @@
       },
       addVigile(){
         this.dialog('', 'Vigile aggiunto con successo', '#/vigili');
+      },
+      deleteVigile(id){
+        vigileController.deleteVigile(id).then((response) => {
+          let raw = response.data;
+          if (raw.error === false){
+            this.dialog('', 'Account del vigile rimosso con successo', '#/vigili') 
+          }else if(raw.error === true){
+            this.dialog('Errore', 'Impossibile cancellare l\'account, contattare l\'amministratore', '#/vigili') 
+          }else{
+            switch(raw[0]['error']){
+              case '401':
+                this.dialog('Errore', 'Non sei autorizzato a cancellare l\'account del vigile, se credi ci sia stato un errore, contatta l\'amministratore', '#/vigili');
+                break; 
+              case '404':
+                this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/vigili');
+                break;
+            }
+          }
+        }, (error) => {
+          console.log(error);
+          this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/dashboard');
+        });
       }
     },
   }
