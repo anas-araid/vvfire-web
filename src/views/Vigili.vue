@@ -73,7 +73,7 @@
       errored: false,
       datiPresenti: true,
       nuovoVigileON: false,
-      grad: []
+      gradi: []
     }),
     components: {
       'Dialog': DialogAlert,
