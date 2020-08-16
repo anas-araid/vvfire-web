@@ -7,7 +7,6 @@
         <md-card-content>
         <div v-if="this.allVigili.length !== 0 && !this.errored" style="overflow-x:auto">
           <md-table>
-            <md-progress-bar v-if="this.loading" class="md-accent" md-mode="indeterminate"></md-progress-bar>
             <md-table-toolbar>
               <h1 class="md-title">Lista dei vigili</h1>
             </md-table-toolbar>
@@ -43,6 +42,9 @@
         </div>
         </md-card-content>
       </md-card>
+      <div v-else>
+        <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
+      </div>
     </div>
     <md-button class="md-fab md-fab-bottom-right style-red-bg" @click="openNuovoVigile()">
       <md-icon>add</md-icon>
@@ -107,12 +109,13 @@
             console.log(error);
             this.errored= true;
             this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/dashboard');
+            this.loading = false;
           });
         }else{
           this.dialog('Errore', 'Il server non ha restituito i dati relativi ai gradi dei vigili, contatta l\' amministratore', '#/dashboard');
+           this.loading = false;
         }
       });
-      this.loading = false;
     },
     methods: {
       dialog(title, message, url){
