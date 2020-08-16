@@ -2,6 +2,7 @@
   <md-app-content style="height:100%;border:none">
     <div class="md-layout md-alignment-center-center" style="margin:10px">
       <Dialog v-if="this.message.active" :data="this.message"></Dialog>
+      <deleteVigileDialog v-if="this.deleteAlert.active" :data="this.deleteAlert" @deleteVigile="deleteVigile()"></deleteVigileDialog>
       <nuovo-vigile v-if="this.nuovoVigileON" :data="this.nuovoVigileON" @nuovoVigileClosed="closeNuovoVigile()" @addVigile="addVigile()"></nuovo-vigile>
       <md-card style="overflow-x:auto" v-if="!this.loading">
         <md-card-content>
@@ -28,7 +29,7 @@
               <md-table-head md-label="autista">{{vigile.autista ? 'SI' : 'NO'}}</md-table-head>
               <md-table-head md-label="grado">{{vigile.gradoName}}</md-table-head>
               <md-table-head md-label="modifica"><a>MODIFICA</a></md-table-head>
-              <md-table-head md-label="elimina"><a class="style-red-text" @click="deleteVigile(vigile.id)">RIMUOVI</a></md-table-head>
+              <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteVigile(vigile.id)">RIMUOVI</a></md-table-head>
             </md-table-row>
           </md-table>
         </div>
@@ -55,6 +56,7 @@
   // @ is an alias to /src
   // import corpovvfController from '../controllers/corpovvfController.js';
   import DialogAlert from '../components/Dialog.vue'; 
+  import deleteVigileDialog from '../components/deleteVigileDialog.vue'; 
   import loginController from '../controllers/loginController.js';
   import vigileController from '../controllers/vigileController.js';
   import gradoController from '../controllers/gradoController.js';
@@ -66,6 +68,7 @@
       showNavigation: false,
       loading: true,
       message: {'active': false, 'content': null, 'url': null},
+      deleteAlert: {'active': false, 'idVigile': null},
       allVigili:[],
       errored: false,
       datiPresenti: true,
@@ -74,6 +77,7 @@
     }),
     components: {
       'Dialog': DialogAlert,
+      'deleteVigileDialog': deleteVigileDialog,
       'nuovo-vigile': nuovoVigile
     },
     mounted(){
@@ -131,7 +135,12 @@
       addVigile(){
         this.dialog('', 'Vigile aggiunto con successo', '#/vigili');
       },
-      deleteVigile(id){
+      alertDeleteVigile(id){
+        this.deleteAlert.active = true;
+        this.deleteAlert.idVigile = id;
+      },
+      deleteVigile(){
+        let id = this.deleteAlert.idVigile;
         vigileController.deleteVigile(id).then((response) => {
           let raw = response.data;
           if (raw.error === false){
