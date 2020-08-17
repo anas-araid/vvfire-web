@@ -15,6 +15,18 @@ export default {
       'Authorization': token
     }})
   },
+  getVigileByID(idVigile){
+    if (!loginController.isTokenValid()){
+      return false;
+    }
+    let token = loginController.getToken()['token'];
+    return axios.post('http://localhost:1337/api/v1/vigile/find-by-id', {
+      id: idVigile,
+    }, {
+    headers: {
+      'Authorization': token
+    }})
+  },
   newVigile(name, surname, phone, email, autista, admin, id_grado, idCorpo){
     let password = this.generateTemporaryPassword(email); 
     if (!loginController.isTokenValid()){

@@ -3,7 +3,8 @@
     <div class="md-layout md-alignment-center-center" style="margin:10px">
       <Dialog v-if="this.message.active" :data="this.message"></Dialog>
       <deleteVigileDialog v-if="this.deleteAlert.active" :data="this.deleteAlert" @deleteVigile="deleteVigile()"></deleteVigileDialog>
-      <nuovo-vigile v-if="this.nuovoVigileON" :data="this.nuovoVigileON" @nuovoVigileClosed="closeNuovoVigile()" @addVigile="addVigile()"></nuovo-vigile>
+      <nuovo-vigile v-if="this.nuovoVigileON" :data="this.nuovoVigileON" @nuovoVigileClosed="closeNuovoVigile()" @addVigileAlert="addVigileAlert()"></nuovo-vigile>
+      <modifica-vigile v-if="this.editVigile.active" :data="this.editVigile" @modificaVigileClosed="closeModificaVigile()" @editVigileAlert="editVigileAlert()"></modifica-vigile>
       <md-card style="overflow-x:auto" v-if="!this.loading">
         <md-card-content>
         <div v-if="this.allVigili.length !== 0 && !this.errored" style="overflow-x:auto">
@@ -28,7 +29,7 @@
               <md-table-head md-label="email">{{vigile.email}}</md-table-head>
               <md-table-head md-label="autista">{{vigile.autista ? 'SI' : 'NO'}}</md-table-head>
               <md-table-head md-label="grado">{{vigile.gradoName}}</md-table-head>
-              <md-table-head md-label="modifica"><a>MODIFICA</a></md-table-head>
+              <md-table-head md-label="modifica"><a @click="openModificaVigile(vigile.id)">MODIFICA</a></md-table-head>
               <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteVigile(vigile.id)">RIMUOVI</a></md-table-head>
             </md-table-row>
           </md-table>
@@ -61,6 +62,7 @@
   import vigileController from '../controllers/vigileController.js';
   import gradoController from '../controllers/gradoController.js';
   import nuovoVigile from '../components/nuovoVigile.vue';
+  import modificaVigile from '../components/modificaVigile.vue';
   
   export default {
     name: 'Vigili',
@@ -69,6 +71,7 @@
       loading: true,
       message: {'active': false, 'content': null, 'url': null},
       deleteAlert: {'active': false, 'idVigile': null},
+      editVigile: {'active': false, 'idVigile': null},
       allVigili:[],
       errored: false,
       datiPresenti: true,
@@ -78,7 +81,8 @@
     components: {
       'Dialog': DialogAlert,
       'deleteVigileDialog': deleteVigileDialog,
-      'nuovo-vigile': nuovoVigile
+      'nuovo-vigile': nuovoVigile,
+      'modifica-vigile': modificaVigile
     },
     mounted(){
       this.loading = true;
@@ -129,11 +133,21 @@
       openNuovoVigile(){
         this.nuovoVigileON = true;
       },
+      openModificaVigile(idVigile){
+        this.editVigile.idVigile = idVigile;
+        this.editVigile.active = true;
+      },
       closeNuovoVigile(){
         this.nuovoVigileON = false;
       },
-      addVigile(){
+      closeModificaVigile(){
+        this.editVigile.active = false;
+      },
+      addVigileAlert(){
         this.dialog('', 'Vigile aggiunto con successo', '#/vigili');
+      },
+      editVigileAlert(){
+        this.dialog('', 'Dati del vigile aggiornati con successo', '#/vigili');
       },
       alertDeleteVigile(id){
         this.deleteAlert.active = true;
