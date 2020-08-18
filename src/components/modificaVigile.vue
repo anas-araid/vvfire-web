@@ -10,7 +10,7 @@
       <md-dialog-content class="style-dialog">
         <div class="md-layout md-alignment-center-center">
         <div class="md-layout-item md-large-size-100 md-medium-size-100 md-small-size-100 md-xsmall-size-100" style="text-align:center">
-          <form class="md-layout" @submit.prevent="">
+          <form class="md-layout" @submit.prevent="updateVigile()">
             <md-card class="md-layout-item md-size-100 md-small-size-100" >
               <md-progress-bar v-if="this.loading" class="md-accent" md-mode="indeterminate"></md-progress-bar>
               <md-card-content>
@@ -50,7 +50,7 @@
                       </md-select>
                     </md-field>
                     <div class="input" style="text-align:left">
-                      <md-checkbox v-model="autista" id="autista">Autista (patente C) {{autista}}</md-checkbox>
+                      <md-checkbox v-model="autista" id="autista">Autista (patente C)</md-checkbox>
                     </div>
                   </div>
                 </div>
@@ -70,7 +70,6 @@
 
 <script>
   import gradoController from '../controllers/gradoController.js';
-  import loginController from '../controllers/loginController.js';
   import vigileController from '../controllers/vigileController.js';
   import Dialog from '../components/Dialog.vue';
 
@@ -87,6 +86,7 @@
     data: function(){
       return {
         isActive: this.data.active,
+        idVigile: null,
         nome: null,
         cognome: null,
         email: null,
@@ -112,6 +112,7 @@
         let raw = response.data[0];
         if (!raw.error){
           let vigile = raw.vigile[0];
+          this.idVigile = vigile.id;
           this.nome = vigile.name;
           this.cognome = vigile.surname;
           this.autista = vigile.autista ? true : false;
@@ -145,28 +146,26 @@
         let telefono = this.telefono;
         let autista = (this.autista) ? true : false;
         let idGrado = this.selectedGrado;
-        console.log(nome + cognome + email + telefono+ autista + idGrado);
+        let idVigile = this.idVigile;
         if (nome !== null &&
             cognome !== null &&
             email !== null &&
             telefono !== null &&
             autista !== null &&
             idGrado !== null){
-          let idCorpo = loginController.getCorpoVVFData()['id'];
-          let admin = false;
-          vigileController.newVigile(nome, cognome, telefono, email, autista, admin, idGrado, idCorpo).then((response) => {
+          vigileController.updateVigile(idVigile, nome, cognome, telefono, email, autista, idGrado).then((response) => {
             if (response.status === 200){
-              this.$emit('addVigile');
+              this.$emit('editVigileAlert');
               this.close();
             }
           }, (error) => {
             console.log(error);
             this.errored= true;
-            this.dialog('Errore', 'Impossibile aggiungere il vigile, controllare se l\'email o il numero di telefono sono stati già immessi. Se il problema persiste contattare l\'amministratore', '#/dashboard');
+            this.dialog('Errore', 'Impossibile aggiornare i dati il vigile. Se il problema persiste contattare l\'amministratore', '#/vigili');
           });
         }else{
           this.errored= true;
-          this.dialog('Errore', 'Impossibile aggiungere il vigile, controllare se tutti i campi sono stati compilati. Se il problema persiste contattare l\'amministratore', '#/dashboard');
+          this.dialog('Errore', 'Impossibile aggiornare i dati il vigile, controllare se tutti i campi sono stati compilati. Se il problema persiste contattare l\'amministratore', '#/vigili');
         }
       },
       dialog(title, message, url){
