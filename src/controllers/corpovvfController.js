@@ -8,7 +8,7 @@ export default {
       return false;
     }
     let token = loginController.getToken()['token']
-    return axios.post('http://localhost:1337/api/v1/corpovvf/find-by-email', {
+    return axios.post(process.env.VUE_APP_API_SERVER+'/api/v1/corpovvf/find-by-email', {
       email: email,
     }, {
     headers: {
@@ -20,7 +20,7 @@ export default {
       return false;
     }
     let token = loginController.getToken()['token']
-    return axios.patch('http://localhost:1337/api/v1/corpovvf/update', {
+    return axios.patch(process.env.VUE_APP_API_SERVER+'/api/v1/corpovvf/update', {
       id: id,
       name: name,
       phone: phone,
@@ -36,7 +36,7 @@ export default {
       return false;
     }
     let token = loginController.getToken()['token']
-    return axios.delete('http://localhost:1337/api/v1/corpovvf/delete', {
+    return axios.delete(process.env.VUE_APP_API_SERVER+'/api/v1/corpovvf/delete', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': token

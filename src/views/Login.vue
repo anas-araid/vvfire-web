@@ -74,7 +74,7 @@
     methods: {
       auth() {
         this.loading = true;
-        axios.post('http://localhost:1337/api/v1/corpovvf/login', {
+        axios.post(process.env.VUE_APP_API_SERVER+'/api/v1/corpovvf/login', {
           email: this.email,
           password: md5(this.password)
         })

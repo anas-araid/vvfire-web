@@ -8,7 +8,7 @@ export default {
       return false;
     }
     let token = loginController.getToken()['token'];
-    return axios.post('http://localhost:1337/api/v1/vigile/show', {
+    return axios.post(process.env.VUE_APP_API_SERVER + '/api/v1/vigile/show', {
       idcorpo: id_corpo,
     }, {
     headers: {
@@ -20,7 +20,7 @@ export default {
       return false;
     }
     let token = loginController.getToken()['token'];
-    return axios.post('http://localhost:1337/api/v1/vigile/find-by-id', {
+    return axios.post(process.env.VUE_APP_API_SERVER + '/api/v1/vigile/find-by-id', {
       id: idVigile,
     }, {
     headers: {
@@ -33,7 +33,7 @@ export default {
       return false;
     }
     let token = loginController.getToken()['token'];
-    return axios.post('http://localhost:1337/api/v1/vigile/create', {
+    return axios.post(process.env.VUE_APP_API_SERVER + '/api/v1/vigile/create', {
       name: name,
       surname: surname,
       phone: phone,
@@ -52,7 +52,7 @@ export default {
       return false;
     }
     let token = loginController.getToken()['token'];
-    return axios.patch('http://localhost:1337/api/v1/vigile/update', {
+    return axios.patch(process.env.VUE_APP_API_SERVER + '/api/v1/vigile/update', {
       id: id,
       name: name,
       surname: surname,
@@ -76,7 +76,7 @@ export default {
     console.log(id)
     console.log(idCorpo)
     let token = loginController.getToken()['token']
-    return axios.delete('http://localhost:1337/api/v1/vigile/delete', {
+    return axios.delete(process.env.VUE_APP_API_SERVER + '/api/v1/vigile/delete', {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': token
