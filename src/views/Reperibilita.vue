@@ -10,6 +10,7 @@
           :disable-views="['years', 'year']"
           locale="it"
           :events="events"
+          :on-event-click="onEventClick"
           style="max-height:600px;">
         </vue-cal>
         <div v-else>
@@ -36,7 +37,8 @@
       showNavigation: false,
       loading: false,
       message: {'active': false, 'content': null, 'url': null},
-      events: []
+      events: [],
+      selectedEvent: null
     }),
     components: {
       'Dialog': DialogAlert,
@@ -62,7 +64,7 @@
                   start: new Date(listaDisponibilita[i].startTime).toLocaleString('en', options).replace(/,/,''),
                   end: new Date(listaDisponibilita[i].endTime).toLocaleString('en', options).replace(/,/,''),
                   title: vigile.name + ' ' + vigile.surname,
-                  content: vigile.phone,
+                  contentFull: vigile.phone,
                   class: 'style-event-color'
                 })
                 this.loading = false;
@@ -73,7 +75,7 @@
                     this.loading = false;
                     break; 
                   case '404':
-                    this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/dashboard');
+                    this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/reperibilita');
                     this.loading = false;
                     break;
                 }
@@ -89,6 +91,14 @@
         this.message.title = title;            
         this.message.content = message;
         this.message.url = url;         
+      },
+      onEventClick (event, e) {
+        this.selectedEvent = event
+        console.log(this.selectedEvent);
+        let content = "Vigile: " + this.selectedEvent.title + " | Numero di telefono: " + this.selectedEvent.contentFull;
+        this.dialog('Dettagli', content, false);
+        // Prevent navigating to narrower view (default vue-cal behavior).
+        e.stopPropagation()
       }
     },
   }
