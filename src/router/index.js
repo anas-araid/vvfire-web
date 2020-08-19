@@ -6,6 +6,7 @@ import Login from '../views/Login.vue'
 import Dashboard from '../layout/DashboardLayout.vue'
 import Impostazioni from '../views/Impostazioni.vue'
 import Vigili from '../views/Vigili.vue'
+import Reperibilita from '../views/Reperibilita.vue'
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,11 @@ const routes = [
       path: '/vigili',
       components: {
         loggedContent: Vigili
+      }
+    },{
+      path: '/reperibilita',
+      components: {
+        loggedContent: Reperibilita
       }
     }]
   },

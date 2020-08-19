@@ -41,3 +41,29 @@ a{
   padding-right:10px!important;
   padding-left:10px!important;
 }
+
+.style-event-color{
+  background-color: rgba(164,230,210,.9)!important;
+  border: 1px solid #90d2be!important;
+}
+.vuecal__menu, .vuecal__cell-events-count {
+  background-color: #e53935!important;
+  color:white!important;
+}
+.vuecal__title-bar {
+  background-color: #e538357c!important;
+}
+.vuecal__cell--today, .vuecal__cell--current {
+  background-color: rgba(255, 255, 255, 0.418)!important;
+}
+.vuecal:not(.vuecal--day-view) .vuecal__cell--selected {
+  background-color: rgba(235, 255, 245, 0.4)!important;
+}
+.vuecal__cell--selected:before {
+  border-color: rgba(66, 185, 131, 0.5)!important;
+}
+/* Cells and buttons get highlighted when an event is dragged over it. */
+.vuecal__cell--highlighted:not(.vuecal__cell--has-splits),
+.vuecal__cell-split--highlighted {background-color: rgba(195, 255, 225, 0.5);}
+.vuecal__arrow.vuecal__arrow--highlighted,
+.vuecal__view-btn.vuecal__view-btn--highlighted {background-color: rgba(136, 236, 191, 0.25);}
