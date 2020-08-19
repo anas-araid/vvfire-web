@@ -129,6 +129,7 @@
           let admin = false;
           vigileController.newVigile(nome, cognome, telefono, email, autista, admin, idGrado, idCorpo).then((response) => {
             if (response.status === 200){
+              // send password via mail
               this.$emit('addVigileAlert');
               this.close();
             }

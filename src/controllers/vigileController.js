@@ -39,7 +39,7 @@ export default {
       phone: phone,
       autista: autista,
       email: email,
-      password: password,
+      password: md5(password),
       fkGrado: id_grado,
       fkCorpovvf: idCorpo
     }, {
@@ -73,8 +73,6 @@ export default {
     if (idCorpo === null || idCorpo === undefined){
       return false;
     }
-    console.log(id)
-    console.log(idCorpo)
     let token = loginController.getToken()['token']
     return axios.delete(process.env.VUE_APP_API_SERVER + '/api/v1/vigile/delete', {
       headers: {
