@@ -7,6 +7,7 @@ import Dashboard from '../layout/DashboardLayout.vue'
 import Impostazioni from '../views/Impostazioni.vue'
 import Vigili from '../views/Vigili.vue'
 import Reperibilita from '../views/Reperibilita.vue'
+import loginController from '../controllers/loginController';
 
 Vue.use(VueRouter)
 
@@ -31,6 +32,7 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
+    meta: { requiresAuth: true },
     children: [{
       path: '/impostazioni',
       components: {
@@ -60,6 +62,20 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!loginController.isTokenValid()) {
+      next({
+        path: '/login'
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
