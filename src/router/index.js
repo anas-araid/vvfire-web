@@ -7,6 +7,7 @@ import Dashboard from '../layout/DashboardLayout.vue'
 import Impostazioni from '../views/Impostazioni.vue'
 import Vigili from '../views/Vigili.vue'
 import Reperibilita from '../views/Reperibilita.vue'
+import RicercaPersona from '../views/RicercaPersona.vue'
 import loginController from '../controllers/loginController';
 
 Vue.use(VueRouter)
@@ -47,6 +48,11 @@ const routes = [
       path: '/reperibilita',
       components: {
         loggedContent: Reperibilita
+      }
+    },{
+      path: '/ricercapersona',
+      components: {
+        loggedContent: RicercaPersona
       }
     }]
   },
