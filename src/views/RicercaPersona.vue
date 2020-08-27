@@ -48,27 +48,57 @@
 
 <script>
   import DialogAlert from '../components/Dialog.vue'; 
+  import loginController from '../controllers/loginController.js';
+  import ricercapersonaController from '../controllers/ricercapersonaController.js';
 
-export default {
-  name: 'RicercaPersona',
-  data: () => ({
-    showNavigation: false,
-    loading: false,
-    message: {'active': false, 'content': null, 'url': null},
-    datiPresenti: false,
-    allRicerche: [],
-    errored: false
-  }),
-  components: {
-    'Dialog': DialogAlert,
-  },
-  methods: {
-    dialog(title, message, url){
-      this.message.active = true;
-      this.message.title = title;            
-      this.message.content = message;
-      this.message.url = url;         
-    }
-  },
-}
+  export default {
+    name: 'RicercaPersona',
+    data: () => ({
+      showNavigation: false,
+      loading: false,
+      message: {'active': false, 'content': null, 'url': null},
+      datiPresenti: false,
+      allRicerche: [],
+      errored: false
+    }),
+    components: {
+      'Dialog': DialogAlert,
+    },
+    mounted(){
+      this.loading = true;
+      let idCorpo = loginController.getCorpoVVFData()['id'];
+      ricercapersonaController.getRicercheByCorpo(idCorpo).then((response) => {
+        let raw = response.data[0];
+        console.log(raw);
+        if (!raw['error']){
+          this.datiPresenti = !(this.allRicerche.length === 0);
+          let ricerche = raw.ricerche;
+          console.log(ricerche);
+        }else{
+          switch(raw['error']){
+            case '401':
+              this.dialog('Errore', 'Accesso non autorizzato, credenziali non valide, rieffettuare l\'accesso', '#/dashboard');
+              break; 
+            case '404':
+              this.datiPresenti = false;
+              break;
+          }
+        }
+        this.loading = false;
+      }, (error) => {
+        console.log(error);
+        this.errored= true;
+        this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/dashboard');
+        this.loading = false;
+      });
+    },
+    methods: {
+      dialog(title, message, url){
+        this.message.active = true;
+        this.message.title = title;            
+        this.message.content = message;
+        this.message.url = url;         
+      }
+    },
+  }
 </script>
