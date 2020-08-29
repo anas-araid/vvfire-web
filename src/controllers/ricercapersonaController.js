@@ -13,5 +13,8 @@ export default {
     headers: {
       'Authorization': token
     }})
+  },
+  newRicerca(){
+
   }
 }
