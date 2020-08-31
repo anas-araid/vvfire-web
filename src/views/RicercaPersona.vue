@@ -39,7 +39,7 @@
           <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
         </div>
       </div>
-    <md-button class="md-fab md-fab-bottom-right" @click="temp()" :disabled="this.loading">
+    <md-button class="md-fab md-fab-bottom-right" @click="newRicerca()" :disabled="this.loading">
       <md-icon>add</md-icon>
     </md-button>
     <br>
@@ -98,6 +98,9 @@
         this.message.title = title;            
         this.message.content = message;
         this.message.url = url;         
+      },
+      newRicerca(){
+        // open new ricerca
       }
     },
   }
