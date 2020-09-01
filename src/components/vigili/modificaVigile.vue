@@ -69,9 +69,9 @@
 </template>
 
 <script>
-  import gradoController from '../controllers/gradoController.js';
-  import vigileController from '../controllers/vigileController.js';
-  import Dialog from '../components/Dialog.vue';
+  import gradoController from '../../controllers/gradoController.js';
+  import vigileController from '../../controllers/vigileController.js';
+  import Dialog from '../Dialog.vue';
 
   export default {
     Name: 'modificaVigile',

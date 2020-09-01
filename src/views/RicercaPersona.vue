@@ -1,6 +1,7 @@
 <template>
   <md-app-content style="height:100%;border:none">
       <div class="md-layout md-alignment-center-center">
+        <nuovaRicercaDialog  v-if="this.newRicerca" :active="this.newRicerca" @ricercaDialogClosed="closeNewRicerca()"></nuovaRicercaDialog>
         <Dialog v-if="this.message.active" :data="this.message"></Dialog>
         <md-card style="overflow-x:auto" v-if="!this.loading">
         <md-card-content>
@@ -39,7 +40,7 @@
           <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
         </div>
       </div>
-    <md-button class="md-fab md-fab-bottom-right" @click="newRicerca()" :disabled="this.loading">
+    <md-button class="md-fab md-fab-bottom-right" @click="openNewRicerca()" :disabled="this.loading">
       <md-icon>add</md-icon>
     </md-button>
     <br>
@@ -48,6 +49,7 @@
 
 <script>
   import DialogAlert from '../components/Dialog.vue'; 
+  import nuovaRicercaDialog from '../components/ricercapersona/nuovaRicerca.vue'; 
   import loginController from '../controllers/loginController.js';
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
 
@@ -59,10 +61,12 @@
       message: {'active': false, 'content': null, 'url': null},
       datiPresenti: false,
       allRicerche: [],
-      errored: false
+      errored: false,
+      newRicerca: false
     }),
     components: {
       'Dialog': DialogAlert,
+      'nuovaRicercaDialog': nuovaRicercaDialog
     },
     mounted(){
       this.loading = true;
@@ -99,8 +103,13 @@
         this.message.content = message;
         this.message.url = url;         
       },
-      newRicerca(){
+      openNewRicerca(){
         // open new ricerca
+        this.newRicerca = true;
+        console.log(this.newRicerca)
+      },
+      closeNewRicerca(){
+        this.newRicerca = false;
       }
     },
   }

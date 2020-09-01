@@ -57,12 +57,12 @@
   // @ is an alias to /src
   // import corpovvfController from '../controllers/corpovvfController.js';
   import DialogAlert from '../components/Dialog.vue'; 
-  import deleteVigileDialog from '../components/deleteVigileDialog.vue'; 
+  import deleteVigileDialog from '../components/vigili/deleteVigileDialog.vue'; 
+  import nuovoVigile from '../components/vigili/nuovoVigile.vue';
+  import modificaVigile from '../components/vigili/modificaVigile.vue';
   import loginController from '../controllers/loginController.js';
   import vigileController from '../controllers/vigileController.js';
   import gradoController from '../controllers/gradoController.js';
-  import nuovoVigile from '../components/nuovoVigile.vue';
-  import modificaVigile from '../components/modificaVigile.vue';
   
   export default {
     name: 'Vigili',
