@@ -93,7 +93,7 @@
         }, (error) => {
           this.loading = false;
           console.log(error);
-          this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/login');
+          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/login');
         });
       },
       dialog(title, message, url){

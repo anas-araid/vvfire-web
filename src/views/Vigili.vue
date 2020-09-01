@@ -114,7 +114,7 @@
           }, (error) => {
             console.log(error);
             this.errored= true;
-            this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/dashboard');
+            this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
             this.loading = false;
           });
         }else{
@@ -173,7 +173,7 @@
           }
         }, (error) => {
           console.log(error);
-          this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/dashboard');
+          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
         });
       }
     },

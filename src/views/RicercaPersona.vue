@@ -17,7 +17,7 @@
                 <md-table-head class="style-table-header"></md-table-head>
                 <md-table-head class="style-table-header"></md-table-head>
               </md-table-row>
-              <md-table-row v-for="ricerca in this.allVigili" :key="ricerca.id">
+              <md-table-row v-for="ricerca in this.allRicerche" :key="ricerca.id">
                 <md-table-head md-label="name">{{ricerca.name}}</md-table-head>
                 <md-table-head md-label="startTime">{{ricerca.startTime}}</md-table-head>
                 <md-table-head md-label="endTime">{{ricerca.endTime}}</md-table-head>
@@ -86,9 +86,9 @@
         }
         this.loading = false;
       }, (error) => {
-        console.log(error);
         this.errored= true;
-        this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/dashboard');
+        console.log(error)
+        this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
         this.loading = false;
       });
     },

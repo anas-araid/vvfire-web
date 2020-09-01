@@ -133,7 +133,7 @@
         }
       }, (error) => {
         console.log(error);
-        this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/dashboard');
+        this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
       });
     },
     methods: {
@@ -183,7 +183,7 @@
           }
         }, (error) => {
           console.log(error);
-          this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/dashboard');
+          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
         });
         // cancello le password dalla form
         this.password = null;
@@ -214,7 +214,7 @@
             }
           }, (error) => {
             console.log(error);
-            this.dialog('Errore', 'Controllare la connessione di rete, se il problema persiste contattare l\'amministratore', '#/impostazioni');
+            this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/impostazioni');
           });
         }
         this.confermaPassword = '';
