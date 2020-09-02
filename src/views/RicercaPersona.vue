@@ -4,7 +4,7 @@
         <nuovaRicercaDialog  
           v-if="this.newRicerca" 
           :active="this.newRicerca" 
-          @ricercaDialogClosed="closeNewRicerca()"
+          @ricercaDialogClosed="closeNewRicerca"
           @createNuovaRicerca="createNewRicerca"
         ></nuovaRicercaDialog>
         <Dialog v-if="this.message.active" :data="this.message"></Dialog>
@@ -130,10 +130,8 @@
         // di endTime viene sovrascritto
         ricercapersonaController.newRicerca(name, startTime, startTime, false, idCorpo).then((response) => {
           let raw = response.data[0];
-          console.log(raw);
           if (!raw.error){
-            this.dialog('', 'Nuova ricerca persona creata con successo', '');
-            //this.fetchRicerche();
+            this.fetchRicerche();
             this.loading = false;
           }else{
             this.errored= true;
