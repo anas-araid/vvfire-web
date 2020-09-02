@@ -23,15 +23,12 @@
     data: function(){
       return {
         name: null,
-        isActive: this.active
+        isActive: true
       }
-    },
-    mounted(){
-      //console.log(this.active)
     },
     methods: {
       nuovaRicerca(){
-        console.log(this.name)
+        this.$emit('createNuovaRicerca', this.name);
         this.close();
       },
       close(){

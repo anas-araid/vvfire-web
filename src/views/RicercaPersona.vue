@@ -1,7 +1,12 @@
 <template>
   <md-app-content style="height:100%;border:none">
       <div class="md-layout md-alignment-center-center">
-        <nuovaRicercaDialog  v-if="this.newRicerca" :active="this.newRicerca" @ricercaDialogClosed="closeNewRicerca()"></nuovaRicercaDialog>
+        <nuovaRicercaDialog  
+          v-if="this.newRicerca" 
+          :active="this.newRicerca" 
+          @ricercaDialogClosed="closeNewRicerca()"
+          @createNuovaRicerca="createNewRicerca"
+        ></nuovaRicercaDialog>
         <Dialog v-if="this.message.active" :data="this.message"></Dialog>
         <md-card style="overflow-x:auto" v-if="!this.loading">
         <md-card-content>
@@ -17,12 +22,14 @@
                 <md-table-head class="style-table-header">STATO</md-table-head>
                 <md-table-head class="style-table-header"></md-table-head>
                 <md-table-head class="style-table-header"></md-table-head>
+                <md-table-head class="style-table-header"></md-table-head>
               </md-table-row>
               <md-table-row v-for="ricerca in this.allRicerche" :key="ricerca.id">
                 <md-table-head md-label="name">{{ricerca.name}}</md-table-head>
                 <md-table-head md-label="startTime">{{ricerca.startTime}}</md-table-head>
-                <md-table-head md-label="endTime">{{ricerca.endTime}}</md-table-head>
-                <md-table-head md-label="completed">{{ricerca.completed ? 'SI' : 'NO'}}</md-table-head>
+                <md-table-head md-label="endTime">{{ (ricerca.completed) ? ricerca.endTime : '-'}}</md-table-head>
+                <md-table-head md-label="completed">{{ricerca.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
+                <md-table-head md-label="mostra"><a @click="mostraRicerca(ricerca.id)">MOSTRA</a></md-table-head>
                 <md-table-head md-label="modifica"><a @click="openModificaRicerca(ricerca.id)">MODIFICA</a></md-table-head>
                 <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteRicerca(vigile.id)">RIMUOVI</a></md-table-head>
               </md-table-row>
@@ -69,32 +76,7 @@
       'nuovaRicercaDialog': nuovaRicercaDialog
     },
     mounted(){
-      this.loading = true;
-      let idCorpo = loginController.getCorpoVVFData()['id'];
-      ricercapersonaController.getRicercheByCorpo(idCorpo).then((response) => {
-        let raw = response.data[0];
-        console.log(raw);
-        if (!raw['error']){
-          this.datiPresenti = !(this.allRicerche.length === 0);
-          let ricerche = raw.ricerche;
-          console.log(ricerche);
-        }else{
-          switch(raw['error']){
-            case '401':
-              this.dialog('Errore', 'Accesso non autorizzato, credenziali non valide, rieffettuare l\'accesso', '#/dashboard');
-              break; 
-            case '404':
-              this.datiPresenti = false;
-              break;
-          }
-        }
-        this.loading = false;
-      }, (error) => {
-        this.errored= true;
-        console.log(error)
-        this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
-        this.loading = false;
-      });
+      this.fetchRicerche();
     },
     methods: {
       dialog(title, message, url){
@@ -110,6 +92,60 @@
       },
       closeNewRicerca(){
         this.newRicerca = false;
+      },
+      fetchRicerche(){
+        this.loading = true;
+        let idCorpo = loginController.getCorpoVVFData()['id'];
+        ricercapersonaController.getRicercheByCorpo(idCorpo).then((response) => {
+          let raw = response.data[0];
+          console.log(raw);
+          if (!raw['error']){
+            this.datiPresenti = true;
+            this.allRicerche = raw.ricerche;
+            console.log(this.allRicerche);
+          }else{
+            switch(raw['error']){
+              case '401':
+                this.dialog('Errore', 'Accesso non autorizzato, credenziali non valide, rieffettuare l\'accesso', '#/dashboard');
+                break; 
+              case '404':
+                this.datiPresenti = false;
+                break;
+            }
+          }
+          this.loading = false;
+        }, (error) => {
+          this.errored= true;
+          console.log(error)
+          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
+          this.loading = false;
+        });
+      },
+      createNewRicerca(value){
+        this.loading = true;
+        let name = value;
+        let idCorpo = loginController.getCorpoVVFData()['id'];
+        let startTime = new Date().toISOString();
+        // endTime all'inizio viene impostato uguale a startTime, quando la ricerca viene completata, allora il valore
+        // di endTime viene sovrascritto
+        ricercapersonaController.newRicerca(name, startTime, startTime, false, idCorpo).then((response) => {
+          let raw = response.data[0];
+          console.log(raw);
+          if (!raw.error){
+            this.dialog('', 'Nuova ricerca persona creata con successo', '');
+            //this.fetchRicerche();
+            this.loading = false;
+          }else{
+            this.errored= true;
+            this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
+            this.loading = false;
+          }
+        }, (error) => {
+            console.log(error);
+            this.errored= true;
+            this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
+            this.loading = false;
+        });
       }
     },
   }
