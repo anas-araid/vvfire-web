@@ -108,6 +108,7 @@
           if (!raw['error']){
             this.datiPresenti = true;
             this.allRicerche = raw.ricerche;
+            this.newRicerca = false;
           }else{
             switch(raw['error']){
               case '401':
@@ -115,6 +116,7 @@
                 break; 
               case '404':
                 this.datiPresenti = false;
+                this.newRicerca = false;
                 break;
             }
           }
@@ -127,7 +129,6 @@
         });
       },
       createNewRicerca(value){
-       // this.newRicerca = false;
         this.loading = true;
         let name = value;
         let idCorpo = loginController.getCorpoVVFData()['id'];
@@ -142,7 +143,6 @@
           }else{
             this.errored= true;
             this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
-            this.loading = false;
           }
         }, (error) => {
             console.log(error);
@@ -162,14 +162,13 @@
           let raw = response.data;
           if (raw.error === false){
             this.fetchRicerche();
-            this.dialog('', 'Ricerca persona rimossa con successo', false);
           }else if(raw.error === true){
             this.dialog('Errore', 'Impossibile cancellare i dati relativi alla ricerca persona, contattare l\'amministratore', '#/ricercapersona') 
           }else{
             switch(raw[0]['error']){
               case '401':
                 this.dialog('Errore', 'Non sei autorizzato a cancellare i dati di questa ricerca persona, se credi ci sia stato un errore, contatta l\'amministratore', '#/ricercapersona');
-                break; 
+                break;
               case '404':
                 this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/ricercapersona');
                 break;
