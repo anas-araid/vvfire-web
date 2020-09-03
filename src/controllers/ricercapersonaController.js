@@ -19,13 +19,6 @@ export default {
       return false;
     }
     let token = loginController.getToken()['token'];
-    console.log({
-      name: name,
-      startTime: startTime,
-      endTime: endTime,
-      completed: completed,
-      fkCorpo: fkCorpo
-    });
     return axios.post(process.env.VUE_APP_API_SERVER + '/api/v1/ricercapersona/create', {
       name: name,
       startTime: startTime,
@@ -36,5 +29,25 @@ export default {
     headers: {
       'Authorization': token
     }})
+  },
+  deleteRicerca(id){
+    if (!loginController.isTokenValid()){
+      return false;
+    }
+    let idCorpo = loginController.getCorpoVVFData()['id'];
+    if (idCorpo === null || idCorpo === undefined){
+      return false;
+    }
+    let token = loginController.getToken()['token']
+    return axios.delete(process.env.VUE_APP_API_SERVER + '/api/v1/ricercapersona/delete', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      data:{
+        id: id,
+        fkCorpovvf: idCorpo
+      }
+    });
   }
 }

@@ -7,6 +7,11 @@
           @ricercaDialogClosed="closeNewRicerca"
           @createNuovaRicerca="createNewRicerca"
         ></nuovaRicercaDialog>
+        <deleteRicercaDialog  
+          v-if="this.deleteDataDialog.active" 
+          :data="this.deleteDataDialog" 
+          @deleteRicerca="deleteRicerca"
+        ></deleteRicercaDialog>
         <Dialog v-if="this.message.active" :data="this.message"></Dialog>
         <md-card style="overflow-x:auto" v-if="!this.loading">
         <md-card-content>
@@ -31,7 +36,7 @@
                 <md-table-head md-label="completed">{{ricerca.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
                 <md-table-head md-label="mostra"><a @click="mostraRicerca(ricerca.id)">MOSTRA</a></md-table-head>
                 <md-table-head md-label="modifica"><a @click="openModificaRicerca(ricerca.id)">MODIFICA</a></md-table-head>
-                <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteRicerca(vigile.id)">RIMUOVI</a></md-table-head>
+                <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteRicerca(ricerca.id)">RIMUOVI</a></md-table-head>
               </md-table-row>
             </md-table>
           </div>
@@ -57,6 +62,7 @@
 <script>
   import DialogAlert from '../components/Dialog.vue'; 
   import nuovaRicercaDialog from '../components/ricercapersona/nuovaRicerca.vue'; 
+  import deleteRicercaDialog from '../components/ricercapersona/deleteRicercaDialog.vue'; 
   import loginController from '../controllers/loginController.js';
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
 
@@ -66,6 +72,7 @@
       showNavigation: false,
       loading: false,
       message: {'active': false, 'content': null, 'url': null},
+      deleteDataDialog: {'active': false, 'idRicerca': null},
       datiPresenti: false,
       allRicerche: [],
       errored: false,
@@ -73,7 +80,8 @@
     }),
     components: {
       'Dialog': DialogAlert,
-      'nuovaRicercaDialog': nuovaRicercaDialog
+      'nuovaRicercaDialog': nuovaRicercaDialog,
+      'deleteRicercaDialog': deleteRicercaDialog
     },
     mounted(){
       this.fetchRicerche();
@@ -88,7 +96,6 @@
       openNewRicerca(){
         // open new ricerca
         this.newRicerca = true;
-        console.log(this.newRicerca)
       },
       closeNewRicerca(){
         this.newRicerca = false;
@@ -98,11 +105,9 @@
         let idCorpo = loginController.getCorpoVVFData()['id'];
         ricercapersonaController.getRicercheByCorpo(idCorpo).then((response) => {
           let raw = response.data[0];
-          console.log(raw);
           if (!raw['error']){
             this.datiPresenti = true;
             this.allRicerche = raw.ricerche;
-            console.log(this.allRicerche);
           }else{
             switch(raw['error']){
               case '401':
@@ -122,6 +127,7 @@
         });
       },
       createNewRicerca(value){
+       // this.newRicerca = false;
         this.loading = true;
         let name = value;
         let idCorpo = loginController.getCorpoVVFData()['id'];
@@ -144,7 +150,36 @@
             this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
             this.loading = false;
         });
+      },
+      alertDeleteRicerca(id){
+        this.deleteDataDialog.active = true;
+        this.deleteDataDialog.idRicerca = id;
+      },
+      deleteRicerca(){
+        console.log('cancella')
+        let id = this.deleteDataDialog.idRicerca;
+        ricercapersonaController.deleteRicerca(id).then((response) => {
+          let raw = response.data;
+          if (raw.error === false){
+            this.fetchRicerche();
+            this.dialog('', 'Ricerca persona rimossa con successo', false);
+          }else if(raw.error === true){
+            this.dialog('Errore', 'Impossibile cancellare i dati relativi alla ricerca persona, contattare l\'amministratore', '#/ricercapersona') 
+          }else{
+            switch(raw[0]['error']){
+              case '401':
+                this.dialog('Errore', 'Non sei autorizzato a cancellare i dati di questa ricerca persona, se credi ci sia stato un errore, contatta l\'amministratore', '#/ricercapersona');
+                break; 
+              case '404':
+                this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/ricercapersona');
+                break;
+            }
+          }
+        }, (error) => {
+          console.log(error);
+          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
+        });
       }
-    },
+    }
   }
 </script>
