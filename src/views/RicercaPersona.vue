@@ -1,23 +1,27 @@
 <template>
   <md-app-content style="height:100%;border:none">
       <div class="md-layout md-alignment-center-center">
+        <!-- Componente per aggiungere una nuova ricerca persona -->
         <nuovaRicercaDialog  
           v-if="this.newRicerca" 
           :active="this.newRicerca" 
           @ricercaDialogClosed="closeNewRicerca"
           @createNuovaRicerca="createNewRicerca"
         ></nuovaRicercaDialog>
+        <!-- Componente per aggiornare il nome di una ricerca persona -->
         <updateRicercaDialog  
           v-if="this.updateDataDialog.active" 
           :data="this.updateDataDialog" 
           @updateRicercaDialogClosed="closeUpdateRicerca"
           @updateRicerca="updateRicerca"
         ></updateRicercaDialog>
+        <!-- Componente per rimuovere il nome di una ricerca persona -->
         <deleteRicercaDialog  
           v-if="this.deleteDataDialog.active" 
           :data="this.deleteDataDialog" 
           @deleteRicerca="deleteRicerca"
         ></deleteRicercaDialog>
+        <!-- Componente per eseguire alert specifici -->
         <Dialog v-if="this.message.active" :data="this.message"></Dialog>
         <md-card style="overflow-x:auto" v-if="!this.loading">
         <md-card-content>
@@ -176,7 +180,6 @@
         let name = updateData.name;
         ricercapersonaController.updateRicerca(id, name).then((response) => {
           let raw = response.data[0];
-          console.log(raw)
           if (!raw.error){
             this.fetchRicerche();
           }else{

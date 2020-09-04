@@ -41,7 +41,6 @@
     methods: {
       nuovaRicerca(){
         this.isActive = false;
-        this.active = false;
         this.$emit('createNuovaRicerca', this.name);
       },
       close(){
