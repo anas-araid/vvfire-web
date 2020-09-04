@@ -7,6 +7,12 @@
           @ricercaDialogClosed="closeNewRicerca"
           @createNuovaRicerca="createNewRicerca"
         ></nuovaRicercaDialog>
+        <updateRicercaDialog  
+          v-if="this.updateDataDialog.active" 
+          :data="this.updateDataDialog" 
+          @updateRicercaDialogClosed="closeUpdateRicerca"
+          @updateRicerca="updateRicerca"
+        ></updateRicercaDialog>
         <deleteRicercaDialog  
           v-if="this.deleteDataDialog.active" 
           :data="this.deleteDataDialog" 
@@ -39,7 +45,7 @@
                 </md-table-head>
                 <md-table-head md-label="completed">{{ricerca.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
                 <md-table-head md-label="mostra"><a @click="mostraRicerca(ricerca.id)">MOSTRA</a></md-table-head>
-                <md-table-head md-label="modifica"><a @click="openModificaRicerca(ricerca.id)">MODIFICA</a></md-table-head>
+                <md-table-head md-label="modifica"><a @click="openModificaRicerca(ricerca.id, ricerca.name)">MODIFICA</a></md-table-head>
                 <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteRicerca(ricerca.id)">RIMUOVI</a></md-table-head>
               </md-table-row>
             </md-table>
@@ -67,6 +73,7 @@
   import DialogAlert from '../components/Dialog.vue'; 
   import nuovaRicercaDialog from '../components/ricercapersona/nuovaRicerca.vue'; 
   import deleteRicercaDialog from '../components/ricercapersona/deleteRicercaDialog.vue'; 
+  import updateRicercaDialog from '../components/ricercapersona/updateRicercaDialog.vue'; 
   import loginController from '../controllers/loginController.js';
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
 
@@ -77,14 +84,16 @@
       loading: false,
       message: {'active': false, 'content': null, 'url': null},
       deleteDataDialog: {'active': false, 'idRicerca': null},
+      updateDataDialog: {'active': false, 'idRicerca': null, 'nameRicerca': null},
       datiPresenti: false,
       allRicerche: [],
       errored: false,
-      newRicerca: false
+      newRicerca: false,
     }),
     components: {
       'Dialog': DialogAlert,
       'nuovaRicercaDialog': nuovaRicercaDialog,
+      'updateRicercaDialog': updateRicercaDialog,
       'deleteRicercaDialog': deleteRicercaDialog
     },
     mounted(){
@@ -96,6 +105,11 @@
         this.message.title = title;            
         this.message.content = message;
         this.message.url = url;         
+      },
+      openModificaRicerca(id, name){
+        this.updateDataDialog.idRicerca = id;
+        this.updateDataDialog.nameRicerca = name;
+        this.updateDataDialog.active = true;
       },
       openNewRicerca(){
         // open new ricerca
@@ -131,6 +145,7 @@
           this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
           this.loading = false;
         });
+        this.updateDataDialog.active = false;
       },
       createNewRicerca(value){
         this.loading = true;
@@ -149,18 +164,40 @@
             this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
           }
         }, (error) => {
-            console.log(error);
+          console.log(error);
+          this.errored= true;
+          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
+          this.loading = false;
+        });
+      },
+      updateRicerca(updateData){
+        this.loading = true;
+        let id = updateData.id;
+        let name = updateData.name;
+        ricercapersonaController.updateRicerca(id, name).then((response) => {
+          let raw = response.data[0];
+          console.log(raw)
+          if (!raw.error){
+            this.fetchRicerche();
+          }else{
             this.errored= true;
             this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
-            this.loading = false;
+          }
+        }, (error) => {
+          console.log(error);
+          this.errored= true;
+          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
+          this.loading = false;
         });
+      },
+      closeUpdateRicerca(){
+        this.updateDataDialog.active = false;
       },
       alertDeleteRicerca(id){
         this.deleteDataDialog.active = true;
         this.deleteDataDialog.idRicerca = id;
       },
       deleteRicerca(){
-        console.log('cancella')
         let id = this.deleteDataDialog.idRicerca;
         ricercapersonaController.deleteRicerca(id).then((response) => {
           let raw = response.data;
