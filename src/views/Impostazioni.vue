@@ -166,6 +166,8 @@
           let raw = response.data[0];
           if (!raw['error']){
             let data = raw.corpovvf;
+            // aggiorno i dati salvati nella sessione
+            loginController.saveData(data, loginController.getToken()['token']);
             this.corpoID = data.id;
             this.email = data.email;
             this.caserma = data.name;
