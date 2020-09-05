@@ -24,42 +24,42 @@
         <!-- Componente per eseguire alert specifici -->
         <Dialog v-if="this.message.active" :data="this.message"></Dialog>
         <md-card style="overflow-x:auto" v-if="!this.loading">
-        <md-card-content>
-          <div v-if="this.allRicerche.length !== 0 && !this.errored" style="overflow-x:auto">
-            <md-table>
-              <md-table-toolbar>
-                <h1 class="md-title">Lista ricerche</h1>
-              </md-table-toolbar>
-              <md-table-row>
-                <md-table-head class="style-table-header">NOME RICERCA</md-table-head>
-                <md-table-head class="style-table-header">INIZIO RICERCA</md-table-head>
-                <md-table-head class="style-table-header">FINE RICERCA</md-table-head>
-                <md-table-head class="style-table-header">STATO</md-table-head>
-                <md-table-head class="style-table-header"></md-table-head>
-                <md-table-head class="style-table-header"></md-table-head>
-                <md-table-head class="style-table-header"></md-table-head>
-              </md-table-row>
-              <md-table-row v-for="ricerca in this.allRicerche" :key="ricerca.id">
-                <md-table-head md-label="name">{{ricerca.name}}</md-table-head>
-                <md-table-head md-label="startTime">
-                  {{new Date(ricerca.startTime).toLocaleString('it', { hour12: false, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/,'')}}
-                </md-table-head>
-                <md-table-head md-label="endTime">
-                  {{ (ricerca.completed) ? new Date(ricerca.startTime).toLocaleString('it', { hour12: false, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/,'') : '-'}}
-                </md-table-head>
-                <md-table-head md-label="completed">{{ricerca.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
-                <md-table-head md-label="mostra"><a @click="router.push({name:'LiveMap', params: {idRicerca: ricerca.id}})">MOSTRA</a></md-table-head>
-                <md-table-head md-label="modifica"><a @click="openModificaRicerca(ricerca.id, ricerca.name)">MODIFICA</a></md-table-head>
-                <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteRicerca(ricerca.id)">RIMUOVI</a></md-table-head>
-              </md-table-row>
-            </md-table>
-          </div>
-          <div v-else-if="this.errored" style="text-align:center">
-            <h3>Errore</h3>
-          </div>
-          <div v-else-if="!this.datiPresenti" style="text-align:center">
-            <h3>Dati non presenti</h3>
-          </div>
+          <md-card-content>
+            <div v-if="this.allRicerche.length !== 0 && !this.errored" style="overflow-x:auto">
+              <md-table>
+                <md-table-toolbar>
+                  <h1 class="md-title">Lista ricerche</h1>
+                </md-table-toolbar>
+                <md-table-row>
+                  <md-table-head class="style-table-header">NOME RICERCA</md-table-head>
+                  <md-table-head class="style-table-header">INIZIO RICERCA</md-table-head>
+                  <md-table-head class="style-table-header">FINE RICERCA</md-table-head>
+                  <md-table-head class="style-table-header">STATO</md-table-head>
+                  <md-table-head class="style-table-header"></md-table-head>
+                  <md-table-head class="style-table-header"></md-table-head>
+                  <md-table-head class="style-table-header"></md-table-head>
+                </md-table-row>
+                <md-table-row v-for="ricerca in this.allRicerche" :key="ricerca.id">
+                  <md-table-head md-label="name">{{ricerca.name}}</md-table-head>
+                  <md-table-head md-label="startTime">
+                    {{new Date(ricerca.startTime).toLocaleString('it', { hour12: false, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/,'')}}
+                  </md-table-head>
+                  <md-table-head md-label="endTime">
+                    {{ (ricerca.completed) ? new Date(ricerca.startTime).toLocaleString('it', { hour12: false, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/,'') : '-'}}
+                  </md-table-head>
+                  <md-table-head md-label="completed">{{ricerca.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
+                  <md-table-head md-label="mostra"><a @click="router.push({name:'LiveMap', params: {idRicerca: ricerca.id}})">MOSTRA</a></md-table-head>
+                  <md-table-head md-label="modifica"><a @click="openModificaRicerca(ricerca.id, ricerca.name)">MODIFICA</a></md-table-head>
+                  <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteRicerca(ricerca.id)">RIMUOVI</a></md-table-head>
+                </md-table-row>
+              </md-table>
+            </div>
+            <div v-else-if="this.errored" style="text-align:center">
+              <h3>Errore</h3>
+            </div>
+            <div v-else-if="!this.datiPresenti" style="text-align:center">
+              <h3>Dati non presenti</h3>
+            </div>
           </md-card-content>
         </md-card>
         <div v-else>
@@ -81,7 +81,7 @@
   import loginController from '../controllers/loginController.js';
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
   import router from '../router/index.js';
-  
+
   export default {
     name: 'RicercaPersona',
     data: () => ({

@@ -1,6 +1,30 @@
 <template>
   <md-app-content style="height:100%;border:none">
     <Dialog v-if="this.message.active" :data="this.message"></Dialog>
+    <div v-if="!this.loading">
+      <span class="md-display-1">{{this.currentRicercaPersona.name}}</span>
+      <br>
+      <!-- LISTA MAPPA-->
+      <md-card class="md-layout-item md-size-100 md-small-size-100" >
+        <md-card-header style="text-align:left">
+          <div class="md-title">Mappa Live</div>
+        </md-card-header>
+        <md-card-content>
+        </md-card-content>
+      </md-card>
+      <br>
+      <!-- LISTA VIGILI-->
+      <md-card class="md-layout-item md-size-100 md-small-size-100" >
+        <md-card-header style="text-align:left">
+          <div class="md-title">Lista vigili presenti</div>
+        </md-card-header>
+        <md-card-content>
+        </md-card-content>
+      </md-card>
+    </div>
+    <div v-else>
+      <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
+    </div>
   </md-app-content>
 </template>
 
@@ -14,6 +38,7 @@
     data: function (){
       return {
         showNavigation: false,
+        message: {'active': false, 'content': null, 'url': null},
         loading: false,
         errored: false,
         currentRicercaPersona: null
@@ -29,6 +54,7 @@
     },
     methods: {
       getRicerca(idRicerca, idCorpo){
+        this.loading = true;
         ricercapersonaController.getRicercaByID(idRicerca, idCorpo).then((response) => {
           let raw = response.data[0];
           if (!raw.error){
@@ -38,7 +64,7 @@
           }else{
             switch(raw['error']){
               case '401':
-                this.dialog('Errore', 'Accesso non autorizzato, credenziali non valide, rieffettuare l\'accesso', '#/dashboard');
+                this.dialog('Errore', 'Non sei autorizzato a visualizzare questa ricerca persona', '#/ricercapersona');
                 break; 
               case '404':
                 this.datiPresenti = false;
@@ -49,7 +75,7 @@
         }, (error) => {
           this.errored= true;
           console.log(error)
-          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
+          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
           this.loading = false;
         });
       },

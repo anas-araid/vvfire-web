@@ -8,6 +8,9 @@ a{
 .style-red-text{
   color: #e53935!important;
 }
+.style-grey-text{
+  color: rgba(0,0,0,0.54)!important;
+}
 .style-red-bg{
   background-color: #e53935!important;
   color:white!important;
