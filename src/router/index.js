@@ -8,6 +8,7 @@ import Impostazioni from '../views/Impostazioni.vue'
 import Vigili from '../views/Vigili.vue'
 import Reperibilita from '../views/Reperibilita.vue'
 import RicercaPersona from '../views/RicercaPersona.vue'
+import LiveMap from '../views/LiveMap.vue'
 import loginController from '../controllers/loginController';
 
 Vue.use(VueRouter)
@@ -54,6 +55,12 @@ const routes = [
       components: {
         loggedContent: RicercaPersona
       }
+    }, {
+      path: '/ricercapersona/livemap/:id',
+      components: {
+        loggedContent: LiveMap
+      },
+      props: true
     }]
   },
   {
