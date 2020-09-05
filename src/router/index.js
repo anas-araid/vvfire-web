@@ -56,7 +56,8 @@ const routes = [
         loggedContent: RicercaPersona
       }
     }, {
-      path: '/ricercapersona/livemap/:id',
+      path: '/ricercapersona/livemap/:idRicerca',
+      name: 'LiveMap',
       components: {
         loggedContent: LiveMap
       },

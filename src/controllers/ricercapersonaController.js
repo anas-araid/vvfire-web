@@ -14,6 +14,19 @@ export default {
       'Authorization': token
     }})
   },
+  getRicercaByID(idRicerca, idCorpo){
+    if (!loginController.isTokenValid()){
+      return false;
+    }
+    let token = loginController.getToken()['token'];
+    return axios.post(process.env.VUE_APP_API_SERVER + '/api/v1/ricercapersona/find-by-id', {
+      id: idRicerca,
+      fkCorpovvf: idCorpo
+    }, {
+    headers: {
+      'Authorization': token
+    }})
+  },
   newRicerca(name, startTime, endTime, completed, fkCorpo){
     if (!loginController.isTokenValid()){
       return false;

@@ -48,7 +48,7 @@
                   {{ (ricerca.completed) ? new Date(ricerca.startTime).toLocaleString('it', { hour12: false, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/,'') : '-'}}
                 </md-table-head>
                 <md-table-head md-label="completed">{{ricerca.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
-                <md-table-head md-label="mostra"><a @click="router.push('/ricercapersona/livemap/'+ricerca.id)">MOSTRA</a></md-table-head>
+                <md-table-head md-label="mostra"><a @click="router.push({name:'LiveMap', params: {idRicerca: ricerca.id}})">MOSTRA</a></md-table-head>
                 <md-table-head md-label="modifica"><a @click="openModificaRicerca(ricerca.id, ricerca.name)">MODIFICA</a></md-table-head>
                 <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteRicerca(ricerca.id)">RIMUOVI</a></md-table-head>
               </md-table-row>
@@ -81,6 +81,7 @@
   import loginController from '../controllers/loginController.js';
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
   import router from '../router/index.js';
+  
   export default {
     name: 'RicercaPersona',
     data: () => ({
