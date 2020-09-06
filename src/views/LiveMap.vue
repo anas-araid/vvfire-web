@@ -43,8 +43,9 @@
 <script>
   import loginController from '../controllers/loginController.js';
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
+  import positionController from '../controllers/posizioniController.js';
   import DialogAlert from '../components/Dialog.vue'; 
-
+  import moment from 'moment'; 
   import L from 'leaflet';
   import { LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet';
 
@@ -56,6 +57,7 @@
         message: {'active': false, 'content': null, 'url': null},
         loading: true,
         errored: false,
+        idRicerca: null,
         currentRicercaPersona: null,
         trentoLatLng: [46.074779,11.121749],
         map: {
@@ -73,12 +75,13 @@
       LMarker
     },
     mounted(){
-      console.log(this.map)
+      //console.log(this.map)
       console.log(L);
-      console.log(L.latLng(this.trentoLatLng))
+      //console.log(L.latLng(this.trentoLatLng))
       let idCorpo = loginController.getCorpoVVFData()['id'];
-      let idRicerca = this.$route.params.idRicerca;
-      this.getRicerca(idRicerca, idCorpo);
+      this.idRicerca = this.$route.params.idRicerca;
+      this.getRicerca(this.idRicerca, idCorpo);
+      this.getLatestPositions(this.idRicerca);
     },
     methods: {
       getRicerca(idRicerca, idCorpo){
@@ -105,6 +108,14 @@
           console.log(error)
           this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
           this.loading = false;
+        });
+      },
+      getLatestPositions(idRicerca){
+        let time = moment().subtract(180, 'minutes').format();
+        positionController.getLatestUniquePosition(idRicerca, time).then((response) => {
+          console.log(response)
+          let posizioni = response.data;
+          return posizioni;
         });
       },
       dialog(title, message, url){
