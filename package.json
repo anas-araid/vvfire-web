@@ -11,6 +11,7 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "dotenv-webpack": "^2.0.0",
+    "leaflet": "^1.7.1",
     "md5": "^2.3.0",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
@@ -18,7 +19,8 @@
     "vue-cal": "^3.6.4",
     "vue-material": "^1.0.0-beta-14",
     "vue-router": "^3.2.0",
-    "vue-session": "^1.0.0"
+    "vue-session": "^1.0.0",
+    "vue2-leaflet": "^2.5.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",

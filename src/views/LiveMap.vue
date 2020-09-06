@@ -10,6 +10,18 @@
           <div class="md-title">Mappa Live</div>
         </md-card-header>
         <md-card-content>
+          <l-map :center="map.center" :zoom="map.zoom" style="min-height:600px">
+            <l-tile-layer
+              :url="map.url"
+            />
+            <l-marker :lat-lng="trentoLatLng">
+              <l-popup>
+                <div>
+                  Trento
+                </div>
+              </l-popup>
+            </l-marker>
+          </l-map>
         </md-card-content>
       </md-card>
       <br>
@@ -33,21 +45,37 @@
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
   import DialogAlert from '../components/Dialog.vue'; 
 
+  import L from 'leaflet';
+  import { LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet';
+
   export default {
     name: 'LiveMap',
     data: function (){
       return {
         showNavigation: false,
         message: {'active': false, 'content': null, 'url': null},
-        loading: false,
+        loading: true,
         errored: false,
-        currentRicercaPersona: null
+        currentRicercaPersona: null,
+        trentoLatLng: [46.074779,11.121749],
+        map: {
+          zoom: 11.2,
+          center:  [46.074779,11.121749],
+          url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+        }
       }
     },
     components: {
-      'Dialog': DialogAlert
+      'Dialog': DialogAlert,
+      LMap,
+      LTileLayer,
+      LPopup,
+      LMarker
     },
     mounted(){
+      console.log(this.map)
+      console.log(L);
+      console.log(L.latLng(this.trentoLatLng))
       let idCorpo = loginController.getCorpoVVFData()['id'];
       let idRicerca = this.$route.params.idRicerca;
       this.getRicerca(idRicerca, idCorpo);
