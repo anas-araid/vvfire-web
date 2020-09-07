@@ -44,6 +44,7 @@
   import loginController from '../controllers/loginController.js';
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
   import positionController from '../controllers/posizioniController.js';
+  import vigileController from '../controllers/vigileController.js';
   import DialogAlert from '../components/Dialog.vue'; 
   import moment from 'moment'; 
   import L from 'leaflet';
@@ -58,6 +59,7 @@
         loading: true,
         errored: false,
         idRicerca: null,
+        posizioni: [],
         currentRicercaPersona: null,
         trentoLatLng: [46.074779,11.121749],
         map: {
@@ -75,9 +77,7 @@
       LMarker
     },
     mounted(){
-      //console.log(this.map)
       console.log(L);
-      //console.log(L.latLng(this.trentoLatLng))
       let idCorpo = loginController.getCorpoVVFData()['id'];
       this.idRicerca = this.$route.params.idRicerca;
       this.getRicerca(this.idRicerca, idCorpo);
@@ -111,11 +111,33 @@
         });
       },
       getLatestPositions(idRicerca){
-        let time = moment().subtract(180, 'minutes').format();
+        let time = moment().subtract(18000, 'minutes').format();
         positionController.getLatestUniquePosition(idRicerca, time).then((response) => {
-          console.log(response)
-          let posizioni = response.data;
-          return posizioni;
+          let rawPositions = response.data;
+          if (rawPositions != []){
+            for (let i = 0; i < rawPositions.length; i++){
+              let idVigile = rawPositions[i].fkVigile;
+              vigileController.getVigileByID(idVigile).then( (vigileResponse) => {
+                let rawVigile = vigileResponse.data[0];
+                let currentPosition = [];
+                currentPosition.id = rawPositions[i].id;
+                currentPosition.latitude = rawPositions[i].latitude;
+                currentPosition.longitude = rawPositions[i].longitude;
+                currentPosition.date = rawPositions[i].date;
+                if (!rawVigile.error){
+                  let currentVigile = rawVigile.vigile[0];
+                  currentPosition.firemanName = currentVigile.name + ' ' + currentVigile.surname;
+                  currentPosition.firemanPhone = currentVigile.phone;
+                }else{
+                  currentPosition.firemanName = 'Sconosciuto';
+                  currentPosition.firemanPhone = 'Sconosciuto';
+                }
+                this.posizioni.push(currentPosition);
+                console.log(this.posizioni)
+
+              });
+            }
+          }
         });
       },
       dialog(title, message, url){
