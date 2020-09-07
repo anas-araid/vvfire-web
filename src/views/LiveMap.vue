@@ -10,7 +10,7 @@
           <div class="md-title">Mappa Live</div>
         </md-card-header>
         <md-card-content>
-          <l-map :center="map.center" :zoom="map.zoom" v-resize="onResize" style="min-height:600px">
+          <l-map :center="map.center" :zoom="map.zoom" :v-resize="onResize" style="min-height:600px">
             <l-tile-layer
               :url="map.url"
             />
@@ -91,7 +91,6 @@
       this.idRicerca = this.$route.params.idRicerca;
       this.getRicerca(this.idRicerca, idCorpo);
       this.getLatestPositions(this.idRicerca);
-      this.getListaVigili(this.idRicerca);
     },
     methods: {
       getRicerca(idRicerca, idCorpo){
@@ -120,9 +119,10 @@
         });
       },
       getLatestPositions(idRicerca){
-        let time = moment().subtract(18000, 'minutes').format();
+        let time = moment().subtract(5, 'minutes').format();
         positionController.getLatestUniquePosition(idRicerca, time).then((response) => {
           let rawPositions = response.data;
+          //console.log(rawPositions);
           if (rawPositions != []){
             for (let i = 0; i < rawPositions.length; i++){
               let idVigile = rawPositions[i].fkVigile;
@@ -145,11 +145,6 @@
               });
             }
           }
-        });
-      },
-      getListaVigili(idRicerca){
-        positionController.getListaVigili(idRicerca).then( (response) => {
-          console.log(response)
         });
       },
       dialog(title, message, url){
