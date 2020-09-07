@@ -5,8 +5,8 @@ import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 import VueSession from 'vue-session'
-import 'leaflet/dist/leaflet.css';
 import { Icon } from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 Vue.config.productionTip = false
 

@@ -10,7 +10,7 @@
           <div class="md-title">Mappa Live</div>
         </md-card-header>
         <md-card-content>
-          <l-map :center="map.center" :zoom="map.zoom" style="min-height:600px">
+          <l-map :center="map.center" :zoom="map.zoom" v-resize="onResize" style="min-height:600px">
             <l-tile-layer
               :url="map.url"
             />
@@ -151,6 +151,9 @@
         this.message.title = title;            
         this.message.content = message;
         this.message.url = url;         
+      },
+      onResize() {
+        this.$refs.map[0].mapObject._onResize();
       }
     }
   }
