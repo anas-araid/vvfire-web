@@ -3,7 +3,7 @@
     <Dialog v-if="this.message.active" :data="this.message"></Dialog>
     <div v-if="!this.loading">
       <span class="md-display-1">{{this.currentRicercaPersona.name}}</span>
-      <br>
+      <br><br>
       <!-- LISTA MAPPA-->
       <md-card class="md-layout-item md-size-100 md-small-size-100" >
         <md-card-header style="text-align:left">
@@ -14,13 +14,21 @@
             <l-tile-layer
               :url="map.url"
             />
-            <l-marker :lat-lng="trentoLatLng">
-              <l-popup>
-                <div>
-                  Trento
-                </div>
-              </l-popup>
-            </l-marker>
+            <div v-if="this.posizioni != []" >
+              <div v-for="posizione in this.posizioni" :key="posizione.id">
+                <l-marker :lat-lng="[posizione.latitude, posizione.longitude]">
+                  <l-popup>
+                    <div>
+                      Vigile: {{posizione.firemanName}}
+                      <br>
+                      Numero di telefono: {{posizione.firemanPhone}}
+                      <br>
+                      {{moment(posizione.date).locale('it').fromNow() }}
+                    </div>
+                  </l-popup>
+                </l-marker>
+              </div>
+            </div>
           </l-map>
         </md-card-content>
       </md-card>
@@ -60,6 +68,7 @@
         errored: false,
         idRicerca: null,
         posizioni: [],
+        moment: moment,
         currentRicercaPersona: null,
         trentoLatLng: [46.074779,11.121749],
         map: {
@@ -91,7 +100,6 @@
           if (!raw.error){
             this.datiPresenti = true;
             this.currentRicercaPersona = raw.ricerca;
-            console.log(this.currentRicercaPersona);
           }else{
             switch(raw['error']){
               case '401':
@@ -133,8 +141,6 @@
                   currentPosition.firemanPhone = 'Sconosciuto';
                 }
                 this.posizioni.push(currentPosition);
-                console.log(this.posizioni)
-
               });
             }
           }
