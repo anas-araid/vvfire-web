@@ -14,5 +14,17 @@ export default {
     headers: {
       'Authorization': token
     }})
+  },
+  getListaVigili(idRicerca){
+    if (!loginController.isTokenValid()){
+      return false;
+    }
+    let token = loginController.getToken()['token'];
+    return axios.post(process.env.VUE_APP_API_SERVER + '/api/v1/posizioni/get-vigili-by-ricerca', {
+      fkRicerca: idRicerca
+    }, {
+    headers: {
+      'Authorization': token
+    }})
   }
 }

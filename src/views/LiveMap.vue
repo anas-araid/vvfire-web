@@ -91,6 +91,7 @@
       this.idRicerca = this.$route.params.idRicerca;
       this.getRicerca(this.idRicerca, idCorpo);
       this.getLatestPositions(this.idRicerca);
+      this.getListaVigili(this.idRicerca);
     },
     methods: {
       getRicerca(idRicerca, idCorpo){
@@ -144,6 +145,11 @@
               });
             }
           }
+        });
+      },
+      getListaVigili(idRicerca){
+        positionController.getListaVigili(idRicerca).then( (response) => {
+          console.log(response)
         });
       },
       dialog(title, message, url){
