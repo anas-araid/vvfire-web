@@ -45,7 +45,7 @@
                     {{new Date(ricerca.startTime).toLocaleString('it', { hour12: false, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/,'')}}
                   </md-table-head>
                   <md-table-head md-label="endTime">
-                    {{ (ricerca.completed) ? new Date(ricerca.startTime).toLocaleString('it', { hour12: false, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/,'') : '-'}}
+                    {{ (ricerca.completed) ? new Date(ricerca.endTime).toLocaleString('it', { hour12: false, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/,'') : '-'}}
                   </md-table-head>
                   <md-table-head md-label="completed">{{ricerca.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
                   <md-table-head md-label="mostra"><a @click="router.push({name:'Missioni', params: {idRicerca: ricerca.id}})">MOSTRA</a></md-table-head>

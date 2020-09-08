@@ -1,14 +1,14 @@
 <template>
   <md-app-content style="height:100%;border:none">
       <div class="md-layout md-alignment-center-center">
-        <!-- Componente per aggiungere una nuova ricerca persona
-        <nuovaRicercaDialog  
-          v-if="this.newRicerca" 
-          :active="this.newRicerca" 
-          @ricercaDialogClosed="closeNewRicerca"
-          @createNuovaRicerca="createNewRicerca"
-        ></nuovaRicercaDialog>
-        Componente per aggiornare il nome di una ricerca persona
+        <!-- Componente per aggiungere una nuova ricerca persona -->
+        <nuovaMissioneDialog  
+          v-if="this.newMissione" 
+          :active="this.newMissione" 
+          @missioneDialogClosed="closeNewMissione"
+          @createNuovaMissione="createNewMissione"
+        ></nuovaMissioneDialog>
+        <!-- Componente per aggiornare il nome di una ricerca persona
         <updateRicercaDialog  
           v-if="this.updateDataDialog.active" 
           :data="this.updateDataDialog" 
@@ -42,13 +42,13 @@
                 <md-table-row v-for="missione in this.allMissioni" :key="missione.id">
                   <md-table-head md-label="name">{{missione.name}}</md-table-head>
                   <md-table-head md-label="startTime">
-                    {{new Date(missione.startTime).toLocaleString('it', { hour12: false, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/,'')}}
+                    {{moment(missione.startTime).locale('it').format('LLL') }}
                   </md-table-head>
                   <md-table-head md-label="endTime">
-                    {{ (missione.completed) ? new Date(missione.startTime).toLocaleString('it', { hour12: false, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/,'') : '-'}}
+                    {{ (missione.completed) ? moment(missione.endTime).locale('it').format('LLL') : '-'}}
                   </md-table-head>
                   <md-table-head md-label="completed">{{missione.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
-                  <md-table-head md-label="mostra"><a @click="router.push({name:'LiveMap', params: {idRicerca: missione.id}})">MOSTRA</a></md-table-head>
+                  <md-table-head md-label="mostra"><a @click="router.push({name:'LiveMap', params: {idMissione: missione.id}})">MOSTRA</a></md-table-head>
                   <md-table-head md-label="modifica"><a @click="openModificaRicerca(missione.id, missione.name)">MODIFICA</a></md-table-head>
                   <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteRicerca(missione.id)">RIMUOVI</a></md-table-head>
                 </md-table-row>
@@ -66,7 +66,7 @@
           <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
         </div>
       </div>
-    <md-button class="md-fab md-fab-bottom-right" @click="openNewRicerca()" :disabled="this.loading">
+    <md-button class="md-fab md-fab-bottom-right" @click="openNewMissione()" :disabled="this.loading">
       <md-icon>add</md-icon>
     </md-button>
     <br>
@@ -75,13 +75,14 @@
 
 <script>
   import DialogAlert from '../components/Dialog.vue'; 
-  //import nuovaRicercaDialog from '../components/ricercapersona/nuovaRicerca.vue'; 
-  //import deleteRicercaDialog from '../components/ricercapersona/deleteRicercaDialog.vue'; 
-  //import updateRicercaDialog from '../components/ricercapersona/updateRicercaDialog.vue'; 
+  import nuovaMissioneDialog from '../components/missioni/nuovaMissioneDialog.vue'; 
+  //import deleteRicercaDialog from '../components/missioni/deleteRicercaDialog.vue'; 
+  //import updateRicercaDialog from '../components/missioni/updateRicercaDialog.vue'; 
   import loginController from '../controllers/loginController.js';
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
   import missioniController from '../controllers/missioniController.js';
   import router from '../router/index.js';
+  import moment from 'moment'; 
 
   export default {
     name: 'Missioni',
@@ -94,12 +95,13 @@
       datiPresenti: false,
       allMissioni: [],
       errored: false,
+      moment: moment,
       newMissione: false,
       router: router
     }),
     components: {
       'Dialog': DialogAlert,
-      //'nuovaRicercaDialog': nuovaRicercaDialog,
+      'nuovaMissioneDialog': nuovaMissioneDialog,
       //'updateRicercaDialog': updateRicercaDialog,
       //'deleteRicercaDialog': deleteRicercaDialog
     },
@@ -123,11 +125,11 @@
         this.updateDataDialog.nameRicerca = name;
         this.updateDataDialog.active = true;
       },
-      openNewRicerca(){
+      openNewMissione(){
         // open new ricerca
         this.newMissione = true;
       },
-      closeNewRicerca(){
+      closeNewMissione(){
         this.newMissione = false;
       },
       fetchMissioni(){
@@ -156,7 +158,7 @@
         });
         this.updateDataDialog.active = false;
       },
-      createNewRicerca(value){
+      createNewMissione(value){
         this.loading = true;
         let name = value;
         let idCorpo = loginController.getCorpoVVFData()['id'];
