@@ -43,12 +43,12 @@ export default {
       'Authorization': token
     }})
   },
-  updateRicerca(id, name){
+  updateMissione(id, name){
     if (!loginController.isTokenValid()){
       return false;
     }
     let token = loginController.getToken()['token'];
-    return axios.patch(process.env.VUE_APP_API_SERVER + '/api/v1/ricercapersona/update', {
+    return axios.patch(process.env.VUE_APP_API_SERVER + '/api/v1/missione/update', {
       id: id,
       name: name,
     }, {

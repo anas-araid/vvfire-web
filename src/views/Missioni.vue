@@ -8,14 +8,14 @@
           @missioneDialogClosed="closeNewMissione"
           @createNuovaMissione="createNewMissione"
         ></nuovaMissioneDialog>
-        <!-- Componente per aggiornare il nome di una ricerca persona
-        <updateRicercaDialog  
+        <!-- Componente per aggiornare il nome di una ricerca persona -->
+        <updateMissioneDialog  
           v-if="this.updateDataDialog.active" 
           :data="this.updateDataDialog" 
-          @updateRicercaDialogClosed="closeUpdateRicerca"
-          @updateRicerca="updateRicerca"
-        ></updateRicercaDialog>
-         Componente per rimuovere il nome di una ricerca persona
+          @updateMissioneDialogClosed="closeUpdateMissione"
+          @updateMissione="updateMissione"
+        ></updateMissioneDialog>
+        <!-- Componente per rimuovere il nome di una ricerca persona
         <deleteRicercaDialog  
           v-if="this.deleteDataDialog.active" 
           :data="this.deleteDataDialog" 
@@ -49,7 +49,7 @@
                   </md-table-head>
                   <md-table-head md-label="completed">{{missione.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
                   <md-table-head md-label="mostra"><a @click="router.push({name:'LiveMap', params: {idMissione: missione.id}})">MOSTRA</a></md-table-head>
-                  <md-table-head md-label="modifica"><a @click="openModificaRicerca(missione.id, missione.name)">MODIFICA</a></md-table-head>
+                  <md-table-head md-label="modifica"><a @click="openModificaMissione(missione.id, missione.name)">MODIFICA</a></md-table-head>
                   <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteRicerca(missione.id)">RIMUOVI</a></md-table-head>
                 </md-table-row>
               </md-table>
@@ -77,7 +77,7 @@
   import DialogAlert from '../components/Dialog.vue'; 
   import nuovaMissioneDialog from '../components/missioni/nuovaMissioneDialog.vue'; 
   //import deleteRicercaDialog from '../components/missioni/deleteRicercaDialog.vue'; 
-  //import updateRicercaDialog from '../components/missioni/updateRicercaDialog.vue'; 
+  import updateMissioneDialog from '../components/missioni/updateMissioneDialog.vue'; 
   //import loginController from '../controllers/loginController.js';
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
   import missioniController from '../controllers/missioniController.js';
@@ -91,7 +91,7 @@
       loading: false,
       message: {'active': false, 'content': null, 'url': null},
       deleteDataDialog: {'active': false, 'idRicerca': null},
-      updateDataDialog: {'active': false, 'idRicerca': null, 'nameRicerca': null},
+      updateDataDialog: {'active': false, 'idMissione': null, 'nameMissione': null},
       datiPresenti: false,
       allMissioni: [],
       errored: false,
@@ -102,7 +102,7 @@
     components: {
       'Dialog': DialogAlert,
       'nuovaMissioneDialog': nuovaMissioneDialog,
-      //'updateRicercaDialog': updateRicercaDialog,
+      'updateMissioneDialog': updateMissioneDialog,
       //'deleteRicercaDialog': deleteRicercaDialog
     },
     mounted(){
@@ -120,13 +120,12 @@
         this.message.content = message;
         this.message.url = url;         
       },
-      openModificaRicerca(id, name){
-        this.updateDataDialog.idRicerca = id;
-        this.updateDataDialog.nameRicerca = name;
+      openModificaMissione(id, name){
+        this.updateDataDialog.idMissione = id;
+        this.updateDataDialog.nameMissione = name;
         this.updateDataDialog.active = true;
       },
       openNewMissione(){
-        // open new ricerca
         this.newMissione = true;
       },
       closeNewMissione(){
@@ -179,26 +178,26 @@
           this.loading = false;
         });
       },
-      updateRicerca(updateData){
+      updateMissione(updateData){
         this.loading = true;
         let id = updateData.id;
         let name = updateData.name;
-        ricercapersonaController.updateRicerca(id, name).then((response) => {
+        missioniController.updateMissione(id, name).then((response) => {
           let raw = response.data[0];
           if (!raw.error){
-            this.fetchRicerche();
+            this.fetchMissioni();
           }else{
             this.errored= true;
-            this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
+            this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona/missioni'+this.idRicerca);
           }
         }, (error) => {
           console.log(error);
           this.errored= true;
-          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
+          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona/missioni'+this.idRicerca);
           this.loading = false;
         });
       },
-      closeUpdateRicerca(){
+      closeUpdateMissione(){
         this.updateDataDialog.active = false;
       },
       alertDeleteRicerca(id){
