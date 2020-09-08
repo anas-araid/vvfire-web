@@ -27,17 +27,17 @@ export default {
       'Authorization': token
     }})
   },
-  newRicerca(name, startTime, endTime, completed, fkCorpo){
+  newMissione(name, startTime, endTime, completed, fkRicerca){
     if (!loginController.isTokenValid()){
       return false;
     }
     let token = loginController.getToken()['token'];
-    return axios.post(process.env.VUE_APP_API_SERVER + '/api/v1/ricercapersona/create', {
+    return axios.post(process.env.VUE_APP_API_SERVER + '/api/v1/missione/create', {
       name: name,
       startTime: startTime,
       endTime: endTime,
       completed: completed,
-      fkCorpovvf: fkCorpo
+      fkRicerca: fkRicerca
     }, {
     headers: {
       'Authorization': token

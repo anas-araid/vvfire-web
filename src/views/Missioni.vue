@@ -78,7 +78,7 @@
   import nuovaMissioneDialog from '../components/missioni/nuovaMissioneDialog.vue'; 
   //import deleteRicercaDialog from '../components/missioni/deleteRicercaDialog.vue'; 
   //import updateRicercaDialog from '../components/missioni/updateRicercaDialog.vue'; 
-  import loginController from '../controllers/loginController.js';
+  //import loginController from '../controllers/loginController.js';
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
   import missioniController from '../controllers/missioniController.js';
   import router from '../router/index.js';
@@ -136,7 +136,6 @@
         this.loading = true;
         missioniController.getMissioniByRicerca(this.idRicerca).then((response) => {
           let raw = response.data[0];
-          console.log(raw)
           if (!raw['error']){
             this.datiPresenti = true;
             this.allMissioni = raw.missioni;
@@ -161,23 +160,22 @@
       createNewMissione(value){
         this.loading = true;
         let name = value;
-        let idCorpo = loginController.getCorpoVVFData()['id'];
         let startTime = new Date().toISOString();
-        // endTime all'inizio viene impostato uguale a startTime, quando la ricerca viene completata, allora il valore
+        // endTime all'inizio viene impostato uguale a startTime, quando la missione verrà completata, allora il valore
         // di endTime viene sovrascritto
-        ricercapersonaController.newRicerca(name, startTime, startTime, false, idCorpo).then((response) => {
+        missioniController.newMissione(name, startTime, startTime, false, this.idRicerca).then((response) => {
           let raw = response.data[0];
           if (!raw.error){
-            this.fetchRicerche();
+            this.fetchMissioni();
             this.loading = false;
           }else{
             this.errored= true;
-            this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
+            this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona/missioni'+this.idRicerca);
           }
         }, (error) => {
           console.log(error);
           this.errored= true;
-          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
+          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona/missioni'+this.idRicerca);
           this.loading = false;
         });
       },
