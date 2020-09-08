@@ -15,13 +15,13 @@
           @updateMissioneDialogClosed="closeUpdateMissione"
           @updateMissione="updateMissione"
         ></updateMissioneDialog>
-        <!-- Componente per rimuovere il nome di una ricerca persona
-        <deleteRicercaDialog  
+        <!-- Componente per rimuovere il nome di una ricerca persona -->
+        <deleteMissioneDialog  
           v-if="this.deleteDataDialog.active" 
           :data="this.deleteDataDialog" 
-          @deleteRicerca="deleteRicerca"
-        ></deleteRicercaDialog>
-         Componente per eseguire alert specifici -->
+          @deleteMissione="deleteMissione"
+        ></deleteMissioneDialog>
+        <!-- Componente per eseguire alert specifici -->
         <Dialog v-if="this.message.active" :data="this.message"></Dialog>
         <md-card style="overflow-x:auto" v-if="!this.loading">
           <md-card-content>
@@ -50,7 +50,7 @@
                   <md-table-head md-label="completed">{{missione.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
                   <md-table-head md-label="mostra"><a @click="router.push({name:'LiveMap', params: {idMissione: missione.id}})">MOSTRA</a></md-table-head>
                   <md-table-head md-label="modifica"><a @click="openModificaMissione(missione.id, missione.name)">MODIFICA</a></md-table-head>
-                  <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteRicerca(missione.id)">RIMUOVI</a></md-table-head>
+                  <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteMissione(missione.id)">RIMUOVI</a></md-table-head>
                 </md-table-row>
               </md-table>
             </div>
@@ -76,10 +76,8 @@
 <script>
   import DialogAlert from '../components/Dialog.vue'; 
   import nuovaMissioneDialog from '../components/missioni/nuovaMissioneDialog.vue'; 
-  //import deleteRicercaDialog from '../components/missioni/deleteRicercaDialog.vue'; 
+  import deleteMissioneDialog from '../components/missioni/deleteMissioneDialog.vue'; 
   import updateMissioneDialog from '../components/missioni/updateMissioneDialog.vue'; 
-  //import loginController from '../controllers/loginController.js';
-  import ricercapersonaController from '../controllers/ricercapersonaController.js';
   import missioniController from '../controllers/missioniController.js';
   import router from '../router/index.js';
   import moment from 'moment'; 
@@ -90,7 +88,7 @@
       showNavigation: false,
       loading: false,
       message: {'active': false, 'content': null, 'url': null},
-      deleteDataDialog: {'active': false, 'idRicerca': null},
+      deleteDataDialog: {'active': false, 'idMissione': null},
       updateDataDialog: {'active': false, 'idMissione': null, 'nameMissione': null},
       datiPresenti: false,
       allMissioni: [],
@@ -103,7 +101,7 @@
       'Dialog': DialogAlert,
       'nuovaMissioneDialog': nuovaMissioneDialog,
       'updateMissioneDialog': updateMissioneDialog,
-      //'deleteRicercaDialog': deleteRicercaDialog
+      'deleteMissioneDialog': deleteMissioneDialog
     },
     mounted(){
       this.idRicerca = this.$route.params.idRicerca;
@@ -169,12 +167,12 @@
             this.loading = false;
           }else{
             this.errored= true;
-            this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona/missioni'+this.idRicerca);
+            this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona/missioni/'+this.idRicerca);
           }
         }, (error) => {
           console.log(error);
           this.errored= true;
-          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona/missioni'+this.idRicerca);
+          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona/missioni/'+this.idRicerca);
           this.loading = false;
         });
       },
@@ -188,37 +186,37 @@
             this.fetchMissioni();
           }else{
             this.errored= true;
-            this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona/missioni'+this.idRicerca);
+            this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona/missioni/'+this.idRicerca);
           }
         }, (error) => {
           console.log(error);
           this.errored= true;
-          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona/missioni'+this.idRicerca);
+          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona/missioni/'+this.idRicerca);
           this.loading = false;
         });
       },
       closeUpdateMissione(){
         this.updateDataDialog.active = false;
       },
-      alertDeleteRicerca(id){
+      alertDeleteMissione(id){
         this.deleteDataDialog.active = true;
-        this.deleteDataDialog.idRicerca = id;
+        this.deleteDataDialog.idMissione = id;
       },
-      deleteRicerca(){
-        let id = this.deleteDataDialog.idRicerca;
-        ricercapersonaController.deleteRicerca(id).then((response) => {
+      deleteMissione(){
+        let id = this.deleteDataDialog.idMissione;
+        missioniController.deleteMissione(id).then((response) => {
           let raw = response.data;
           if (raw.error === false){
-            this.fetchRicerche();
+            this.fetchMissioni();
           }else if(raw.error === true){
-            this.dialog('Errore', 'Impossibile cancellare i dati relativi alla ricerca persona, contattare l\'amministratore', '#/ricercapersona') 
+            this.dialog('Errore', 'Impossibile cancellare i dati relativi alla missione, contattare l\'amministratore', '#/ricercapersona/missioni/'+this.idRicerca) 
           }else{
             switch(raw[0]['error']){
               case '401':
-                this.dialog('Errore', 'Non sei autorizzato a cancellare i dati di questa ricerca persona, se credi ci sia stato un errore, contatta l\'amministratore', '#/ricercapersona');
+                this.dialog('Errore', 'Non sei autorizzato a cancellare i dati di questa missione, se credi ci sia stato un errore, contatta l\'amministratore', '#/ricercapersona/missioni/'+this.idRicerca);
                 break;
               case '404':
-                this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/ricercapersona');
+                this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/ricercapersona/missioni/'+this.idRicerca);
                 break;
             }
           }
