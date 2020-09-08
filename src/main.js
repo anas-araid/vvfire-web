@@ -11,7 +11,10 @@ import 'leaflet/dist/leaflet.css';
 Vue.config.productionTip = false
 
 Vue.use(VueMaterial)
-Vue.use(VueSession)
+var options = {
+    persist: true
+}
+Vue.use(VueSession, options)
 
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({

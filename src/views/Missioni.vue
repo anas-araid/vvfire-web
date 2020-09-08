@@ -1,56 +1,56 @@
 <template>
   <md-app-content style="height:100%;border:none">
       <div class="md-layout md-alignment-center-center">
-        <!-- Componente per aggiungere una nuova ricerca persona -->
+        <!-- Componente per aggiungere una nuova ricerca persona
         <nuovaRicercaDialog  
           v-if="this.newRicerca" 
           :active="this.newRicerca" 
           @ricercaDialogClosed="closeNewRicerca"
           @createNuovaRicerca="createNewRicerca"
         ></nuovaRicercaDialog>
-        <!-- Componente per aggiornare il nome di una ricerca persona -->
+        Componente per aggiornare il nome di una ricerca persona
         <updateRicercaDialog  
           v-if="this.updateDataDialog.active" 
           :data="this.updateDataDialog" 
           @updateRicercaDialogClosed="closeUpdateRicerca"
           @updateRicerca="updateRicerca"
         ></updateRicercaDialog>
-        <!-- Componente per rimuovere il nome di una ricerca persona -->
+         Componente per rimuovere il nome di una ricerca persona
         <deleteRicercaDialog  
           v-if="this.deleteDataDialog.active" 
           :data="this.deleteDataDialog" 
           @deleteRicerca="deleteRicerca"
         ></deleteRicercaDialog>
-        <!-- Componente per eseguire alert specifici -->
+         Componente per eseguire alert specifici -->
         <Dialog v-if="this.message.active" :data="this.message"></Dialog>
         <md-card style="overflow-x:auto" v-if="!this.loading">
           <md-card-content>
-            <div v-if="this.allRicerche.length !== 0 && !this.errored" style="overflow-x:auto">
+            <div v-if="this.allMissioni.length !== 0 && !this.errored" style="overflow-x:auto">
               <md-table>
                 <md-table-toolbar>
-                  <h1 class="md-title">Lista ricerche</h1>
+                  <h1 class="md-title">Lista missioni</h1>
                 </md-table-toolbar>
                 <md-table-row>
-                  <md-table-head class="style-table-header">NOME RICERCA</md-table-head>
-                  <md-table-head class="style-table-header">INIZIO RICERCA</md-table-head>
-                  <md-table-head class="style-table-header">FINE RICERCA</md-table-head>
+                  <md-table-head class="style-table-header">NOME MISSIONE</md-table-head>
+                  <md-table-head class="style-table-header">INIZIO</md-table-head>
+                  <md-table-head class="style-table-header">FINE</md-table-head>
                   <md-table-head class="style-table-header">STATO</md-table-head>
                   <md-table-head class="style-table-header"></md-table-head>
                   <md-table-head class="style-table-header"></md-table-head>
                   <md-table-head class="style-table-header"></md-table-head>
                 </md-table-row>
-                <md-table-row v-for="ricerca in this.allRicerche" :key="ricerca.id">
-                  <md-table-head md-label="name">{{ricerca.name}}</md-table-head>
+                <md-table-row v-for="missione in this.allMissioni" :key="missione.id">
+                  <md-table-head md-label="name">{{missione.name}}</md-table-head>
                   <md-table-head md-label="startTime">
-                    {{new Date(ricerca.startTime).toLocaleString('it', { hour12: false, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/,'')}}
+                    {{new Date(missione.startTime).toLocaleString('it', { hour12: false, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/,'')}}
                   </md-table-head>
                   <md-table-head md-label="endTime">
-                    {{ (ricerca.completed) ? new Date(ricerca.startTime).toLocaleString('it', { hour12: false, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/,'') : '-'}}
+                    {{ (missione.completed) ? new Date(missione.startTime).toLocaleString('it', { hour12: false, day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit' }).replace(/,/,'') : '-'}}
                   </md-table-head>
-                  <md-table-head md-label="completed">{{ricerca.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
-                  <md-table-head md-label="mostra"><a @click="router.push({name:'Missioni', params: {idRicerca: ricerca.id}})">MOSTRA</a></md-table-head>
-                  <md-table-head md-label="modifica"><a @click="openModificaRicerca(ricerca.id, ricerca.name)">MODIFICA</a></md-table-head>
-                  <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteRicerca(ricerca.id)">RIMUOVI</a></md-table-head>
+                  <md-table-head md-label="completed">{{missione.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
+                  <md-table-head md-label="mostra"><a @click="router.push({name:'LiveMap', params: {idRicerca: missione.id}})">MOSTRA</a></md-table-head>
+                  <md-table-head md-label="modifica"><a @click="openModificaRicerca(missione.id, missione.name)">MODIFICA</a></md-table-head>
+                  <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteRicerca(missione.id)">RIMUOVI</a></md-table-head>
                 </md-table-row>
               </md-table>
             </div>
@@ -75,15 +75,16 @@
 
 <script>
   import DialogAlert from '../components/Dialog.vue'; 
-  import nuovaRicercaDialog from '../components/ricercapersona/nuovaRicerca.vue'; 
-  import deleteRicercaDialog from '../components/ricercapersona/deleteRicercaDialog.vue'; 
-  import updateRicercaDialog from '../components/ricercapersona/updateRicercaDialog.vue'; 
+  //import nuovaRicercaDialog from '../components/ricercapersona/nuovaRicerca.vue'; 
+  //import deleteRicercaDialog from '../components/ricercapersona/deleteRicercaDialog.vue'; 
+  //import updateRicercaDialog from '../components/ricercapersona/updateRicercaDialog.vue'; 
   import loginController from '../controllers/loginController.js';
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
+  import missioniController from '../controllers/missioniController.js';
   import router from '../router/index.js';
 
   export default {
-    name: 'RicercaPersona',
+    name: 'Missioni',
     data: () => ({
       showNavigation: false,
       loading: false,
@@ -91,19 +92,24 @@
       deleteDataDialog: {'active': false, 'idRicerca': null},
       updateDataDialog: {'active': false, 'idRicerca': null, 'nameRicerca': null},
       datiPresenti: false,
-      allRicerche: [],
+      allMissioni: [],
       errored: false,
-      newRicerca: false,
+      newMissione: false,
       router: router
     }),
     components: {
       'Dialog': DialogAlert,
-      'nuovaRicercaDialog': nuovaRicercaDialog,
-      'updateRicercaDialog': updateRicercaDialog,
-      'deleteRicercaDialog': deleteRicercaDialog
+      //'nuovaRicercaDialog': nuovaRicercaDialog,
+      //'updateRicercaDialog': updateRicercaDialog,
+      //'deleteRicercaDialog': deleteRicercaDialog
     },
     mounted(){
-      this.fetchRicerche();
+      this.idRicerca = this.$route.params.idRicerca;
+      if (!isFinite(String(this.idRicerca))){
+        router.push({name: 'RicercaPersona'});
+      }else{
+        this.fetchMissioni();
+      }
     },
     methods: {
       dialog(title, message, url){
@@ -119,28 +125,25 @@
       },
       openNewRicerca(){
         // open new ricerca
-        this.newRicerca = true;
+        this.newMissione = true;
       },
       closeNewRicerca(){
-        this.newRicerca = false;
+        this.newMissione = false;
       },
-      fetchRicerche(){
+      fetchMissioni(){
         this.loading = true;
-        let idCorpo = loginController.getCorpoVVFData()['id'];
-        ricercapersonaController.getRicercheByCorpo(idCorpo).then((response) => {
+        missioniController.getMissioniByRicerca(this.idRicerca).then((response) => {
           let raw = response.data[0];
+          console.log(raw)
           if (!raw['error']){
             this.datiPresenti = true;
-            this.allRicerche = raw.ricerche;
-            this.newRicerca = false;
+            this.allMissioni = raw.missioni;
+            this.newMissione = false;
           }else{
             switch(raw['error']){
-              case '401':
-                this.dialog('Errore', 'Accesso non autorizzato, credenziali non valide, rieffettuare l\'accesso', '#/dashboard');
-                break; 
               case '404':
                 this.datiPresenti = false;
-                this.newRicerca = false;
+                this.newMissione = false;
                 break;
             }
           }
