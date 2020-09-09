@@ -1,76 +1,82 @@
 <template>
   <md-app-content style="height:100%;border:none">
-      <div class="md-layout md-alignment-center-center">
-        <!-- Componente per aggiungere una nuova ricerca persona -->
-        <nuovaMissioneDialog  
-          v-if="this.newMissione" 
-          :active="this.newMissione" 
-          @missioneDialogClosed="closeNewMissione"
-          @createNuovaMissione="createNewMissione"
-        ></nuovaMissioneDialog>
-        <!-- Componente per aggiornare il nome di una ricerca persona -->
-        <updateMissioneDialog  
-          v-if="this.updateDataDialog.active" 
-          :data="this.updateDataDialog" 
-          @updateMissioneDialogClosed="closeUpdateMissione"
-          @updateMissione="updateMissione"
-        ></updateMissioneDialog>
-        <!-- Componente per rimuovere il nome di una ricerca persona -->
-        <deleteMissioneDialog  
-          v-if="this.deleteDataDialog.active" 
-          :data="this.deleteDataDialog" 
-          @deleteMissione="deleteMissione"
-        ></deleteMissioneDialog>
-        <!-- Componente per eseguire alert specifici -->
-        <Dialog v-if="this.message.active" :data="this.message"></Dialog>
-        <md-card style="overflow-x:auto" v-if="!this.loading">
-          <md-card-content>
-            <div v-if="this.allMissioni.length !== 0 && !this.errored" style="overflow-x:auto">
-              <md-table>
-                <md-table-toolbar>
-                  <h1 class="md-title">Lista missioni</h1>
-                </md-table-toolbar>
-                <md-table-row>
-                  <md-table-head class="style-table-header">NOME MISSIONE</md-table-head>
-                  <md-table-head class="style-table-header">INIZIO</md-table-head>
-                  <md-table-head class="style-table-header">FINE</md-table-head>
-                  <md-table-head class="style-table-header">STATO</md-table-head>
-                  <md-table-head class="style-table-header"></md-table-head>
-                  <md-table-head class="style-table-header"></md-table-head>
-                  <md-table-head class="style-table-header"></md-table-head>
-                </md-table-row>
-                <md-table-row v-for="missione in this.allMissioni" :key="missione.id">
-                  <md-table-head md-label="name">{{missione.name}}</md-table-head>
-                  <md-table-head md-label="startTime">
-                    {{moment(missione.startTime).locale('it').format('LLL') }}
-                  </md-table-head>
-                  <md-table-head md-label="endTime">
-                    {{ (missione.completed) ? moment(missione.endTime).locale('it').format('LLL') : '-'}}
-                  </md-table-head>
-                  <md-table-head md-label="completed">{{missione.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
-                  <md-table-head md-label="mostra"><a @click="router.push({name:'LiveMap', params: {idMissione: missione.id}})">MOSTRA</a></md-table-head>
-                  <md-table-head md-label="modifica"><a @click="openModificaMissione(missione.id, missione.name)">MODIFICA</a></md-table-head>
-                  <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteMissione(missione.id)">RIMUOVI</a></md-table-head>
-                </md-table-row>
-              </md-table>
-            </div>
-            <div v-else-if="this.errored" style="text-align:center">
-              <h3>Errore</h3>
-            </div>
-            <div v-else-if="!this.datiPresenti" style="text-align:center">
-                <md-empty-state
-                  md-rounded
-                  md-icon="search_off"
-                  md-label=""
-                  md-description="Per creare una nuova missione, clicca il tasto rosso in basso a destra.">
-                </md-empty-state>
-            </div>
-          </md-card-content>
-        </md-card>
-        <div v-else>
-          <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
+    <div class="md-layout md-alignment-center-center">
+      <!-- Componente per aggiungere una nuova ricerca persona -->
+      <nuovaMissioneDialog  
+        v-if="this.newMissione" 
+        :active="this.newMissione" 
+        @missioneDialogClosed="closeNewMissione"
+        @createNuovaMissione="createNewMissione"
+      ></nuovaMissioneDialog>
+      <!-- Componente per aggiornare il nome di una ricerca persona -->
+      <updateMissioneDialog  
+        v-if="this.updateDataDialog.active" 
+        :data="this.updateDataDialog" 
+        @updateMissioneDialogClosed="closeUpdateMissione"
+        @updateMissione="updateMissione"
+      ></updateMissioneDialog>
+      <!-- Componente per rimuovere il nome di una ricerca persona -->
+      <deleteMissioneDialog  
+        v-if="this.deleteDataDialog.active" 
+        :data="this.deleteDataDialog" 
+        @deleteMissione="deleteMissione"
+      ></deleteMissioneDialog>
+      <!-- Componente per eseguire alert specifici -->
+      <Dialog v-if="this.message.active" :data="this.message"></Dialog>
+      <div v-if="!this.loading">
+        <div v-if="allMissioni.length !== 0 && !this.errored">
+          <div v-for="dailyMissions in allMissioni" :key="dailyMissions[0].giorno">
+            <md-card style="overflow-x:auto">
+              <md-card-content>
+                <div style="overflow-x:auto">
+                  <md-table>
+                    <md-table-toolbar>
+                      <h1 class="md-title">{{ dailyMissions[0] }}</h1>
+                    </md-table-toolbar>
+                    <md-table-row>
+                      <md-table-head class="style-table-header">NOME MISSIONE</md-table-head>
+                      <md-table-head class="style-table-header">INIZIO</md-table-head>
+                      <md-table-head class="style-table-header">FINE</md-table-head>
+                      <md-table-head class="style-table-header">STATO</md-table-head>
+                      <md-table-head class="style-table-header"></md-table-head>
+                      <md-table-head class="style-table-header"></md-table-head>
+                      <md-table-head class="style-table-header"></md-table-head>
+                    </md-table-row>
+                    <md-table-row v-for="missione in dailyMissions[1].data" :key="missione.id">
+                      <md-table-head md-label="name">{{missione.name}}</md-table-head>
+                      <md-table-head md-label="startTime">
+                        {{moment(missione.startTime).locale('it').format('LLL') }}
+                      </md-table-head>
+                      <md-table-head md-label="endTime">
+                        {{ (missione.completed) ? moment(missione.endTime).locale('it').format('LLL') : '-'}}
+                      </md-table-head>
+                      <md-table-head md-label="completed">{{missione.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
+                      <md-table-head md-label="mostra"><a @click="router.push({name:'LiveMap', params: {idMissione: missione.id}})">MOSTRA</a></md-table-head>
+                      <md-table-head md-label="modifica"><a @click="openModificaMissione(missione.id, missione.name)">MODIFICA</a></md-table-head>
+                      <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteMissione(missione.id)">RIMUOVI</a></md-table-head>
+                    </md-table-row>
+                  </md-table>
+                </div>
+              </md-card-content>
+            </md-card><br>
+          </div>
+        </div>
+        <div v-else-if="this.errored" style="text-align:center">
+          <h3>Errore</h3>
+        </div>
+        <div v-else-if="!this.datiPresenti" style="text-align:center">
+          <md-empty-state
+            md-rounded
+            md-icon="search_off"
+            md-label=""
+            md-description="Per creare una nuova missione, clicca il tasto rosso in basso a destra.">
+          </md-empty-state>
         </div>
       </div>
+      <div v-else>
+        <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
+      </div>
+    </div>
     <md-button class="md-fab md-fab-bottom-right" @click="openNewMissione()" :disabled="this.loading">
       <md-icon>add</md-icon>
     </md-button>
@@ -156,10 +162,9 @@
           let raw = response.data[0];
           this.allMissioni = [];
           if (!raw['error']){
-            this.datiPresenti = true;
             this.allMissioni = raw.missioni;
-            console.log(this.allMissioni);
-            this.orderMissioniByDate(this.allMissioni)
+            this.allMissioni = this.orderMissioniByDate(raw.missioni)
+            this.datiPresenti = true;
             this.newMissione = false;
           }else{
             switch(raw['error']){
@@ -183,26 +188,26 @@
         for (let i =0; i < missioni.length; i++){
           let missione = missioni[i];
           let day = moment(missione.startTime).locale('it').format('Do MMMM');
-          let temp = [];
-          temp.id = missione.id;
-          temp.name = missione.name;
-          temp.startTime = missione.startTime;
-          temp.endTime = missione.endTime;
-          temp.completed = missione.completed;
-          temp.fkRicerca = missione.fkRicerca;
+          let currentData = [];
+          currentData.id = missione.id;
+          currentData.name = missione.name;
+          currentData.startTime = missione.startTime;
+          currentData.endTime = missione.endTime;
+          currentData.completed = missione.completed;
+          currentData.fkRicerca = missione.fkRicerca;
           if (i !== 0){
             let yesterdayDate = missioni[i-1].startTime;
-            if (moment(temp.startTime).isSame(yesterdayDate, 'day') ){
-              orderMissions[orderMissions.length-1].push(temp); 
+            if (moment(currentData.startTime).isSame(yesterdayDate, 'day') ){
+              orderMissions[orderMissions.length-1][1].data.push(currentData); 
             }else{
               let day = moment(missione.startTime).locale('it').format('Do MMMM');
-              orderMissions.push([day, temp]);
+              orderMissions.push([day, {data: [currentData]}]);
             }
           }else{
-            orderMissions.push([day, temp]);
+            orderMissions.push([day, {data: [currentData]}]);
           }
         }
-        console.log(orderMissions)
+        return orderMissions;
       },
       createNewMissione(value){
         this.loading = true;
