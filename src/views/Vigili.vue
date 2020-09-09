@@ -42,7 +42,7 @@
             md-rounded
             md-icon="search_off"
             md-label=""
-            md-description="Per creare una nuova missione, clicca il tasto rosso in basso a destra.">
+            md-description="Per aggiungere i vigili, clicca il tasto rosso in basso a destra.">
           </md-empty-state>
         </div>
         </md-card-content>

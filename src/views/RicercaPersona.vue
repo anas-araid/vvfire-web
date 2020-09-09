@@ -134,6 +134,7 @@
         let idCorpo = loginController.getCorpoVVFData()['id'];
         ricercapersonaController.getRicercheByCorpo(idCorpo).then((response) => {
           let raw = response.data[0];
+          this.allRicerche = [];
           if (!raw['error']){
             this.datiPresenti = true;
             this.allRicerche = raw.ricerche;

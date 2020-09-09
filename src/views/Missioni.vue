@@ -158,6 +158,8 @@
           if (!raw['error']){
             this.datiPresenti = true;
             this.allMissioni = raw.missioni;
+            console.log(this.allMissioni);
+            this.orderMissioniByDate(this.allMissioni)
             this.newMissione = false;
           }else{
             switch(raw['error']){
@@ -175,6 +177,32 @@
           this.loading = false;
         });
         this.updateDataDialog.active = false;
+      },
+      orderMissioniByDate(missioni){
+        let orderMissions = [];
+        for (let i =0; i < missioni.length; i++){
+          let missione = missioni[i];
+          let day = moment(missione.startTime).locale('it').format('Do MMMM');
+          let temp = [];
+          temp.id = missione.id;
+          temp.name = missione.name;
+          temp.startTime = missione.startTime;
+          temp.endTime = missione.endTime;
+          temp.completed = missione.completed;
+          temp.fkRicerca = missione.fkRicerca;
+          if (i !== 0){
+            let yesterdayDate = missioni[i-1].startTime;
+            if (moment(temp.startTime).isSame(yesterdayDate, 'day') ){
+              orderMissions[orderMissions.length-1].push(temp); 
+            }else{
+              let day = moment(missione.startTime).locale('it').format('Do MMMM');
+              orderMissions.push([day, temp]);
+            }
+          }else{
+            orderMissions.push([day, temp]);
+          }
+        }
+        console.log(orderMissions)
       },
       createNewMissione(value){
         this.loading = true;
