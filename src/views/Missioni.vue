@@ -58,7 +58,12 @@
               <h3>Errore</h3>
             </div>
             <div v-else-if="!this.datiPresenti" style="text-align:center">
-              <h3>Dati non presenti</h3>
+                <md-empty-state
+                  md-rounded
+                  md-icon="search_off"
+                  md-label=""
+                  md-description="Per creare una nuova missione, clicca il tasto rosso in basso a destra.">
+                </md-empty-state>
             </div>
           </md-card-content>
         </md-card>
@@ -149,6 +154,7 @@
         this.loading = true;
         missioniController.getMissioniByRicerca(this.idRicerca).then((response) => {
           let raw = response.data[0];
+          this.allMissioni = [];
           if (!raw['error']){
             this.datiPresenti = true;
             this.allMissioni = raw.missioni;
