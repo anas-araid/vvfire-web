@@ -8,7 +8,7 @@ export default {
     }
     let token = loginController.getToken()['token'];
     return axios.post(process.env.VUE_APP_API_SERVER + '/api/v1/ricercapersona/show', {
-      idcorpo: id_corpo,
+      fkCorpovvf: id_corpo,
     }, {
     headers: {
       'Authorization': token

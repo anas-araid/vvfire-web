@@ -54,6 +54,7 @@
   import positionController from '../controllers/posizioniController.js';
   import vigileController from '../controllers/vigileController.js';
   import DialogAlert from '../components/Dialog.vue'; 
+  import router from '../router/index.js';
   import moment from 'moment'; 
   import L from 'leaflet';
   import { LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet';
@@ -87,22 +88,48 @@
     },
     mounted(){
       console.log(L);
-      let idCorpo = loginController.getCorpoVVFData()['id'];
+      //this.getLatestPositions(this.idRicerca);
+    },
+    beforeCreate(){
       this.idRicerca = this.$route.params.idRicerca;
-      this.getRicerca(this.idRicerca, idCorpo);
-      this.getLatestPositions(this.idRicerca);
+      let idRicerca = this.idRicerca;
+      if (!isFinite(String(this.idRicerca))){
+        router.push({name: 'RicercaPersona'});
+      }
+      let idCorpo = loginController.getCorpoVVFData()['id'];
+      ricercapersonaController.getRicercaByID(idRicerca, idCorpo).then((response) => {
+        let raw = response.data[0];
+        if (!raw.error){
+            this.datiPresenti = true;
+            this.currentRicercaPersona = raw.ricerca;
+            this.loading = false;
+            this.getLatestPositions(idRicerca);
+        }else{
+          switch(raw['error']){
+            case '401':
+              this.errored = true;
+              this.dialog('Errore', 'Accesso non autorizzato a visualizzare questa pagina', '#/dashboard');
+              break; 
+            case '404':
+              this.datiPresenti = false;
+              break;
+          }
+        }
+      });
     },
     methods: {
       getRicerca(idRicerca, idCorpo){
         this.loading = true;
         ricercapersonaController.getRicercaByID(idRicerca, idCorpo).then((response) => {
           let raw = response.data[0];
+          console.log(raw)
           if (!raw.error){
             this.datiPresenti = true;
             this.currentRicercaPersona = raw.ricerca;
           }else{
             switch(raw['error']){
               case '401':
+                this.errored = true;
                 this.dialog('Errore', 'Non sei autorizzato a visualizzare questa ricerca persona', '#/ricercapersona');
                 break; 
               case '404':
@@ -119,7 +146,7 @@
         });
       },
       getLatestPositions(idRicerca){
-        let time = moment().subtract(5, 'minutes').format();
+        let time = moment().subtract(50000, 'minutes').format();
         positionController.getLatestUniquePosition(idRicerca, time).then((response) => {
           let rawPositions = response.data;
           //console.log(rawPositions);
@@ -148,10 +175,10 @@
         });
       },
       dialog(title, message, url){
-        this.message.active = true;
         this.message.title = title;            
         this.message.content = message;
-        this.message.url = url;         
+        this.message.url = url;    
+        this.message.active = true;
       },
       onResize() {
         this.$refs.map[0].mapObject._onResize();

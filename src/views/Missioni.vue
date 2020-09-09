@@ -79,6 +79,8 @@
   import deleteMissioneDialog from '../components/missioni/deleteMissioneDialog.vue'; 
   import updateMissioneDialog from '../components/missioni/updateMissioneDialog.vue'; 
   import missioniController from '../controllers/missioniController.js';
+  import ricercapersonaController from '../controllers/ricercapersonaController.js';
+  import loginController from '../controllers/loginController.js';
   import router from '../router/index.js';
   import moment from 'moment'; 
 
@@ -104,12 +106,26 @@
       'deleteMissioneDialog': deleteMissioneDialog
     },
     mounted(){
+      this.fetchMissioni();
+    },
+    beforeCreate(){
       this.idRicerca = this.$route.params.idRicerca;
       if (!isFinite(String(this.idRicerca))){
         router.push({name: 'RicercaPersona'});
-      }else{
-        this.fetchMissioni();
       }
+      let idCorpo = loginController.getCorpoVVFData()['id'];
+      ricercapersonaController.getRicercaByID(this.idRicerca, idCorpo).then((response) => {
+        let raw = response.data[0];
+        switch(raw['error']){
+          case '401':
+            this.errored = true;
+            this.dialog('Errore', 'Accesso non autorizzato a visualizzare questa pagina', '#/dashboard');
+            break; 
+          case '404':
+            this.datiPresenti = false;
+            break;
+        }
+      });
     },
     methods: {
       dialog(title, message, url){
