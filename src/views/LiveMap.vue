@@ -146,7 +146,7 @@
         });
       },
       getLatestPositions(idRicerca){
-        let time = moment().subtract(50000, 'minutes').format();
+        let time = moment().subtract(5, 'minutes').format();
         positionController.getLatestUniquePosition(idRicerca, time).then((response) => {
           let rawPositions = response.data;
           //console.log(rawPositions);

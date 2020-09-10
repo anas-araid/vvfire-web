@@ -25,6 +25,12 @@
       <Dialog v-if="this.message.active" :data="this.message"></Dialog>
       <div v-if="!this.loading">
         <div v-if="allMissioni.length !== 0 && !this.errored">
+          <md-button class="style-button-green" @click="router.push({name: 'LiveMap'})">
+            <md-icon style="color:white">room</md-icon>
+             MAPPA LIVE
+          </md-button>
+          <md-button class="style-button-green"><md-icon style="color:white">explore</md-icon> RIEPILOGO COMPLESSIVO</md-button>
+          <br><br>
           <div v-for="dailyMissions in allMissioni" :key="dailyMissions[0].giorno">
             <md-card style="overflow-x:auto">
               <md-card-content>
@@ -53,11 +59,16 @@
                       <md-table-head md-label="completed">{{missione.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
                       <md-table-head md-label="mostra"><a @click="router.push({name:'LiveMap', params: {idMissione: missione.id}})">MOSTRA</a></md-table-head>
                       <md-table-head md-label="modifica"><a @click="openModificaMissione(missione.id, missione.name)">MODIFICA</a></md-table-head>
+                      <md-table-head md-label="completa" ><a v-bind:class="{'style-green-text': !missione.completed, 'style-disabled-link': missione.completed}" @click="(missione.completed) ? console.log() : alertCompleteMissione(missione.id)">COMPLETA</a></md-table-head>
                       <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteMissione(missione.id)">RIMUOVI</a></md-table-head>
                     </md-table-row>
                   </md-table>
                 </div>
               </md-card-content>
+              <md-divider class="md-inset"></md-divider>
+              <md-card-actions>
+                <md-button class="md-raised">RIEPILOGO GIORNALIERO</md-button>
+              </md-card-actions>
             </md-card><br>
           </div>
         </div>

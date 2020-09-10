@@ -5,8 +5,23 @@ body{
 a{
   cursor:pointer!important;
 }
+.style-button-green{
+  color: white!important;
+  background-color: #43a047!important;
+  border-radius: 20px!important;
+}
+.style-disabled-link{
+  cursor: default!important;
+  color: #bdbdbd!important;
+}
+.style-disabled-link:hover{
+  text-decoration: none!important;
+}
 .style-red-text{
   color: #e53935!important;
+}
+.style-green-text{
+  color: #43a047!important;
 }
 .style-grey-text{
   color: rgba(0,0,0,0.54)!important;
