@@ -7,7 +7,7 @@
       <!-- LISTA MAPPA-->
       <md-card class="md-layout-item md-size-100 md-small-size-100" >
         <md-card-actions md-alignment="left">
-          <md-button class="style-red-text" @click="router.push({name: 'Missione', params: {idRicerca: this.currentMissione.fkRicerca}})">INDIETRO</md-button>
+          <md-button class="style-red-text" @click="router.push({name: 'Missioni', params: {idRicerca: currentMissione.fkRicerca}})">INDIETRO</md-button>
         </md-card-actions>
         <md-divider class="md-inset"></md-divider>
         <md-card-header style="text-align:left">
@@ -75,7 +75,9 @@
         idMissione: null,
         posizioni: [],
         moment: moment,
+        router: router,
         currentMissione: [],
+        groupPositions: [],
         trentoLatLng: [46.074779,11.121749],
         map: {
           zoom: 11.2,
@@ -103,11 +105,9 @@
       let idCorpo = loginController.getCorpoVVFData()['id'];
       missioniController.getMissioneById(idMissione, idCorpo).then((response) => {
         let raw = response.data[0];
-        console.log(raw);
         if (!raw.error){
             this.datiPresenti = true;
             this.currentMissione = raw.missione;
-            console.log(this.currentMissione)
             this.loading = false;
             this.getPosizioniByMissione(idMissione);
         }else{
@@ -128,7 +128,6 @@
       getPosizioniByMissione(idMissione){
         positionController.getPosizioniByMissione(idMissione).then((response) => {
           let rawPositions = response.data[0].posizioni;
-          console.log(response);
           if (rawPositions != []){
             for (let i = 0; i < rawPositions.length; i++){
               let idVigile = rawPositions[i].fkVigile;
@@ -139,6 +138,7 @@
                 currentPosition.latitude = rawPositions[i].latitude;
                 currentPosition.longitude = rawPositions[i].longitude;
                 currentPosition.date = rawPositions[i].date;
+                currentPosition.fkVigile = rawPositions[i].fkVigile;
                 if (!rawVigile.error){
                   let currentVigile = rawVigile.vigile[0];
                   currentPosition.firemanName = currentVigile.name + ' ' + currentVigile.surname;
@@ -152,7 +152,41 @@
             }
           }
           console.log(this.posizioni);
+          this.groupPosizionByVigile(this.posizioni);
         });
+      },
+      groupPosizionByVigile(rawPositions){
+        // altrimenti non legge i dati
+        setTimeout(function(){
+          console.log(rawPositions);
+          let groupPositions = [];
+          console.log(rawPositions.length);
+          for (let i=0; i < rawPositions.length; i++){
+            let posizione = rawPositions[i];
+            console.log(posizione);
+            let posData = [];
+            posData.firemanName = posizione.firemanName;
+            posData.firemanPhone = posizione.firemanPhone;
+            posData.fkVigile = posizione.fkVigile;
+            posData.id = posizione.id;
+            if (i !== 0){
+              let exists = groupPositions.some(function(el) {
+                return el[0].id === posData.fkVigile;
+              });
+              console.log(exists)
+              if (exists){
+                let index = groupPositions.map(function(x) {return x[0].id; }).indexOf(posData.fkVigile);
+                groupPositions[index][1].latLng.push([posizione.latitude, posizione.longitude])
+              }else{
+                groupPositions.push([{id: posizione.fkVigile}, {latLng: [[posizione.latitude, posizione.longitude]]}, {data: posData}]);
+              }
+            }else{
+              groupPositions.push([{id: posizione.fkVigile}, {latLng: [[posizione.latitude, posizione.longitude]]}, {data: posData}]);
+            }
+            console.log(groupPositions);
+            this.groupPositions = groupPositions;
+          }
+        }, 1000)
       },
       dialog(title, message, url){
         this.message.title = title;            

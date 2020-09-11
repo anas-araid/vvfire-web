@@ -6,6 +6,10 @@
       <br><br>
       <!-- LISTA MAPPA-->
       <md-card class="md-layout-item md-size-100 md-small-size-100" >
+        <md-card-actions md-alignment="left">
+          <md-button class="style-red-text" @click="router.push({name: 'Missioni', params: {idRicerca: idRicerca}})">INDIETRO</md-button>
+        </md-card-actions>
+        <md-divider class="md-inset"></md-divider>
         <md-card-header style="text-align:left">
           <div class="md-title">Mappa Live</div>
         </md-card-header>
@@ -70,6 +74,7 @@
         idRicerca: null,
         posizioni: [],
         moment: moment,
+        router: router,
         currentRicercaPersona: null,
         trentoLatLng: [46.074779,11.121749],
         map: {
@@ -88,6 +93,8 @@
     },
     mounted(){
       console.log(L);
+      this.idRicerca = this.$route.params.idRicerca;
+      console.log(this.idRicerca)
       //this.getLatestPositions(this.idRicerca);
     },
     beforeCreate(){
