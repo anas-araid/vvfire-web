@@ -7,7 +7,7 @@
       <!-- LISTA MAPPA-->
       <md-card class="md-layout-item md-size-100 md-small-size-100" >
         <md-card-actions md-alignment="left">
-          <md-button class="style-red-text">INDIETRO</md-button>
+          <md-button class="style-red-text" @click="router.push({name: 'Missione', params: {idRicerca: this.currentMissione.fkRicerca}})">INDIETRO</md-button>
         </md-card-actions>
         <md-divider class="md-inset"></md-divider>
         <md-card-header style="text-align:left">
@@ -54,7 +54,6 @@
 
 <script>
   import loginController from '../controllers/loginController.js';
-  import ricercapersonaController from '../controllers/ricercapersonaController.js';
   import positionController from '../controllers/posizioniController.js';
   import vigileController from '../controllers/vigileController.js';
   import missioniController from '../controllers/missioniController.js';
@@ -94,7 +93,6 @@
     },
     mounted(){
       console.log(L);
-      //this.getLatestPositions(this.idRicerca);
     },
     beforeCreate(){
       this.idMissione = this.$route.params.idMissione;
@@ -109,8 +107,9 @@
         if (!raw.error){
             this.datiPresenti = true;
             this.currentMissione = raw.missione;
+            console.log(this.currentMissione)
             this.loading = false;
-            //this.getLatestPositions(idRicerca);
+            this.getPosizioniByMissione(idMissione);
         }else{
           switch(raw['error']){
             case '401':
@@ -126,38 +125,10 @@
       });
     },
     methods: {
-      getRicerca(idRicerca, idCorpo){
-        this.loading = true;
-        ricercapersonaController.getRicercaByID(idRicerca, idCorpo).then((response) => {
-          let raw = response.data[0];
-          console.log(raw)
-          if (!raw.error){
-            this.datiPresenti = true;
-            this.currentRicercaPersona = raw.ricerca;
-          }else{
-            switch(raw['error']){
-              case '401':
-                this.errored = true;
-                this.dialog('Errore', 'Non sei autorizzato a visualizzare questa ricerca persona', '#/ricercapersona');
-                break; 
-              case '404':
-                this.datiPresenti = false;
-                break;
-            }
-          }
-          this.loading = false;
-        }, (error) => {
-          this.errored= true;
-          console.log(error)
-          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/ricercapersona');
-          this.loading = false;
-        });
-      },
-      getLatestPositions(idRicerca){
-        let time = moment().subtract(5, 'minutes').format();
-        positionController.getLatestUniquePosition(idRicerca, time).then((response) => {
-          let rawPositions = response.data;
-          //console.log(rawPositions);
+      getPosizioniByMissione(idMissione){
+        positionController.getPosizioniByMissione(idMissione).then((response) => {
+          let rawPositions = response.data[0].posizioni;
+          console.log(response);
           if (rawPositions != []){
             for (let i = 0; i < rawPositions.length; i++){
               let idVigile = rawPositions[i].fkVigile;
@@ -180,6 +151,7 @@
               });
             }
           }
+          console.log(this.posizioni);
         });
       },
       dialog(title, message, url){
