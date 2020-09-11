@@ -9,6 +9,7 @@ import Vigili from '../views/Vigili.vue'
 import Reperibilita from '../views/Reperibilita.vue'
 import RicercaPersona from '../views/RicercaPersona.vue'
 import Missioni from '../views/Missioni.vue'
+import DettagliMissione from '../views/DettagliMissione.vue'
 import LiveMap from '../views/LiveMap.vue'
 import loginController from '../controllers/loginController';
 
@@ -62,6 +63,13 @@ const routes = [
       name: 'Missioni',
       components: {
         loggedContent: Missioni
+      },
+      props: true
+    }, {
+      path: '/ricercapersona/missioni/dettagli/:idMissione',
+      name: 'DettagliMissione',
+      components: {
+        loggedContent: DettagliMissione
       },
       props: true
     }, {

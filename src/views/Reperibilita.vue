@@ -71,7 +71,7 @@
               }else{
                 switch(raw['error']){
                   case '401':
-                    this.dialog('Errore', 'Accesso non autorizzato, credenziali non valide, rieffettuare l\'accesso', '#/dashboard');
+                    this.dialog('Errore', 'Accesso non autorizzato, non puoi a visualizzare questa pagina', '#/dashboard');
                     this.loading = false;
                     break; 
                   case '404':

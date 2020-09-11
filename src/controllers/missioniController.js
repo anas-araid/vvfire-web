@@ -14,6 +14,19 @@ export default {
       'Authorization': token
     }})
   },
+  getMissioneById(idMissione, idCorpo){
+    if (!loginController.isTokenValid()){
+      return false;
+    }
+    let token = loginController.getToken()['token'];
+    return axios.post(process.env.VUE_APP_API_SERVER + '/api/v1/missione/find-by-id', {
+      idMissione: idMissione,
+      fkCorpovvf: idCorpo
+    }, {
+    headers: {
+      'Authorization': token
+    }})
+  },
   newMissione(name, startTime, endTime, completed, fkRicerca){
     if (!loginController.isTokenValid()){
       return false;

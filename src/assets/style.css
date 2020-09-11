@@ -48,6 +48,9 @@ a{
   /*background-color: white!important;*/
   color:#2c3e50!important;
 }
+.md-divider.md-inset {
+  margin-left: 0px!important;
+}
 .md-list-item-content{
   color:#2c3e50!important;
 }

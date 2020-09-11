@@ -1,11 +1,15 @@
 <template>
   <md-app-content style="height:100%;border:none">
     <Dialog v-if="this.message.active" :data="this.message"></Dialog>
-    <div v-if="!this.loading">
-      <span class="md-display-1">{{this.currentRicercaPersona.name}}</span>
+    <div v-if="!this.loading && this.datiPresenti">
+      <span class="md-display-1">{{this.currentMissione.name}}</span>
       <br><br>
       <!-- LISTA MAPPA-->
       <md-card class="md-layout-item md-size-100 md-small-size-100" >
+        <md-card-actions md-alignment="left">
+          <md-button class="style-red-text">INDIETRO</md-button>
+        </md-card-actions>
+        <md-divider class="md-inset"></md-divider>
         <md-card-header style="text-align:left">
           <div class="md-title">Mappa Live</div>
         </md-card-header>
@@ -53,6 +57,7 @@
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
   import positionController from '../controllers/posizioniController.js';
   import vigileController from '../controllers/vigileController.js';
+  import missioniController from '../controllers/missioniController.js';
   import DialogAlert from '../components/Dialog.vue'; 
   import router from '../router/index.js';
   import moment from 'moment'; 
@@ -60,17 +65,18 @@
   import { LMap, LTileLayer, LMarker, LPopup } from 'vue2-leaflet';
 
   export default {
-    name: 'LiveMap',
+    name: 'DettagliMissione',
     data: function (){
       return {
         showNavigation: false,
         message: {'active': false, 'content': null, 'url': null},
         loading: true,
         errored: false,
-        idRicerca: null,
+        datiPresenti: false,
+        idMissione: null,
         posizioni: [],
         moment: moment,
-        currentRicercaPersona: null,
+        currentMissione: [],
         trentoLatLng: [46.074779,11.121749],
         map: {
           zoom: 11.2,
@@ -91,19 +97,20 @@
       //this.getLatestPositions(this.idRicerca);
     },
     beforeCreate(){
-      this.idRicerca = this.$route.params.idRicerca;
-      let idRicerca = this.idRicerca;
-      if (!isFinite(String(this.idRicerca))){
+      this.idMissione = this.$route.params.idMissione;
+      let idMissione = this.idMissione;
+      if (!isFinite(String(this.idMissione))){
         router.push({name: 'RicercaPersona'});
       }
       let idCorpo = loginController.getCorpoVVFData()['id'];
-      ricercapersonaController.getRicercaByID(idRicerca, idCorpo).then((response) => {
+      missioniController.getMissioneById(idMissione, idCorpo).then((response) => {
         let raw = response.data[0];
+        console.log(raw);
         if (!raw.error){
             this.datiPresenti = true;
-            this.currentRicercaPersona = raw.ricerca;
+            this.currentMissione = raw.missione;
             this.loading = false;
-            this.getLatestPositions(idRicerca);
+            //this.getLatestPositions(idRicerca);
         }else{
           switch(raw['error']){
             case '401':
@@ -112,6 +119,7 @@
               break; 
             case '404':
               this.datiPresenti = false;
+              this.dialog('Errore', 'Impossibile trovare la missione selezionata', '#/ricercapersona');
               break;
           }
         }
