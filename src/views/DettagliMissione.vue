@@ -18,28 +18,44 @@
             <l-tile-layer
               :url="map.url"
             />
-            <div v-if="this.posizioni.length !== 0" >
-              <div v-for="posizione in this.posizioni" :key="posizione.id">
-                <l-marker :lat-lng="[posizione.latitude, posizione.longitude]">
+            <div v-if="this.groupPositions.length !== 0" >
+              <div v-for="traccia in this.groupPositions" :key="traccia[0].id">
+                <l-marker :lat-lng="traccia[1].latLng[0]">
                   <l-popup>
                     <div>
-                      Vigile: {{posizione.firemanName}}
+                      Vigile: {{traccia[2].data.firemanName}}
                       <br>
-                      Numero di telefono: {{posizione.firemanPhone}}
+                      Numero di telefono: {{traccia[2].data.firemanPhone}}
                       <br>
-                      {{moment(posizione.date).locale('it').fromNow() }}
                     </div>
                   </l-popup>
                 </l-marker>
-              </div>
-            </div>
-            <div v-if="this.groupPositions.length !== 0" >
-              <div v-for="traccia in this.groupPositions" :key="traccia[0].id">
+                
+                <l-marker :lat-lng="traccia[1].latLng[ traccia[1].latLng.length -1 ]">
+                  <l-popup>
+                    <div>
+                      Vigile: {{traccia[2].data.firemanName}}
+                      <br>
+                      Numero di telefono: {{traccia[2].data.firemanPhone}}
+                      <br>
+                    </div>
+                  </l-popup>
+                </l-marker>
+                
                 <l-polyline
                   :lat-lngs="traccia[1].latLng"
-                  color="green"
-                  weight="5"
-                />
+                  :color="randomColor({luminosity: 'bright', format:'rgb'})"
+                  :weight="5"
+                >
+                  <l-popup>
+                    <div>
+                      Vigile: {{traccia[2].data.firemanName}}
+                      <br>
+                      Numero di telefono: {{traccia[2].data.firemanPhone}}
+                      <br>
+                    </div>
+                  </l-popup>
+                </l-polyline>
               </div>
             </div>
           </l-map>
@@ -71,6 +87,7 @@
   import moment from 'moment'; 
   import L from 'leaflet';
   import { LMap, LTileLayer, LMarker, LPopup, LPolyline } from 'vue2-leaflet';
+  import randomColor from 'randomcolor'; 
 
   export default {
     name: 'DettagliMissione',
@@ -85,6 +102,7 @@
         posizioni: [],
         moment: moment,
         router: router,
+        randomColor: randomColor,
         currentMissione: [],
         groupPositions: [],
         trentoLatLng: [46.074779,11.121749],
@@ -169,7 +187,6 @@
         });
       },
       groupPosizionByVigile(rawPositions){
-        // altrimenti non legge i dati
         let groupPos = [];
         for (let i=0; i < rawPositions.length; i++){
           let posizione = rawPositions[i];

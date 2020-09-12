@@ -15,6 +15,7 @@
     "md5": "^2.3.0",
     "moment": "^2.27.0",
     "node-sass": "^4.14.1",
+    "randomcolor": "^0.6.2",
     "sass-loader": "^8.0.2",
     "vue": "^2.6.11",
     "vue-cal": "^3.6.4",
