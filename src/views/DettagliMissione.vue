@@ -6,8 +6,10 @@
       <br><br>
       <!-- LISTA MAPPA-->
       <md-card class="md-layout-item md-size-100 md-small-size-100" >
+        <md-progress-bar v-if="this.updating" class="md-accent" md-mode="indeterminate"></md-progress-bar>
         <md-card-actions md-alignment="left">
-          <md-button class="style-red-text" @click="router.push({name: 'Missioni', params: {idRicerca: currentMissione.fkRicerca}})">INDIETRO</md-button>
+          <md-button class="style-blue-text" @click="router.push({name: 'Missioni', params: {idRicerca: currentMissione.fkRicerca}})">INDIETRO</md-button>
+          <md-button class="style-red-text" @click="updateData()">AGGIORNA</md-button>
         </md-card-actions>
         <md-divider class="md-inset"></md-divider>
         <md-card-header style="text-align:left">
@@ -45,7 +47,7 @@
                 <l-polyline
                   :lat-lngs="traccia[1].latLng"
                   :color="randomColor({luminosity: 'bright', format:'rgb'})"
-                  :weight="5"
+                  style="weight:5"
                 >
                   <l-popup>
                     <div>
@@ -96,6 +98,7 @@
         showNavigation: false,
         message: {'active': false, 'content': null, 'url': null},
         loading: true,
+        updating: false,
         errored: false,
         datiPresenti: false,
         idMissione: null,
@@ -125,6 +128,7 @@
       console.log(L);
       let idCorpo = loginController.getCorpoVVFData()['id'];
       let idMissione = this.$route.params.idMissione;
+      this.idMissione = this.$route.params.idMissione;
       missioniController.getMissioneById(idMissione, idCorpo).then((response) => {
         let raw = response.data[0];
         if (!raw.error){
@@ -161,6 +165,7 @@
       getPosizioniByMissione(idMissione){
         positionController.getPosizioniByMissione(idMissione).then((response) => {
           let rawPositions = response.data[0].posizioni;
+          let tempPositions = [];
           if (rawPositions != []){
             for (let i = 0; i < rawPositions.length; i++){
               let idVigile = rawPositions[i].fkVigile;
@@ -180,10 +185,12 @@
                   currentPosition.firemanName = 'Sconosciuto';
                   currentPosition.firemanPhone = 'Sconosciuto';
                 }
-                this.posizioni.push(currentPosition);
+                tempPositions.push(currentPosition);
               });
             }
           }
+          this.posizioni = tempPositions;
+          this.updating = false;
         });
       },
       groupPosizionByVigile(rawPositions){
@@ -221,6 +228,12 @@
       },
       onResize() {
         this.$refs.map[0].mapObject._onResize();
+      },
+      updateData(){
+        this.updating = true;
+        this.posizioni = [];
+        this.getPosizioniByMissione(this.idMissione);
+        // aggiorna lista vigili
       }
     }
   }
