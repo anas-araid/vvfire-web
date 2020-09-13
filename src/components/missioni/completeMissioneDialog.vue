@@ -2,8 +2,8 @@
   <div>
     <md-dialog-confirm
       :md-active.sync="data.active"
-      md-title="Sei sicuro di voler eliminare la missione selezionata?"
-      md-content="Verranno eliminati <strong>definitivamente</strong> tutti i dati (posizioni ecc.) relativi alla missione."
+      md-title="Sei sicuro di voler completare la missione?"
+      md-content="Una volta completata la missione, non verranno più memorizzate le nuove posizioni in ingresso."
       md-confirm-text="CONTINUA"
       md-cancel-text="ANNULLA"
       @md-cancel="onCancel"
@@ -13,7 +13,7 @@
 
 <script>
   export default {
-    name: 'deleteMissioneDialog',
+    name: 'completeMissioneDialog',
     data: () => ({
       active: false
     }),
@@ -24,7 +24,7 @@
     },
     methods: {
       onConfirm () {
-        this.$emit('deleteMissione');
+        this.$emit('completeMissione');
         this.active = false;
       },
       onCancel () {

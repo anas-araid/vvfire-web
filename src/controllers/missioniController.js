@@ -1,6 +1,6 @@
 import loginController from '@/controllers/loginController.js';
 import axios from 'axios';
-
+import moment from 'moment';
 export default {
   getMissioniByRicerca(idRicerca){
     if (!loginController.isTokenValid()){
@@ -51,6 +51,21 @@ export default {
     return axios.patch(process.env.VUE_APP_API_SERVER + '/api/v1/missione/update', {
       id: id,
       name: name,
+    }, {
+    headers: {
+      'Authorization': token
+    }})
+  },
+  completeMissione(id){
+    if (!loginController.isTokenValid()){
+      return false;
+    }
+    let token = loginController.getToken()['token'];
+    moment().locale('it');
+    let endTime = moment().format();
+    return axios.patch(process.env.VUE_APP_API_SERVER + '/api/v1/missione/complete', {
+      id: id,
+      endTime: endTime
     }, {
     headers: {
       'Authorization': token

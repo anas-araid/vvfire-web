@@ -1,26 +1,32 @@
 <template>
   <md-app-content style="height:100%;border:none">
     <div class="md-layout md-alignment-center-center">
-      <!-- Componente per aggiungere una nuova ricerca persona -->
+      <!-- Componente per aggiungere una missione -->
       <nuovaMissioneDialog  
         v-if="this.newMissione" 
         :active="this.newMissione" 
         @missioneDialogClosed="closeNewMissione"
         @createNuovaMissione="createNewMissione"
       ></nuovaMissioneDialog>
-      <!-- Componente per aggiornare il nome di una ricerca persona -->
+      <!-- Componente per aggiornare il nome di una missione -->
       <updateMissioneDialog  
         v-if="this.updateDataDialog.active" 
         :data="this.updateDataDialog" 
         @updateMissioneDialogClosed="closeUpdateMissione"
         @updateMissione="updateMissione"
       ></updateMissioneDialog>
-      <!-- Componente per rimuovere il nome di una ricerca persona -->
+      <!-- Componente per rimuovere il nome di una missione -->
       <deleteMissioneDialog  
         v-if="this.deleteDataDialog.active" 
         :data="this.deleteDataDialog" 
         @deleteMissione="deleteMissione"
       ></deleteMissioneDialog>
+      <!-- Componente alert per completare la missione -->
+      <completeMissioneDialog  
+        v-if="this.completeMissionDialog.active" 
+        :data="this.completeMissionDialog" 
+        @completeMissione="completeMissione"
+      ></completeMissioneDialog>
       <!-- Componente per eseguire alert specifici -->
       <Dialog v-if="this.message.active" :data="this.message"></Dialog>
       <div v-if="!this.loading">
@@ -59,7 +65,7 @@
                       <md-table-head md-label="completed">{{missione.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
                       <md-table-head md-label="mostra"><a @click="router.push({name:'DettagliMissione', params: {idMissione: missione.id}})">MOSTRA</a></md-table-head>
                       <md-table-head md-label="modifica"><a @click="openModificaMissione(missione.id, missione.name)">MODIFICA</a></md-table-head>
-                      <md-table-head md-label="completa" ><a v-bind:class="{'style-green-text': !missione.completed, 'style-disabled-link': missione.completed}" @click="(missione.completed) ? console.log() : alertCompleteMissione(missione.id)">COMPLETA</a></md-table-head>
+                      <md-table-head md-label="completa" ><a v-bind:class="{'style-green-text': !missione.completed, 'style-disabled-link': missione.completed}" @click="(missione.completed) ? console.log('') : alertCompleteMissione(missione.id)">COMPLETA</a></md-table-head>
                       <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteMissione(missione.id)">RIMUOVI</a></md-table-head>
                     </md-table-row>
                   </md-table>
@@ -98,6 +104,7 @@
 <script>
   import DialogAlert from '../components/Dialog.vue'; 
   import nuovaMissioneDialog from '../components/missioni/nuovaMissioneDialog.vue'; 
+  import completeMissioneDialog from '../components/missioni/completeMissioneDialog.vue'; 
   import deleteMissioneDialog from '../components/missioni/deleteMissioneDialog.vue'; 
   import updateMissioneDialog from '../components/missioni/updateMissioneDialog.vue'; 
   import missioniController from '../controllers/missioniController.js';
@@ -114,6 +121,7 @@
       message: {'active': false, 'content': null, 'url': null},
       deleteDataDialog: {'active': false, 'idMissione': null},
       updateDataDialog: {'active': false, 'idMissione': null, 'nameMissione': null},
+      completeMissionDialog: {'active': false, 'idMissione': null},
       datiPresenti: false,
       allMissioni: [],
       errored: false,
@@ -125,7 +133,8 @@
       'Dialog': DialogAlert,
       'nuovaMissioneDialog': nuovaMissioneDialog,
       'updateMissioneDialog': updateMissioneDialog,
-      'deleteMissioneDialog': deleteMissioneDialog
+      'deleteMissioneDialog': deleteMissioneDialog,
+      'completeMissioneDialog': completeMissioneDialog
     },
     mounted(){
       this.fetchMissioni();
@@ -223,7 +232,8 @@
       createNewMissione(value){
         this.loading = true;
         let name = value;
-        let startTime = new Date().toISOString();
+        this.moment().locale('it');
+        let startTime = this.moment().format();
         // endTime all'inizio viene impostato uguale a startTime, quando la missione verrà completata, allora il valore
         // di endTime viene sovrascritto
         missioniController.newMissione(name, startTime, startTime, false, this.idRicerca).then((response) => {
@@ -263,6 +273,29 @@
       },
       closeUpdateMissione(){
         this.updateDataDialog.active = false;
+      },
+      completeMissione(){
+        let id = this.completeMissionDialog.idMissione;
+        missioniController.completeMissione(id).then( (response) => {
+          let raw = response.data[0];
+          if (raw.error === false){
+            this.fetchMissioni();
+            this.completeMissionDialog.idMissione = null;
+          }else{
+            switch(raw[0]['error']){
+              case '404':
+                this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/ricercapersona/missioni/'+this.idRicerca);
+                break;
+            }
+          }
+        }, (error) => {
+          console.log(error);
+          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
+        });
+      },
+      alertCompleteMissione(id){
+        this.completeMissionDialog.active = true;
+        this.completeMissionDialog.idMissione = id;
       },
       alertDeleteMissione(id){
         this.deleteDataDialog.active = true;
