@@ -25,7 +25,7 @@
                 <l-marker :lat-lng="traccia[1].latLng[0]">
                   <l-popup>
                     <div>
-                      Vigile: {{traccia[2].data.firemanName}}
+                      Vigile: {{traccia[2].data.firemanName + ' ' + traccia[2].data.firemanSurname}}
                       <br>
                       Numero di telefono: {{traccia[2].data.firemanPhone}}
                       <br>
@@ -36,7 +36,7 @@
                 <l-marker :lat-lng="traccia[1].latLng[ traccia[1].latLng.length -1 ]">
                   <l-popup>
                     <div>
-                      Vigile: {{traccia[2].data.firemanName}}
+                      Vigile: {{traccia[2].data.firemanName + ' ' + traccia[2].data.firemanSurname}}
                       <br>
                       Numero di telefono: {{traccia[2].data.firemanPhone}}
                       <br>
@@ -51,7 +51,7 @@
                 >
                   <l-popup>
                     <div>
-                      Vigile: {{traccia[2].data.firemanName}}
+                      Vigile: {{traccia[2].data.firemanName + ' ' + traccia[2].data.firemanSurname}}
                       <br>
                       Numero di telefono: {{traccia[2].data.firemanPhone}}
                       <br>
@@ -66,10 +66,36 @@
       <br>
       <!-- LISTA VIGILI-->
       <md-card class="md-layout-item md-size-100 md-small-size-100" >
+        <md-progress-bar v-if="this.updating" class="md-accent" md-mode="indeterminate"></md-progress-bar>
         <md-card-header style="text-align:left">
           <div class="md-title">Lista vigili presenti</div>
         </md-card-header>
         <md-card-content>
+          <div v-if="this.groupPositions.length !== 0">
+            <div style="overflow-x:auto">
+              <md-table>
+                <md-table-row>
+                  <md-table-head class="style-table-header">NOME</md-table-head>
+                  <md-table-head class="style-table-header">COGNOME</md-table-head>
+                  <md-table-head class="style-table-header">NUMERO DI TELEFONO</md-table-head>
+                </md-table-row>
+                <md-table-row v-for="group in this.groupPositions" :key="group[2].data.id">
+                  <md-table-head md-label="name">{{group[2].data.firemanName}}</md-table-head>
+                  <md-table-head md-label="surname">{{group[2].data.firemanSurname}}</md-table-head>
+                  <md-table-head md-label="phone">{{group[2].data.firemanPhone}}</md-table-head>
+                  <md-table-head md-label="mostra"><a @click="map.center = group[1].latLng[0];">MOSTRA IN MAPPA</a></md-table-head>
+                </md-table-row>
+              </md-table>
+            </div>
+          </div>
+          <div v-else>
+            <md-empty-state
+              md-rounded
+              md-icon="search_off"
+              md-label=""
+              md-description="Non c'è nessun vigile che partecipa a questa missione.">
+            </md-empty-state>
+          </div>
         </md-card-content>
       </md-card>
     </div>
@@ -179,10 +205,12 @@
                 currentPosition.fkVigile = rawPositions[i].fkVigile;
                 if (!rawVigile.error){
                   let currentVigile = rawVigile.vigile[0];
-                  currentPosition.firemanName = currentVigile.name + ' ' + currentVigile.surname;
+                  currentPosition.firemanName = currentVigile.name;
+                  currentPosition.firemanSurname = currentVigile.surname;
                   currentPosition.firemanPhone = currentVigile.phone;
                 }else{
                   currentPosition.firemanName = 'Sconosciuto';
+                  currentPosition.firemanSurname = 'Sconosciuto';
                   currentPosition.firemanPhone = 'Sconosciuto';
                 }
                 tempPositions.push(currentPosition);
@@ -199,6 +227,7 @@
           let posizione = rawPositions[i];
           let posData = [];
           posData.firemanName = posizione.firemanName;
+          posData.firemanSurname = posizione.firemanSurname;
           posData.firemanPhone = posizione.firemanPhone;
           posData.fkVigile = posizione.fkVigile;
           posData.id = posizione.id;
