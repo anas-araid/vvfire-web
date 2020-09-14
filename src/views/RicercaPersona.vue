@@ -86,6 +86,7 @@
   import loginController from '../controllers/loginController.js';
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
   import router from '../router/index.js';
+  import moment from 'moment';
 
   export default {
     name: 'RicercaPersona',
@@ -99,7 +100,8 @@
       allRicerche: [],
       errored: false,
       newRicerca: false,
-      router: router
+      router: router,
+      moment: moment
     }),
     components: {
       'Dialog': DialogAlert,
@@ -164,7 +166,8 @@
         this.loading = true;
         let name = value;
         let idCorpo = loginController.getCorpoVVFData()['id'];
-        let startTime = new Date().toISOString();
+        this.moment().locale('it');
+        let startTime = this.moment().format();
         // endTime all'inizio viene impostato uguale a startTime, quando la ricerca viene completata, allora il valore
         // di endTime viene sovrascritto
         ricercapersonaController.newRicerca(name, startTime, startTime, false, idCorpo).then((response) => {
