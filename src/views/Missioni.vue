@@ -94,7 +94,7 @@
         <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
       </div>
     </div>
-    <md-button class="md-fab md-fab-bottom-right" @click="openNewMissione()" :disabled="this.loading">
+    <md-button class="md-fab md-fab-bottom-right" @click="openNewMissione()" :disabled="this.loading || this.ricercaCompleted">
       <md-icon>add</md-icon>
     </md-button>
     <br>
@@ -125,6 +125,7 @@
       datiPresenti: false,
       allMissioni: [],
       errored: false,
+      ricercaCompleted: false,
       moment: moment,
       newMissione: false,
       router: router
@@ -147,6 +148,7 @@
       let idCorpo = loginController.getCorpoVVFData()['id'];
       ricercapersonaController.getRicercaByID(this.idRicerca, idCorpo).then((response) => {
         let raw = response.data[0];
+        console.log(raw);
         switch(raw['error']){
           case '401':
             this.errored = true;
@@ -155,6 +157,9 @@
           case '404':
             this.datiPresenti = false;
             break;
+        }
+        if (!raw.error){
+          this.ricercaCompleted = raw.ricerca.completed;
         }
       });
     },

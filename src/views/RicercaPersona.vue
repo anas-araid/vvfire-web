@@ -92,6 +92,7 @@
   import deleteRicercaDialog from '../components/ricercapersona/deleteRicercaDialog.vue'; 
   import updateRicercaDialog from '../components/ricercapersona/updateRicercaDialog.vue'; 
   import loginController from '../controllers/loginController.js';
+  import missioniController from '../controllers/missioniController.js';
   import ricercapersonaController from '../controllers/ricercapersonaController.js';
   import router from '../router/index.js';
   import moment from 'moment';
@@ -227,12 +228,14 @@
         this.completeRicercaDialog.idRicerca = id;
       },
       completeRicerca(){
+        this.loading = true;
         let id = this.completeRicercaDialog.idRicerca;
         ricercapersonaController.completeRicerca(id).then( (response) => {
           let raw = response.data[0];
           if (raw.error === false){
             this.fetchRicerche();
-            this.completeRicercaDialog.idRicerca=null;
+            this.completeAllMissioni(id);
+            //this.completeRicercaDialog.idRicerca=null;
           }else{
             switch(raw[0]['error']){
               case '404':
@@ -244,6 +247,7 @@
           console.log(error);
           this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
         });
+        this.loading = false;
       },
       deleteRicerca(){
         let id = this.deleteDataDialog.idRicerca;
@@ -266,6 +270,18 @@
         }, (error) => {
           console.log(error);
           this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
+        });
+      },
+      completeAllMissioni(idRicerca){
+        missioniController.getMissioniByRicerca(idRicerca).then((response) => {
+          let raw = response.data[0];
+          let allMissioni = [];
+          if (!raw['error']){
+            allMissioni = raw.missioni;
+            for (let i=0;i<allMissioni.length;i++){
+              missioniController.completeMissione(allMissioni[i].id);
+            }
+          }
         });
       }
     }
