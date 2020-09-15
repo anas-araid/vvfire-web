@@ -46,7 +46,7 @@
                 
                 <l-polyline
                   :lat-lngs="traccia[1].latLng"
-                  :color="randomColor({luminosity: 'bright', format:'rgb'})"
+                  :color="traccia[2].data.traceColor"
                   style="weight:5"
                 >
                   <l-popup>
@@ -231,6 +231,7 @@
           posData.firemanPhone = posizione.firemanPhone;
           posData.fkVigile = posizione.fkVigile;
           posData.id = posizione.id;
+          posData.traceColor = this.randomColor({luminosity: 'bright', format:'rgb'});
           if (i !== 0){
             let exists = groupPos.some(function(el) {
               return el[0].id === posData.fkVigile;
