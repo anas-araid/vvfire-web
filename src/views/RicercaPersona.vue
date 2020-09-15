@@ -21,6 +21,12 @@
           :data="this.deleteDataDialog" 
           @deleteRicerca="deleteRicerca"
         ></deleteRicercaDialog>
+        <!-- Componente alert per completare la ricerca -->
+        <completeRicercaDialog  
+          v-if="this.completeRicercaDialog.active" 
+          :data="this.completeRicercaDialog" 
+          @completeRicerca="completeRicerca"
+        ></completeRicercaDialog>
         <!-- Componente per eseguire alert specifici -->
         <Dialog v-if="this.message.active" :data="this.message"></Dialog>
         <md-card style="overflow-x:auto" v-if="!this.loading">
@@ -50,6 +56,7 @@
                   <md-table-head md-label="completed">{{ricerca.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
                   <md-table-head md-label="mostra"><a @click="router.push({name:'Missioni', params: {idRicerca: ricerca.id}})">MOSTRA</a></md-table-head>
                   <md-table-head md-label="modifica"><a @click="openModificaRicerca(ricerca.id, ricerca.name)">MODIFICA</a></md-table-head>
+                  <md-table-head md-label="completa" ><a v-bind:class="{'style-green-text': !ricerca.completed, 'style-disabled-link': ricerca.completed}" @click="(ricerca.completed) ? false : alertCompleteRicerca(ricerca.id)">COMPLETA</a></md-table-head>
                   <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteRicerca(ricerca.id)">RIMUOVI</a></md-table-head>
                 </md-table-row>
               </md-table>
@@ -81,6 +88,7 @@
 <script>
   import DialogAlert from '../components/Dialog.vue'; 
   import nuovaRicercaDialog from '../components/ricercapersona/nuovaRicerca.vue'; 
+  import completeRicercaDialog from '../components/ricercapersona/completeRicercaDialog.vue';
   import deleteRicercaDialog from '../components/ricercapersona/deleteRicercaDialog.vue'; 
   import updateRicercaDialog from '../components/ricercapersona/updateRicercaDialog.vue'; 
   import loginController from '../controllers/loginController.js';
@@ -96,6 +104,7 @@
       message: {'active': false, 'content': null, 'url': null},
       deleteDataDialog: {'active': false, 'idRicerca': null},
       updateDataDialog: {'active': false, 'idRicerca': null, 'nameRicerca': null},
+      completeRicercaDialog: {'active': false, 'idRicerca': null},
       datiPresenti: false,
       allRicerche: [],
       errored: false,
@@ -107,7 +116,8 @@
       'Dialog': DialogAlert,
       'nuovaRicercaDialog': nuovaRicercaDialog,
       'updateRicercaDialog': updateRicercaDialog,
-      'deleteRicercaDialog': deleteRicercaDialog
+      'deleteRicercaDialog': deleteRicercaDialog,
+      'completeRicercaDialog': completeRicercaDialog
     },
     mounted(){
       this.fetchRicerche();
@@ -211,6 +221,29 @@
       alertDeleteRicerca(id){
         this.deleteDataDialog.active = true;
         this.deleteDataDialog.idRicerca = id;
+      },
+      alertCompleteRicerca(id){
+        this.completeRicercaDialog.active = true;
+        this.completeRicercaDialog.idRicerca = id;
+      },
+      completeRicerca(){
+        let id = this.completeRicercaDialog.idRicerca;
+        ricercapersonaController.completeRicerca(id).then( (response) => {
+          let raw = response.data[0];
+          if (raw.error === false){
+            this.fetchRicerche();
+            this.completeRicercaDialog.idRicerca=null;
+          }else{
+            switch(raw[0]['error']){
+              case '404':
+                this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/ricercapersona');
+                break;
+            }
+          }
+        }, (error) => {
+          console.log(error);
+          this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
+        });
       },
       deleteRicerca(){
         let id = this.deleteDataDialog.idRicerca;

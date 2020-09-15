@@ -65,7 +65,7 @@
                       <md-table-head md-label="completed">{{missione.completed ? 'COMPLETATO' : 'IN CORSO...'}}</md-table-head>
                       <md-table-head md-label="mostra"><a @click="router.push({name:'DettagliMissione', params: {idMissione: missione.id}})">MOSTRA</a></md-table-head>
                       <md-table-head md-label="modifica"><a @click="openModificaMissione(missione.id, missione.name)">MODIFICA</a></md-table-head>
-                      <md-table-head md-label="completa" ><a v-bind:class="{'style-green-text': !missione.completed, 'style-disabled-link': missione.completed}" @click="(missione.completed) ? console.log('') : alertCompleteMissione(missione.id)">COMPLETA</a></md-table-head>
+                      <md-table-head md-label="completa" ><a v-bind:class="{'style-green-text': !missione.completed, 'style-disabled-link': missione.completed}" @click="(missione.completed) ? false : alertCompleteMissione(missione.id)">COMPLETA</a></md-table-head>
                       <md-table-head md-label="elimina"><a class="style-red-text" @click="alertDeleteMissione(missione.id)">RIMUOVI</a></md-table-head>
                     </md-table-row>
                   </md-table>
