@@ -2,7 +2,9 @@
   <md-app-content style="height:100%;border:none">
     <Dialog v-if="this.message.active" :data="this.message"></Dialog>
     <div v-if="!this.loading && this.datiPresenti">
-      <span class="md-display-1">{{this.currentMissione.name}}</span>
+      <span class="md-display-1">Riepilogo giornaliero</span>
+      <br>
+      <span class="md-subheading">{{this.dailyMissioni[0]}}</span>
       <br><br>
       <!-- LISTA MAPPA-->
       <md-card class="md-layout-item md-size-100 md-small-size-100" >
@@ -21,83 +23,52 @@
               :url="map.url"
             />
             <div v-if="this.groupPositions.length !== 0" >
-              <div v-for="traccia in this.groupPositions" :key="traccia[0].id">
-                <l-marker :lat-lng="traccia[1].latLng[0]">
-                  <l-popup>
-                    <div>
-                      Vigile: {{traccia[2].data.firemanName + ' ' + traccia[2].data.firemanSurname}}
-                      <br>
-                      Numero di telefono: {{traccia[2].data.firemanPhone}}
-                      <br>
-                    </div>
-                  </l-popup>
-                </l-marker>
-                
-                <l-marker :lat-lng="traccia[1].latLng[ traccia[1].latLng.length -1 ]">
-                  <l-popup>
-                    <div>
-                      Vigile: {{traccia[2].data.firemanName + ' ' + traccia[2].data.firemanSurname}}
-                      <br>
-                      Numero di telefono: {{traccia[2].data.firemanPhone}}
-                      <br>
-                    </div>
-                  </l-popup>
-                </l-marker>
-                
-                <l-polyline
-                  :lat-lngs="traccia[1].latLng"
-                  :color="traccia[2].data.traceColor"
-                  style="weight:5"
-                >
-                  <l-popup>
-                    <div>
-                      Vigile: {{traccia[2].data.firemanName + ' ' + traccia[2].data.firemanSurname}}
-                      <br>
-                      Numero di telefono: {{traccia[2].data.firemanPhone}}
-                      <br>
-                    </div>
-                  </l-popup>
-                </l-polyline>
+              <div v-for="(missionTraces, index) in this.groupPositions" :key="index">
+                <div v-for="traccia in missionTraces" :key="traccia[0].id">
+                  <l-marker :lat-lng="traccia[1].latLng[0]">
+                    <l-popup>
+                      <div>
+                        Vigile: {{traccia[2].data.firemanName + ' ' + traccia[2].data.firemanSurname}}
+                        <br>
+                        Numero di telefono: {{traccia[2].data.firemanPhone}}
+                        <br>
+                      </div>
+                    </l-popup>
+                  </l-marker>
+                  
+                  <l-marker :lat-lng="traccia[1].latLng[ traccia[1].latLng.length -1 ]">
+                    <l-popup>
+                      <div>
+                        Vigile: {{traccia[2].data.firemanName + ' ' + traccia[2].data.firemanSurname}}
+                        <br>
+                        Numero di telefono: {{traccia[2].data.firemanPhone}}
+                        <br>
+                      </div>
+                    </l-popup>
+                  </l-marker>
+                  
+                  <l-polyline
+                    :lat-lngs="traccia[1].latLng"
+                    :color="traccia[2].data.traceColor"
+                    style="weight:5"
+                  >
+                    <l-popup>
+                      <div>
+                        Vigile: {{traccia[2].data.firemanName + ' ' + traccia[2].data.firemanSurname}}
+                        <br>
+                        Numero di telefono: {{traccia[2].data.firemanPhone}}
+                        <br>
+                      </div>
+                    </l-popup>
+                  </l-polyline>
+                </div>
               </div>
             </div>
           </l-map>
         </md-card-content>
       </md-card>
       <br>
-      <!-- LISTA VIGILI-->
-      <md-card class="md-layout-item md-size-100 md-small-size-100" >
-        <md-progress-bar v-if="this.updating" class="md-accent" md-mode="indeterminate"></md-progress-bar>
-        <md-card-header style="text-align:left">
-          <div class="md-title">Lista vigili presenti</div>
-        </md-card-header>
-        <md-card-content>
-          <div v-if="this.groupPositions.length !== 0">
-            <div style="overflow-x:auto">
-              <md-table>
-                <md-table-row>
-                  <md-table-head class="style-table-header">NOME</md-table-head>
-                  <md-table-head class="style-table-header">COGNOME</md-table-head>
-                  <md-table-head class="style-table-header">NUMERO DI TELEFONO</md-table-head>
-                </md-table-row>
-                <md-table-row v-for="group in this.groupPositions" :key="group[2].data.id">
-                  <md-table-head md-label="name">{{group[2].data.firemanName}}</md-table-head>
-                  <md-table-head md-label="surname">{{group[2].data.firemanSurname}}</md-table-head>
-                  <md-table-head md-label="phone">{{group[2].data.firemanPhone}}</md-table-head>
-                  <md-table-head md-label="mostra"><a @click="map.center = group[1].latLng[0];">MOSTRA IN MAPPA</a></md-table-head>
-                </md-table-row>
-              </md-table>
-            </div>
-          </div>
-          <div v-else>
-            <md-empty-state
-              md-rounded
-              md-icon="search_off"
-              md-label=""
-              md-description="Non c'è nessun vigile che partecipa a questa missione.">
-            </md-empty-state>
-          </div>
-        </md-card-content>
-      </md-card>
+      
     </div>
     <div v-else>
       <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
@@ -130,7 +101,6 @@
         moment: moment,
         router: router,
         randomColor: randomColor,
-        currentMissione: [],
         groupPositions: [],
         trentoLatLng: [46.074779,11.121749],
         map: {
@@ -156,6 +126,7 @@
       this.updating = true;
       let missionData = dailyMissioni[1].data
       for (let i=0; i<missionData.length; i++){
+        this.datiPresenti = true;
         this.getPosizioniByMissione(missionData[i].id);
       }
       this.loading = false;
