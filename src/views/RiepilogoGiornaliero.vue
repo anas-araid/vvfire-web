@@ -10,7 +10,7 @@
       <md-card class="md-layout-item md-size-100 md-small-size-100" >
         <md-progress-bar v-if="this.updating" class="md-accent" md-mode="indeterminate"></md-progress-bar>
         <md-card-actions md-alignment="left">
-          <md-button class="style-blue-text" @click="router.push({name: 'Missioni', params: {idRicerca: currentMissione.fkRicerca}})">INDIETRO</md-button>
+          <md-button class="style-blue-text" @click="router.push({name: 'Missioni', params: {idRicerca: $route.params.idRicerca}})">INDIETRO</md-button>
           <md-button class="style-red-text" @click="updateData()">AGGIORNA</md-button>
         </md-card-actions>
         <md-divider class="md-inset"></md-divider>
@@ -120,10 +120,11 @@
     },
     mounted(){
       console.log(L);
-      let dailyMissioni = this.$route.params.missioni;
       this.dailyMissioni = this.$route.params.missioni;
+      console.log(this.$route.params.idRicerca)
       this.loading = true;
       this.updating = true;
+      let dailyMissioni = this.$route.params.missioni;
       let missionData = dailyMissioni[1].data
       for (let i=0; i<missionData.length; i++){
         this.datiPresenti = true;
@@ -167,14 +168,10 @@
             }
           }
           this.posizioni.push(tempPositions);
-          console.log(tempPositions)
-          console.log(this.posizioni)
           this.updating = false;
         });
       },
       groupPosizionByVigile(allPositions){
-        console.log(allPositions.length);
-        console.log(allPositions);
         this.groupPositions = [];
         for (let j=0; j < allPositions.length; j++){
           let rawPositions = allPositions[j];
@@ -220,8 +217,13 @@
       updateData(){
         this.updating = true;
         this.posizioni = [];
-        this.getPosizioniByMissione(this.idMissione);
-        // aggiorna lista vigili
+        this.updating = true;
+        let dailyMissioni = this.$route.params.missioni;
+        let missionData = dailyMissioni[1].data
+        for (let i=0; i<missionData.length; i++){
+          this.datiPresenti = true;
+          this.getPosizioniByMissione(missionData[i].id);
+        }
       }
     }
   }

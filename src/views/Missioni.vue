@@ -73,7 +73,7 @@
               </md-card-content>
               <md-divider class="md-inset"></md-divider>
               <md-card-actions>
-                <md-button class="md-raised" @click="router.push({name: 'RiepilogoGiornaliero', params: {missioni: dailyMissions}})">RIEPILOGO GIORNALIERO</md-button>
+                <md-button class="md-raised" @click="router.push({name: 'RiepilogoGiornaliero', params: {missioni: dailyMissions, idRicerca: idRicerca}})">RIEPILOGO GIORNALIERO</md-button>
               </md-card-actions>
             </md-card><br>
           </div>
@@ -148,7 +148,6 @@
       let idCorpo = loginController.getCorpoVVFData()['id'];
       ricercapersonaController.getRicercaByID(this.idRicerca, idCorpo).then((response) => {
         let raw = response.data[0];
-        console.log(raw);
         switch(raw['error']){
           case '401':
             this.errored = true;
