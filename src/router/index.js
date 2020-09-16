@@ -10,6 +10,7 @@ import Reperibilita from '../views/Reperibilita.vue'
 import RicercaPersona from '../views/RicercaPersona.vue'
 import Missioni from '../views/Missioni.vue'
 import DettagliMissione from '../views/DettagliMissione.vue'
+import RiepilogoGiornaliero from '../views/RiepilogoGiornaliero.vue'
 import LiveMap from '../views/LiveMap.vue'
 import loginController from '../controllers/loginController';
 
@@ -70,6 +71,13 @@ const routes = [
       name: 'DettagliMissione',
       components: {
         loggedContent: DettagliMissione
+      },
+      props: true
+    }, {
+      path: '/ricercapersona/missioni/riepilogo-giornaliero',
+      name: 'RiepilogoGiornaliero',
+      components: {
+        loggedContent: RiepilogoGiornaliero
       },
       props: true
     }, {

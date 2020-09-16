@@ -106,10 +106,8 @@
 </template>
 
 <script>
-  import loginController from '../controllers/loginController.js';
   import positionController from '../controllers/posizioniController.js';
   import vigileController from '../controllers/vigileController.js';
-  import missioniController from '../controllers/missioniController.js';
   import DialogAlert from '../components/Dialog.vue'; 
   import router from '../router/index.js';
   import moment from 'moment'; 
@@ -118,7 +116,7 @@
   import randomColor from 'randomcolor'; 
 
   export default {
-    name: 'DettagliMissione',
+    name: 'RiepilogoGiornaliero',
     data: function (){
       return {
         showNavigation: false,
@@ -127,7 +125,7 @@
         updating: false,
         errored: false,
         datiPresenti: false,
-        idMissione: null,
+        dailyMissioni: null,
         posizioni: [],
         moment: moment,
         router: router,
@@ -152,36 +150,15 @@
     },
     mounted(){
       console.log(L);
-      let idCorpo = loginController.getCorpoVVFData()['id'];
-      let idMissione = this.$route.params.idMissione;
-      this.idMissione = this.$route.params.idMissione;
-      missioniController.getMissioneById(idMissione, idCorpo).then((response) => {
-        let raw = response.data[0];
-        if (!raw.error){
-            this.datiPresenti = true;
-            this.currentMissione = raw.missione;
-            this.updating = true;
-            this.getPosizioniByMissione(idMissione);
-            this.loading = false;
-        }else{
-          switch(raw['error']){
-            case '401':
-              this.errored = true;
-              this.dialog('Errore', 'Accesso non autorizzato, non puoi a visualizzare questa pagina', '#/dashboard');
-              break; 
-            case '404':
-              this.datiPresenti = false;
-              this.dialog('Errore', 'Impossibile trovare la missione selezionata', '#/ricercapersona');
-              break;
-          }
-        }
-      });
-    },
-    beforeCreate(){
-      this.idMissione = this.$route.params.idMissione;
-      if (!isFinite(String(this.idMissione))){
-        router.push({name: 'RicercaPersona'});
+      let dailyMissioni = this.$route.params.missioni;
+      this.dailyMissioni = this.$route.params.missioni;
+      this.loading = true;
+      this.updating = true;
+      let missionData = dailyMissioni[1].data
+      for (let i=0; i<missionData.length; i++){
+        this.getPosizioniByMissione(missionData[i].id);
       }
+      this.loading = false;
     },
     watch: {
       posizioni: function(){
@@ -218,38 +195,47 @@
               });
             }
           }
-          this.posizioni = tempPositions;
+          this.posizioni.push(tempPositions);
+          console.log(tempPositions)
+          console.log(this.posizioni)
           this.updating = false;
         });
       },
-      groupPosizionByVigile(rawPositions){
-        let groupPos = [];
-        for (let i=0; i < rawPositions.length; i++){
-          let posizione = rawPositions[i];
-          let posData = [];
-          posData.firemanName = posizione.firemanName;
-          posData.firemanSurname = posizione.firemanSurname;
-          posData.firemanPhone = posizione.firemanPhone;
-          posData.fkVigile = posizione.fkVigile;
-          posData.id = posizione.id;
-          posData.traceColor = this.randomColor({luminosity: 'bright', format:'rgb'});
-          if (i !== 0){
-            let exists = groupPos.some(function(el) {
-              return el[0].id === posData.fkVigile;
-            });
-            if (exists){
-              let index = groupPos.map(function(x) {return x[0].id; }).indexOf(posData.fkVigile);
-              if (index !== -1){
-                groupPos[index][1].latLng.push([posizione.latitude, posizione.longitude])
+      groupPosizionByVigile(allPositions){
+        console.log(allPositions.length);
+        console.log(allPositions);
+        this.groupPositions = [];
+        for (let j=0; j < allPositions.length; j++){
+          let rawPositions = allPositions[j];
+          let groupPos = [];
+          for (let i=0; i < rawPositions.length; i++){
+            let posizione = rawPositions[i];
+            let posData = [];
+            posData.firemanName = posizione.firemanName;
+            posData.firemanSurname = posizione.firemanSurname;
+            posData.firemanPhone = posizione.firemanPhone;
+            posData.fkVigile = posizione.fkVigile;
+            posData.id = posizione.id;
+            posData.traceColor = this.randomColor({luminosity: 'bright', format:'rgb'});
+            if (i !== 0){
+              let exists = groupPos.some(function(el) {
+                return el[0].id === posData.fkVigile;
+              });
+              if (exists){
+                let index = groupPos.map(function(x) {return x[0].id; }).indexOf(posData.fkVigile);
+                if (index !== -1){
+                  groupPos[index][1].latLng.push([posizione.latitude, posizione.longitude])
+                }
+              }else{
+                groupPos.push([{id: posizione.fkVigile}, {latLng: [[posizione.latitude, posizione.longitude]]}, {data: posData}]);
               }
             }else{
               groupPos.push([{id: posizione.fkVigile}, {latLng: [[posizione.latitude, posizione.longitude]]}, {data: posData}]);
             }
-          }else{
-            groupPos.push([{id: posizione.fkVigile}, {latLng: [[posizione.latitude, posizione.longitude]]}, {data: posData}]);
           }
+          this.groupPositions.push(groupPos);
+          console.log(this.groupPositions)
         }
-        this.groupPositions = groupPos;
       },
       dialog(title, message, url){
         this.message.title = title;            

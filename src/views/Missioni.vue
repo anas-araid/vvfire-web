@@ -73,7 +73,7 @@
               </md-card-content>
               <md-divider class="md-inset"></md-divider>
               <md-card-actions>
-                <md-button class="md-raised">RIEPILOGO GIORNALIERO</md-button>
+                <md-button class="md-raised" @click="router.push({name: 'RiepilogoGiornaliero', params: {missioni: dailyMissions}})">RIEPILOGO GIORNALIERO</md-button>
               </md-card-actions>
             </md-card><br>
           </div>
@@ -189,6 +189,7 @@
           if (!raw['error']){
             this.allMissioni = raw.missioni;
             this.allMissioni = this.orderMissioniByDate(raw.missioni)
+            console.log(this.allMissioni);
             this.datiPresenti = true;
             this.newMissione = false;
           }else{
