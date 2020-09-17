@@ -202,7 +202,6 @@
             }
           }
           this.groupPositions.push(groupPos);
-          console.log(this.groupPositions)
         }
       },
       dialog(title, message, url){

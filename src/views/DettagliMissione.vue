@@ -264,7 +264,6 @@
         this.updating = true;
         this.posizioni = [];
         this.getPosizioniByMissione(this.idMissione);
-        // aggiorna lista vigili
       }
     }
   }

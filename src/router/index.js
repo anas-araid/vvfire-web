@@ -11,6 +11,7 @@ import RicercaPersona from '../views/RicercaPersona.vue'
 import Missioni from '../views/Missioni.vue'
 import DettagliMissione from '../views/DettagliMissione.vue'
 import RiepilogoGiornaliero from '../views/RiepilogoGiornaliero.vue'
+import RiepilogoComplessivo from '../views/RiepilogoComplessivo.vue'
 import LiveMap from '../views/LiveMap.vue'
 import loginController from '../controllers/loginController';
 
@@ -78,6 +79,13 @@ const routes = [
       name: 'RiepilogoGiornaliero',
       components: {
         loggedContent: RiepilogoGiornaliero
+      },
+      props: true
+    }, {
+      path: '/ricercapersona/missioni/riepilogo-complessivo',
+      name: 'RiepilogoComplessivo',
+      components: {
+        loggedContent: RiepilogoComplessivo
       },
       props: true
     }, {
