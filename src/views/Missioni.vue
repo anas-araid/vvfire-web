@@ -35,7 +35,7 @@
             <md-icon style="color:white">room</md-icon>
              MAPPA LIVE
           </md-button>
-          <md-button class="style-button-green"><md-icon style="color:white">explore</md-icon> RIEPILOGO COMPLESSIVO</md-button>
+          <md-button class="style-button-green" @click="router.push({name: 'RiepilogoComplessivo', params: {missioni: allMissioni, idRicerca: idRicerca}})"><md-icon style="color:white">explore</md-icon> RIEPILOGO COMPLESSIVO</md-button>
           <br><br>
           <div v-for="dailyMissions in allMissioni" :key="dailyMissions[0].giorno">
             <md-card style="overflow-x:auto">
@@ -188,7 +188,6 @@
           if (!raw['error']){
             this.allMissioni = raw.missioni;
             this.allMissioni = this.orderMissioniByDate(raw.missioni)
-            console.log(this.allMissioni);
             this.datiPresenti = true;
             this.newMissione = false;
           }else{

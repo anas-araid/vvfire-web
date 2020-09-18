@@ -1,7 +1,7 @@
 <template>
   <md-app-content style="height:100%;border:none">
     <Dialog v-if="this.message.active" :data="this.message"></Dialog>
-    <div v-if="!this.loading && this.datiPresenti">
+    <div v-if="!this.loading">
       <span class="md-display-1">Riepilogo giornaliero</span>
       <br>
       <span class="md-subheading">{{this.dailyMissioni[0]}}</span>
@@ -68,7 +68,6 @@
         </md-card-content>
       </md-card>
       <br>
-      
     </div>
     <div v-else>
       <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>
@@ -121,20 +120,23 @@
     mounted(){
       console.log(L);
       this.dailyMissioni = this.$route.params.missioni;
-      console.log(this.$route.params.idRicerca)
       this.loading = true;
       this.updating = true;
       let dailyMissioni = this.$route.params.missioni;
       let missionData = dailyMissioni[1].data
       for (let i=0; i<missionData.length; i++){
-        this.datiPresenti = true;
         this.getPosizioniByMissione(missionData[i].id);
       }
       this.loading = false;
     },
     watch: {
       posizioni: function(){
-        this.groupPosizionByVigile(this.posizioni);
+        if (this.posizioni.length !== 0){
+          this.groupPosizionByVigile(this.posizioni);
+        }else{
+          this.datiPresenti = false;
+          this.dialog('', 'Non ci sono ancora posizioni registrate', false);
+        }
       }
     },
     methods: {
@@ -214,7 +216,6 @@
         this.$refs.map[0].mapObject._onResize();
       },
       updateData(){
-        this.updating = true;
         this.posizioni = [];
         this.updating = true;
         let dailyMissioni = this.$route.params.missioni;
