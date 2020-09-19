@@ -28,9 +28,9 @@
                   <l-marker :lat-lng="traccia[1].latLng[0]">
                     <l-popup>
                       <div>
-                        Vigile: {{traccia[2].data.firemanName + ' ' + traccia[2].data.firemanSurname}}
+                        Vigile: {{traccia[2].data[0].firemanName + ' ' + traccia[2].data[0].firemanSurname}}
                         <br>
-                        Numero di telefono: {{traccia[2].data.firemanPhone}}
+                        Numero di telefono: {{traccia[2].data[0].firemanPhone}}
                         <br>
                       </div>
                     </l-popup>
@@ -39,9 +39,9 @@
                   <l-marker :lat-lng="traccia[1].latLng[ traccia[1].latLng.length -1 ]">
                     <l-popup>
                       <div>
-                        Vigile: {{traccia[2].data.firemanName + ' ' + traccia[2].data.firemanSurname}}
+                        Vigile: {{traccia[2].data[0].firemanName + ' ' + traccia[2].data[0].firemanSurname}}
                         <br>
-                        Numero di telefono: {{traccia[2].data.firemanPhone}}
+                        Numero di telefono: {{traccia[2].data[0].firemanPhone}}
                         <br>
                       </div>
                     </l-popup>
@@ -49,14 +49,14 @@
                   
                   <l-polyline
                     :lat-lngs="traccia[1].latLng"
-                    :color="traccia[2].data.traceColor"
+                    :color="randomColor({luminosity: 'bright', format:'rgb'})"
                     style="weight:5"
                   >
                     <l-popup>
                       <div>
-                        Vigile: {{traccia[2].data.firemanName + ' ' + traccia[2].data.firemanSurname}}
+                        Vigile: {{traccia[2].data[0].firemanName + ' ' + traccia[2].data[0].firemanSurname}}
                         <br>
-                        Numero di telefono: {{traccia[2].data.firemanPhone}}
+                        Numero di telefono: {{traccia[2].data[0].firemanPhone}}
                         <br>
                       </div>
                     </l-popup>
@@ -77,8 +77,9 @@
 </template>
 
 <script>
-  import positionController from '../controllers/posizioniController.js';
-  import vigileController from '../controllers/vigileController.js';
+  //import positionController from '../controllers/posizioniController.js';
+  //import vigileController from '../controllers/vigileController.js';
+  import missioniController from '../controllers/missioniController.js';
   import DialogAlert from '../components/Dialog.vue'; 
   import router from '../router/index.js';
   import moment from 'moment'; 
@@ -127,22 +128,44 @@
       for (let j=0; j < allMissioni.length; j++){
         let missionData = allMissioni[j][1].data;
         for (let i=0; i<missionData.length; i++){
-          this.getPosizioniByMissione(missionData[i].id);
+          //this.getPosizioniByMissione(missionData[i].id);
+          this.getRiepilogoMissione(missionData[i].id);
         }
       }
       this.loading = false;
     },
-    watch: {
-      posizioni: function(){
-        if (this.posizioni.length !== 0){
-          this.groupPosizionByVigile(this.posizioni);
-        }else{
-          this.datiPresenti = false;
-          this.dialog('', 'Non ci sono ancora posizioni registrate', false);
-        }
-      }
-    },
     methods: {
+      dialog(title, message, url){
+        this.message.title = title;            
+        this.message.content = message;
+        this.message.url = url;    
+        this.message.active = true;
+      },
+      onResize() {
+        this.$refs.map[0].mapObject._onResize();
+      },
+      updateData(){
+        this.posizioni = [];
+        this.updating = true;
+        let allMissioni = this.$route.params.missioni;
+        for (let j=0; j < allMissioni.length; j++){
+          let missionData = allMissioni[j][1].data;
+          for (let i=0; i<missionData.length; i++){
+            this.getRiepilogoMissione(missionData[i].id);
+          }
+        }
+      },
+      getRiepilogoMissione(idMissione){
+        missioniController.getRiepilogoMissione(idMissione).then((response) => {
+          let raw = response.data[0];
+          this.groupPositions.push(raw.data);
+          this.updating = false;
+        });
+      }
+      // getRiepilogoMissione sostituisce le funzioni getPosizioniByMissione e groupPosizionByVigile
+      // tutte le operazioni che svolgevano queste missioni, ora sono eseguite server-side
+      // in questo modo si è migliorata la velocità e la stabilità dell'applicativo
+      /*,
       getPosizioniByMissione(idMissione){
         positionController.getPosizioniByMissione(idMissione).then((response) => {
           let rawPositions = response.data[0].posizioni;
@@ -207,29 +230,9 @@
             }
           }
           this.groupPositions.push(groupPos);
+          console.log(this.groupPositions);
         }
-      },
-      dialog(title, message, url){
-        this.message.title = title;            
-        this.message.content = message;
-        this.message.url = url;    
-        this.message.active = true;
-      },
-      onResize() {
-        this.$refs.map[0].mapObject._onResize();
-      },
-      updateData(){
-        this.posizioni = [];
-        this.updating = true;
-        let allMissioni = this.$route.params.missioni;
-        for (let j=0; j < allMissioni.length; j++){
-        let missionData = allMissioni[j][1].data;
-          for (let i=0; i<missionData.length; i++){
-            this.datiPresenti = true;
-            this.getPosizioniByMissione(missionData[i].id);
-          }
-        }
-      }
+      },*/
     }
   }
 </script>
