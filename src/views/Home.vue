@@ -3,6 +3,9 @@
     <div class="md-layout md-alignment-center-center" style="min-height:500px;height:100%">
       <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:left">
         <span class="md-display-2" style="font-weight:200">Changing the way we <i class="style-red-text">rescue</i></span>
+        <br><br><br>
+        <button class="circleScaleBtn"><span>INIZIA SUBITO!</span></button>
+        <button class="snapLeftBtn"><span>SCOPRI DI PIU'</span></button>
       </div>
       <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100">
         <span class="md-display-3">[screen app]</span>

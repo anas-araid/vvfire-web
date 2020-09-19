@@ -3,6 +3,8 @@
     <div class="md-layout md-alignment-center-center">
       <Dialog v-if="this.message.active" :data="this.message"></Dialog>
       <div class="md-layout-item md-large-size-80 md-medium-size-100 md-small-size-50 md-xsmall-size-100" style="text-align:center;">
+        <span class="md-display-1">Personale reperibile</span>
+        <br><br>
         <vue-cal
           v-if="!this.loading"
           :time-from="7 * 60"

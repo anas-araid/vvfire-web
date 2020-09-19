@@ -93,3 +93,129 @@ a{
 .vuecal__view-btn.vuecal__view-btn--highlighted {background-color: rgba(136, 236, 191, 0.25);}
 
 .vuecal__event {cursor: pointer!important;}
+
+
+button{
+  border:none!important;
+  margin: 5px!important;
+  cursor: pointer!important;
+}
+
+.circleScaleBtn {
+  padding: 12px 12px!important;
+  background-color: hsl(0, 100%, 95%)!important;
+  color: #e53935!important;
+  position: relative!important;
+  border-radius: 6px!important;
+  overflow: hidden!important;
+  z-index: 1!important;
+}
+
+.circleScaleBtn span {
+  z-index: 1!important;
+  position: relative!important;
+}
+
+.circleScaleBtn::before {
+  content: ''!important;
+  position: absolute!important;
+  top: 50%!important;
+  left: 50%!important;
+  width: 140px!important;
+  height: 140px!important;
+  border-radius: 50%!important;
+  transform: translate3d(-50%,-50%,0) scale3d(0,0,0)!important;
+  transition: opacity .4s cubic-bezier(.19,1,.22,1),transform .75s cubic-bezier(.19,1,.22,1)!important;
+  background-color: #e53935!important;
+  opacity: 0!important;
+}
+
+.circleScaleBtn:hover span {
+  color: hsl(0, 100%, 95%)!important;
+}
+
+.circleScaleBtn:hover::before {
+  opacity: 1!important;
+  transition-duration: .85s!important;
+  transform: translate3d(-50%,-50%,0) scale3d(1,1,1)!important;
+}
+
+
+.pulseBtn {
+  padding: 12px 24px!important;
+  background-color: hsl(0, 100%, 95%)!important;
+  color: #e53935!important;
+  border-radius: 6px!important;
+  box-shadow: 0 0 0 0 rgba(230, 237, 255, 0.7)!important;
+  animation: pulse 1.75s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes pulse {
+  to {
+    box-shadow: 0 0 0 30px rgba(230, 237, 255, 0);
+  }
+}
+
+.snapLeftBtn {
+  text-align: center;
+  padding: 12px 24px;
+  background-color: hsl(0, 100%, 95%);
+  position: relative;
+  border-radius: 6px;
+  color: #e53935;
+  overflow: hidden;
+}
+
+.snapLeftBtn::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  transform: translateX(-101%);
+  background:#e53935;
+  transition: transform .25s ease-in;
+}
+
+.snapLeftBtn:hover::before {
+  transform: translateX(0);
+}
+
+.snapLeftBtn span {
+  position: relative;
+  z-index: 1;
+  display: block;
+  transition: color 0.1s .15s ease-in;
+}
+
+.snapLeftBtn:hover span {
+  color: hsl(0, 100%, 95%);
+  animation: animButtonSpan 0.4s;
+}
+
+@keyframes animButtonSpan {
+  0% {
+      transform: translateX(0);
+      opacity: 1;
+  }
+
+  35% {
+      transform: translateX(20px);
+      opacity: 0;
+  }
+
+  50.001% {
+      transform: translateX(-20px);
+  }
+
+  60% {
+      transform: translateX(0px);
+  }
+
+}
+
+
+
+

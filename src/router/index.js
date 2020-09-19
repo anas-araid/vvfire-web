@@ -38,6 +38,7 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
+    redirect: { name: 'Reperibilita' },
     meta: { requiresAuth: true },
     children: [{
       path: '/impostazioni',
@@ -51,6 +52,7 @@ const routes = [
       }
     },{
       path: '/reperibilita',
+      name: 'Reperibilita',
       components: {
         loggedContent: Reperibilita
       }

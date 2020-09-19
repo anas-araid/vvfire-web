@@ -1,7 +1,7 @@
 <template>
   <md-app-content style="height:100%;border:none">
     <Dialog v-if="this.message.active" :data="this.message"></Dialog>
-    <div v-if="!this.loading && this.datiPresenti">
+    <div v-if="!this.loading">
       <span class="md-display-1">{{this.currentMissione.name}}</span>
       <br><br>
       <!-- LISTA MAPPA-->
