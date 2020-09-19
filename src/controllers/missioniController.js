@@ -2,6 +2,20 @@ import loginController from '@/controllers/loginController.js';
 import axios from 'axios';
 import moment from 'moment';
 export default {
+  getRiepilogoMissione(idMissione){
+    let idCorpo = loginController.getCorpoVVFData()['id'];
+    if (!loginController.isTokenValid()){
+      return false;
+    }
+    let token = loginController.getToken()['token'];
+    return axios.post(process.env.VUE_APP_API_SERVER + '/api/v1/missione/get-riepilogo-missione', {
+      idMissione: idMissione,
+      fkCorpovvf: idCorpo
+    }, {
+    headers: {
+      'Authorization': token
+    }})
+  },
   getMissioniByRicerca(idRicerca){
     if (!loginController.isTokenValid()){
       return false;
