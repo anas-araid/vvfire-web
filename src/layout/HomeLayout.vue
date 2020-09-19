@@ -26,11 +26,6 @@
           <span class="md-list-item-text">Accedi</span>
         </md-list-item>
 
-        <md-list-item href="/#funzionalita">
-          <md-icon>miscellaneous_services</md-icon>
-          <span class="md-list-item-text">Funzionalità</span>
-        </md-list-item>
-
         <md-list-item href="/#download">
           <md-icon>get_app</md-icon>
           <span class="md-list-item-text">Download app</span>

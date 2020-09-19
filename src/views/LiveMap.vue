@@ -11,7 +11,7 @@
         </md-card-actions>
         <md-divider class="md-inset"></md-divider>
         <md-card-header style="text-align:left">
-          <div class="md-title">Mappa Live</div>
+          <div class="md-title">Ultime posizioni</div>
         </md-card-header>
         <md-card-content>
           <l-map :center="map.center" :zoom="map.zoom" :v-resize="onResize" style="min-height:600px">
@@ -37,14 +37,6 @@
         </md-card-content>
       </md-card>
       <br>
-      <!-- LISTA VIGILI-->
-      <md-card class="md-layout-item md-size-100 md-small-size-100" >
-        <md-card-header style="text-align:left">
-          <div class="md-title">Lista vigili presenti</div>
-        </md-card-header>
-        <md-card-content>
-        </md-card-content>
-      </md-card>
     </div>
     <div v-else>
       <md-progress-spinner class="md-accent" md-mode="indeterminate"></md-progress-spinner>

@@ -16,8 +16,8 @@
       <md-icon class="arrowBounce">keyboard_arrow_down</md-icon>
     </div>
 
-    <div class="md-layout md-alignment-center-center" style="min-height:100%;height:100%">
-      <div class="md-layout-item md-large-size-50 md-medium-size-3033 md-small-size-50 md-xsmall-size-100">
+    <div id="funzionalita" class="md-layout md-alignment-center-center" style="min-height:100%;height:100%">
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100">
         <img src="../assets/ricerche.png" />
       </div>
       <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:center">
@@ -30,25 +30,25 @@
 
     <div class="md-layout md-alignment-center-center" style="min-height:100%;height:100%">
       <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:left">
-        <span class="md-display-1" style="font-weight:200;">La localizzazione e la gestione delle tracce gps non sono mai stati cosi semplici!</span>
-        <br><br>
+        <span class="md-display-1" style="font-weight:200;">La localizzazione e la gestione delle tracce gps non sono mai stati così semplici!</span>
+        <br><br><br>
         <span class="md-display-1" style="font-weight:200;font-size:24px">
-          Potrai facilmente monitorare la posizione dei vigili in ogni momento, avere un riepilogo delle aree perlustate
+          Potrai facilmente monitorare la posizione del personale in ogni momento, avere un riepilogo delle aree perlustate
           ed un riepilogo complessivo per valutare l'efficenza della ricerca svolta.
         </span>
       </div>
-      <div class="md-layout-item md-large-size-50 md-medium-size-3033 md-small-size-50 md-xsmall-size-100">
-        <img src="../assets/map.svg" style="width:30%" />
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100">
+        <img src="../assets/riepilogo.png"/>
       </div>
     </div>
 
     <div class="md-layout md-alignment-center-center" style="min-height:100%;height:100%">
-      <div class="md-layout-item md-large-size-50 md-medium-size-3033 md-small-size-50 md-xsmall-size-100">
-        <img src="../assets/ricerche.png" />
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100">
+        <img src="../assets/reperibilita.png" />
       </div>
       <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:center">
         <span class="md-display-1" style="font-weight:200">Consulta la reperibilità del personale</span>
-        <br><br>
+        <br><br><br><br>
         <span class="md-display-1" style="font-weight:200;font-size:24px">
           Hai bisogno di personale per un intervento non urgente? Non sai chi al momento sia reperibile?
           <br><br>
@@ -58,9 +58,10 @@
       </div>
     </div>
 
-    <div class="md-layout md-alignment-center-center" style="min-height:100%;height:100%">
+    <div class="md-layout md-alignment-center-center" style="min-height:50%;height:50%">
       <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:left">
-        <span class="md-display-1" style="font-weight:200;">Sviluppi futuri</span>
+        <span class="md-display-1" style="font-weight:200;">Funzionalità in via di sviluppo</span>
+        <br><br>
         <br><br>
         <span class="md-display-1" style="font-weight:200;font-size:28px">
           Documentazione fotografica degli interventi
@@ -71,8 +72,27 @@
           ricostruire le operazioni svolte, soprattutto se si tratta di eventi accaduti molto tempo fa.
         </span>
       </div>
-      <div class="md-layout-item md-large-size-50 md-medium-size-3033 md-small-size-50 md-xsmall-size-100">
-        <img src="../assets/map.svg" style="width:30%" />
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100">
+        <img src="../assets/snorkel.jpg" style="border-radius:7px;width:80%;margin:30px" />
+      </div>
+    </div>
+    <br><br>
+    <br><br>
+    <br><br>
+    <div class="md-layout md-alignment-center-center" style="min-height:50%;height:50%">
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100">
+        <img src="../assets/app.svg" style="width:50%;margin:30px" />
+      </div>
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:left">
+        <br><br>
+        <span class="md-display-1" style="font-weight:200;font-size:28px">
+          App per Android e iOS
+        </span>
+        <br><br>
+        <span class="md-display-1" style="font-weight:200;font-size:24px">
+          Componente fondamentale per il funzionamento della piattaforma, tramite il proprio smartphone sarà possible impostare la propria reperibilità ed utilizzare il
+          proprio dispositivo come localizzatore gps durante gli interventi di ricerca persona.
+        </span>
       </div>
     </div>
 

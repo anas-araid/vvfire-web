@@ -16,6 +16,11 @@
       </md-toolbar>
 
       <md-list>
+        <md-list-item to="/">
+          <md-icon>home</md-icon>
+          <span class="md-list-item-text">Home</span>
+        </md-list-item>
+        
         <md-list-item to="/impostazioni">
           <md-icon>settings</md-icon>
           <span class="md-list-item-text">Impostazioni</span>
