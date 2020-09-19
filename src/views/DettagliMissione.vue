@@ -182,12 +182,7 @@
       if (!isFinite(String(this.idMissione))){
         router.push({name: 'RicercaPersona'});
       }
-    }/*,
-    watch: {
-      posizioni: function(){
-        this.groupPosizionByVigile(this.posizioni);
-      }
-    }*/,
+    },
     methods: {
       dialog(title, message, url){
         this.message.title = title;            
@@ -210,6 +205,7 @@
           let raw = response.data[0];
           this.groupPositions = raw.data;
           this.updating = false;
+          console.log(this.groupPositions)
         });
       }/*,
       getPosizioniByMissione(idMissione){
@@ -274,6 +270,11 @@
         }
         this.groupPositions = groupPos;
         console.log(this.groupPositions)
+      },
+      watch: {
+        posizioni: function(){
+          this.groupPosizionByVigile(this.posizioni);
+        }
       }*/
     }
   }
