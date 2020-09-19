@@ -29,6 +29,7 @@ const routes = [
       }
     },{
       path: 'login',
+      name: 'Login',
       components: {
         homepage: Login
       }

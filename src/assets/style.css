@@ -217,5 +217,31 @@ button{
 }
 
 
+.arrowBounce {
+  position: relative;
+  animation: bounce 2s infinite;
+}
+
+.arrowBounce svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color:hsl(0, 80%, 62%)!important;
+  fill: hsl(0, 80%, 62%)!important;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+  }
+  40% {
+      transform: translateY(-30px);
+  }
+  60% {
+      transform: translateY(-15px);
+  }
+}
+
 
 
