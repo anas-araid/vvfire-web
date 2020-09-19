@@ -15,6 +15,67 @@
     <div>
       <md-icon class="arrowBounce">keyboard_arrow_down</md-icon>
     </div>
+
+    <div class="md-layout md-alignment-center-center" style="min-height:100%;height:100%">
+      <div class="md-layout-item md-large-size-50 md-medium-size-3033 md-small-size-50 md-xsmall-size-100">
+        <img src="../assets/ricerche.png" />
+      </div>
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:center">
+        <span class="md-display-1" style="font-weight:200">Gestione completa degli interventi di ricerca persona</span>
+        <br><br>
+        <span class="md-display-1" style="font-weight:200;font-size:24px">Un'alternativa facile e veloce ai costosi localizzatori gps, basta uno smartphone!</span>
+        <br>
+      </div>
+    </div>
+
+    <div class="md-layout md-alignment-center-center" style="min-height:100%;height:100%">
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:left">
+        <span class="md-display-1" style="font-weight:200;">La localizzazione e la gestione delle tracce gps non sono mai stati cosi semplici!</span>
+        <br><br>
+        <span class="md-display-1" style="font-weight:200;font-size:24px">
+          Potrai facilmente monitorare la posizione dei vigili in ogni momento, avere un riepilogo delle aree perlustate
+          ed un riepilogo complessivo per valutare l'efficenza della ricerca svolta.
+        </span>
+      </div>
+      <div class="md-layout-item md-large-size-50 md-medium-size-3033 md-small-size-50 md-xsmall-size-100">
+        <img src="../assets/map.svg" style="width:30%" />
+      </div>
+    </div>
+
+    <div class="md-layout md-alignment-center-center" style="min-height:100%;height:100%">
+      <div class="md-layout-item md-large-size-50 md-medium-size-3033 md-small-size-50 md-xsmall-size-100">
+        <img src="../assets/ricerche.png" />
+      </div>
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:center">
+        <span class="md-display-1" style="font-weight:200">Consulta la reperibilità del personale</span>
+        <br><br>
+        <span class="md-display-1" style="font-weight:200;font-size:24px">
+          Hai bisogno di personale per un intervento non urgente? Non sai chi al momento sia reperibile?
+          <br><br>
+          Controlla subito il calendario in piattaforma, ti mostrerà tutti i vigili disponibili!
+        </span>
+        <br>
+      </div>
+    </div>
+
+    <div class="md-layout md-alignment-center-center" style="min-height:100%;height:100%">
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:left">
+        <span class="md-display-1" style="font-weight:200;">Sviluppi futuri</span>
+        <br><br>
+        <span class="md-display-1" style="font-weight:200;font-size:28px">
+          Documentazione fotografica degli interventi
+        </span>
+        <br><br>
+        <span class="md-display-1" style="font-weight:200;font-size:24px">
+          Avere una rapporto d'intervento con allegato una documentazione fotografica, spesso si rivela fondamentale per 
+          ricostruire le operazioni svolte, soprattutto se si tratta di eventi accaduti molto tempo fa.
+        </span>
+      </div>
+      <div class="md-layout-item md-large-size-50 md-medium-size-3033 md-small-size-50 md-xsmall-size-100">
+        <img src="../assets/map.svg" style="width:30%" />
+      </div>
+    </div>
+
   </md-app-content>
 </template>
 

@@ -14,7 +14,7 @@
                 <md-input type="text" name="name" id="name" v-model="name" autocomplete="name" maxlength="50" required/>
                 <span class="md-error">Inserire il nome del ricerca</span>
               </md-field>
-              <md-button type="submit" class="style-red-bg">CREA</md-button>
+              <md-button type="submit" class="style-red-bg">MODIFICA</md-button>
               <md-button class="md-accent" @click="close()">ANNULLA</md-button>
             </form>
           </div>
