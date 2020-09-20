@@ -40,7 +40,7 @@
       </div>
       
       <div class="md-layout-item md-large-size-40 md-medium-size-33 md-medium-hide">
-        <span class="md-display-3">[screen app]</span>
+        <img src="../assets/login.svg"/>
       </div>
     </div>
   </md-app-content>

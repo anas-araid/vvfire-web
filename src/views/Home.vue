@@ -6,7 +6,7 @@
         <span class="md-display-1" style="font-weight:200">L'innovazione a portata di mano</span>
         <br><br><br>
         <button class="circleScaleBtn" @click="router.push({name: 'Login'})"><span>INIZIA SUBITO!</span></button>
-        <button class="snapLeftBtn"><span>SCOPRI DI PIU'</span></button>
+        <button class="snapLeftBtn" @click="scopri()"><span>SCOPRI DI PIU'</span></button>
       </div>
       <div class="md-layout-item md-large-size-30 md-medium-size-30 md-small-size-50 md-xsmall-size-100">
         <img src="../assets/homepage.svg"/>
@@ -123,6 +123,9 @@
       handleResize (event) {
         console.log(event)
         this.fullHeight = document.documentElement.clientHeight
+      },
+      scopri(){
+        window.location.href='#funzionalita';
       }
     }
   }
