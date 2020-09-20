@@ -15,7 +15,7 @@
 The main functions are:
 - Complete management system for planning, searching and tracking rescue teams during field searches for missing people.
     - Is also an alternative to expensive GPS trackers by using just smartphone localization system.
-    - You can easily monitor the positions of rescue teams at any time, have a summary of searched sectors based on datetime or area.
+    - You can easily monitor the positions of rescue teams at any time, have a summary of searched sectors based on datetime or area etc.
     <div align="center">
       <img src="https://anasaraid.me/hosting/ricerche.png" alt="riepilogo" align="center" width="320px" />
       <img src="https://anasaraid.me/hosting/riepilogo2.png" alt="riepilogo" align="center" width="320px" />
@@ -34,11 +34,12 @@ Other functionalities still in development:
     - Having a report with photographic documentation attached, often is really useful when we need to reconstruct rescue operations, especially if it concerns old events.
 
 
+<br>
 
-
-# vvfire-web
 
 ## Getting Started
+
+[Documentazione](https://github.com/asdf1899/vvfire-web/blob/master/Documentazione.md)
 
 ### Download or clone this repo
 ```
