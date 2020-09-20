@@ -92,8 +92,12 @@
                 }
               });
             }
-            this.loading = false;
           }
+          this.loading = false;
+        }, (error) => {
+          this.errored= true;
+          console.log(error);
+          this.loading = false;
         });
       },
       dialog(title, message, url){
