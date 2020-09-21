@@ -1,5 +1,5 @@
 <template>
-  <md-app-content style="height:100%;border:none">
+  <md-app-content style="height:100%;border:none;">
     <div class="md-layout md-alignment-center-center">
       <!-- Componente per aggiungere una missione -->
       <nuovaMissioneDialog  
@@ -29,7 +29,7 @@
       ></completeMissioneDialog>
       <!-- Componente per eseguire alert specifici -->
       <Dialog v-if="this.message.active" :data="this.message"></Dialog>
-      <div v-if="!this.loading">
+      <div v-if="!this.loading" style="overflow-x:auto"> 
         <div v-if="allMissioni.length !== 0 && !this.errored">
           <md-button class="style-button-green" @click="router.push({name: 'LiveMap'})">
             <md-icon style="color:white">room</md-icon>
@@ -37,10 +37,10 @@
           </md-button>
           <md-button class="style-button-green" @click="router.push({name: 'RiepilogoComplessivo', params: {missioni: allMissioni, idRicerca: idRicerca}})"><md-icon style="color:white">explore</md-icon> RIEPILOGO COMPLESSIVO</md-button>
           <br><br>
-          <div v-for="dailyMissions in allMissioni" :key="dailyMissions[0].giorno">
-            <md-card style="overflow-x:auto">
+          <div v-for="dailyMissions in allMissioni" :key="dailyMissions[0].giorno" >
+            <md-card >
               <md-card-content>
-                <div style="overflow-x:auto">
+                <div >
                   <md-table>
                     <md-table-toolbar>
                       <h1 class="md-title">{{ dailyMissions[0] }}</h1>
