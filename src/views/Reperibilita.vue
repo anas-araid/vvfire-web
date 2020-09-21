@@ -56,6 +56,8 @@
     methods: {
       getDisponiblita(){
         this.loading = true;
+        // resetto l'array events in modo tale che ogni volta che si aggiorna il calendario, i dati non si raddoppiano
+        this.events = [];
         reperibilitaController.getDisponiblita().then((response) => {
           let raw = response.data[0];
           if (!raw.error){
@@ -81,7 +83,7 @@
                 }else{
                   switch(raw['error']){
                     case '401':
-                      this.dialog('Errore', 'Accesso non autorizzato, non puoi a visualizzare questa pagina', '#/dashboard');
+                      this.dialog('Errore', 'Accesso non autorizzato, non puoi a visualizzare questa pagina', '#/impostazioni');
                       this.loading = false;
                       break; 
                     case '404':
