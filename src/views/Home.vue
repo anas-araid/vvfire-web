@@ -1,6 +1,6 @@
 <template>
-  <md-app-content :style="'border:0;height:'+ (fullHeight - 140) +'px'">
-    <div class="md-layout md-alignment-center-center" style="min-height:100%;height:100%">
+  <md-app-content :style="'border:0;padding:0;height:'+ (fullHeight - 140) +'px'">
+    <div class="md-layout md-alignment-center-center" style="min-height:100%;height:100%;padding:32px">
       <div class="md-layout-item md-large-size-70 md-medium-size-70 md-small-size-50 md-xsmall-size-100" style="text-align:left">
         <span class="md-display-3" style="font-weight:200">Changing the way we <i class="style-red-text">rescue</i></span><br>
         <span class="md-display-1" style="font-weight:200">L'innovazione a portata di mano</span>
@@ -16,7 +16,7 @@
       <md-icon class="arrowBounce">keyboard_arrow_down</md-icon>
     </div>
 
-    <div id="funzionalita" class="md-layout md-alignment-center-center" style="min-height:100%;height:100%">
+    <div id="funzionalita" class="md-layout md-alignment-center-center" style="min-height:100%;height:100%;padding:32px">
       <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100">
         <img src="../assets/ricerche.png" />
       </div>
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div class="md-layout md-alignment-center-center" style="min-height:100%;height:100%">
+    <div class="md-layout md-alignment-center-center" style="min-height:100%;height:100%;padding:32px">
       <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:left">
         <span class="md-display-1" style="font-weight:200;">La localizzazione e la gestione delle tracce gps non sono mai stati così semplici!</span>
         <br><br><br>
@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <div class="md-layout md-alignment-center-center" style="min-height:100%;height:100%">
+    <div class="md-layout md-alignment-center-center" style="min-height:100%;height:100%;padding:32px">
       <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100">
         <img src="../assets/reperibilita.png" />
       </div>
@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div class="md-layout md-alignment-center-center" style="min-height:50%;height:50%">
+    <div class="md-layout md-alignment-center-center" style="min-height:50%;height:50%;padding:32px">
       <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:left">
         <span class="md-display-1" style="font-weight:200;">Funzionalità in via di sviluppo</span>
         <br><br>
@@ -79,30 +79,15 @@
     <br><br>
     <br><br>
     <br><br>
-    <div class="md-layout md-alignment-center-center" style="min-height:50%;height:50%">
-      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100">
-        <img src="../assets/app.svg" style="width:50%;margin:30px" />
-      </div>
-      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:left">
-        <br><br>
-        <span class="md-display-1" style="font-weight:200;font-size:28px">
-          App per Android e iOS
-        </span>
-        <br><br>
-        <span class="md-display-1" style="font-weight:200;font-size:24px">
-          Componente fondamentale per il funzionamento della piattaforma, tramite il proprio smartphone sarà possible impostare la propria reperibilità ed utilizzare il
-          proprio dispositivo come localizzatore gps durante gli interventi di ricerca persona.
-        </span>
-      </div>
-    </div>
-
+    <footer-component></footer-component>    
   </md-app-content>
+  
 </template>
 
 <script>
   // @ is an alias to /src
   import router from '../router/index.js';
-
+  import footer from '../components/Footer.vue';
   export default {
     name: 'Home',
     data: () => ({
@@ -110,6 +95,9 @@
       fullHeight:document.documentElement.clientHeight,
       router: router
     }),
+    components: {
+      'footer-component': footer
+    },
     create(){
       window.addEventListener("resize", this.myEventHandler());
     },

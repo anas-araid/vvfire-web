@@ -32,7 +32,7 @@
         </md-list-item>
       </md-list>
     </md-app-drawer>
-    <md-app-content style="height:100%">
+    <md-app-content style="height:100%;padding:0">
       <router-view/>
       <router-view name="homepage"/>
     </md-app-content>
@@ -75,5 +75,6 @@
 <style lang="scss" scoped>
   .md-app {
     max-height: 100vh!important;
+    min-height: 100vh!important;
   }
 </style>
