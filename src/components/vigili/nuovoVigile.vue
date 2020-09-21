@@ -136,11 +136,11 @@
           }, (error) => {
             console.log(error);
             this.errored= true;
-            this.dialog('Errore', 'Impossibile aggiungere il vigile, controllare se l\'email o il numero di telefono sono stati già immessi. Se il problema persiste contattare l\'amministratore', '#/dashboard');
+            this.dialog('Errore', 'Impossibile aggiungere il vigile, controllare se l\'email o il numero di telefono sono stati già immessi. Se il problema persiste contattare l\'amministratore', '#/vigili');
           });
         }else{
           this.errored= true;
-          this.dialog('Errore', 'Impossibile aggiungere il vigile, controllare se tutti i campi sono stati compilati. Se il problema persiste contattare l\'amministratore', '#/dashboard');
+          this.dialog('Errore', 'Impossibile aggiungere il vigile, controllare se tutti i campi sono stati compilati. Se il problema persiste contattare l\'amministratore', '#/vigili');
         }
       },
       dialog(title, message, url){

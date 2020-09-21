@@ -90,45 +90,48 @@
       'modifica-vigile': modificaVigile
     },
     mounted(){
-      this.loading = true;
-      let idCorpo = loginController.getCorpoVVFData()['id'];
-      gradoController.getGradi().then((response) => {
-        // this.gradi --> array con tutti i gradi + id
-        this.gradi = response.data
-        if (this.gradi !== []){
-          vigileController.getVigili(idCorpo).then((response) => {
-            let raw = response.data[0];
-            if (!raw['error']){
-              this.allVigili = raw.vigili;
-              for (var i=0; i < this.allVigili.length; i++){
-                // per ogni vigili aggiungo gradoName --> che è uguale al nome in this.gradi associato all'id fkGrado in this.allVigili
-                this.allVigili[i].gradoName = this.gradi.filter(a=>a.id=== this.allVigili[i].fkGrado)[0].name;
-              }
-              this.datiPresenti = !(this.allVigili.length === 0);
-            }else{
-              switch(raw['error']){
-                case '401':
-                  this.dialog('Errore', 'Accesso non autorizzato, non puoi a visualizzare questa pagina', '#/dashboard');
-                  break; 
-                case '404':
-                  this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/dashboard');
-                  break;
-              }
-            }
-            this.loading = false;
-          }, (error) => {
-            console.log(error);
-            this.errored= true;
-            this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
-            this.loading = false;
-          });
-        }else{
-          this.dialog('Errore', 'Il server non ha restituito i dati relativi ai gradi dei vigili, contatta l\' amministratore', '#/dashboard');
-           this.loading = false;
-        }
-      });
+      this.fetchVigili()
     },
     methods: {
+      fetchVigili(){
+        this.loading = true;
+        let idCorpo = loginController.getCorpoVVFData()['id'];
+        gradoController.getGradi().then((response) => {
+          // this.gradi --> array con tutti i gradi + id
+          this.gradi = response.data
+          if (this.gradi !== []){
+            vigileController.getVigili(idCorpo).then((response) => {
+              let raw = response.data[0];
+              if (!raw['error']){
+                this.allVigili = raw.vigili;
+                for (var i=0; i < this.allVigili.length; i++){
+                  // per ogni vigili aggiungo gradoName --> che è uguale al nome in this.gradi associato all'id fkGrado in this.allVigili
+                  this.allVigili[i].gradoName = this.gradi.filter(a=>a.id=== this.allVigili[i].fkGrado)[0].name;
+                }
+                this.datiPresenti = !(this.allVigili.length === 0);
+              }else{
+                switch(raw['error']){
+                  case '401':
+                    this.dialog('Errore', 'Accesso non autorizzato, non puoi a visualizzare questa pagina', '#/dashboard');
+                    break; 
+                  case '404':
+                    this.dialog('Errore', 'Il server non ha restituito i dati, contatta l\' amministratore', '#/dashboard');
+                    break;
+                }
+              }
+              this.loading = false;
+            }, (error) => {
+              console.log(error);
+              this.errored= true;
+              this.dialog('Errore', 'Errore, se il problema persiste contattare l\'amministratore', '#/dashboard');
+              this.loading = false;
+            });
+          }else{
+            this.dialog('Errore', 'Il server non ha restituito i dati relativi ai gradi dei vigili, contatta l\' amministratore', '#/dashboard');
+            this.loading = false;
+          }
+        });
+      },
       dialog(title, message, url){
         this.message.active = true;
         this.message.title = title;            
@@ -149,10 +152,12 @@
         this.editVigile.active = false;
       },
       addVigileAlert(){
-        this.dialog('', 'Vigile aggiunto con successo', '#/vigili');
+        this.dialog('', 'Vigile aggiunto con successo', false);
+        this.fetchVigili()
       },
       editVigileAlert(){
-        this.dialog('', 'Dati del vigile aggiornati con successo', '#/vigili');
+        this.dialog('', 'Dati del vigile aggiornati con successo', false);
+        this.fetchVigili()
       },
       alertDeleteVigile(id){
         this.deleteAlert.active = true;
@@ -163,7 +168,8 @@
         vigileController.deleteVigile(id).then((response) => {
           let raw = response.data;
           if (raw.error === false){
-            this.dialog('', 'Account del vigile rimosso con successo', '#/vigili') 
+            this.dialog('', 'Account del vigile rimosso con successo', false);
+            this.fetchVigili()
           }else if(raw.error === true){
             this.dialog('Errore', 'Impossibile cancellare l\'account, contattare l\'amministratore', '#/vigili') 
           }else{
