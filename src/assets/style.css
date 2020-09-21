@@ -37,6 +37,12 @@ a{
   position:sticky!important;
   top:0px!important;
 }
+.style-home-card{
+  min-height:100%;
+  height:100%;
+  padding:32px;
+  margin:20px
+}
 .md-drawer {
   width: 230px!important;
   max-width: calc(100vw - 125px)!important;
