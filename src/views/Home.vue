@@ -43,23 +43,22 @@
     </div>
 
     <div class="md-layout md-alignment-center-center style-home-card">
-      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-100 md-xsmall-size-100" style="margin:10px">
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100">
         <img src="../assets/reperibilita.png" />
       </div>
-      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-100 md-xsmall-size-100" style="text-align:center">
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:center">
         <span class="md-display-1" style="font-weight:200">Consulta la reperibilità del personale</span>
-        <br><br><br><br>
-        <span class="md-display-1 md-xsmall-hide" style="font-weight:200;font-size:24px">
+        <br><br>
+        <span class="md-display-2 md-xsmall-hide" style="font-weight:200;font-size:24px">
           Hai bisogno di personale per un intervento non urgente? Non sai chi al momento sia reperibile?
-          <br><br>
+          <br>
           Controlla subito il calendario in piattaforma, ti mostrerà tutti i vigili disponibili!
         </span>
-        <br>
       </div>
     </div>
 
     <div class="md-layout md-alignment-center-center style-home-card">
-      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-100 md-xsmall-size-100" style="margin:10px;text-align:left">
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:left">
         <span class="md-display-1" style="font-weight:200;">Funzionalità in via di sviluppo</span>
         <br><br>
         <br><br>
@@ -72,16 +71,16 @@
           ricostruire le operazioni svolte, soprattutto se si tratta di eventi accaduti molto tempo fa.
         </span>
       </div>
-      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-100 md-xsmall-size-100">
-        <img src="../assets/snorkel.jpg" style="border-radius:7px;width:90%;margin:30px" />
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100">
+        <img src="../assets/snorkel.jpg" style="border-radius:7px;width:70%;margin:30px" />
       </div>
     </div>
 
     <div class="md-layout md-alignment-center-center style-home-card">
-      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-100 md-xsmall-size-100" style="margin:10px">
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100">
         <img src="../assets/app.svg" style="width:70%;margin:30px" />
       </div>
-      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-100 md-xsmall-size-100" style="margin:10px;text-align:left">
+      <div class="md-layout-item md-large-size-50 md-medium-size-33 md-small-size-50 md-xsmall-size-100" style="text-align:left">
         <br><br>
         <span class="md-display-1" style="font-weight:200;font-size:28px">
           App per Android e iOS

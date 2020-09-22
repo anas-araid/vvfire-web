@@ -15,7 +15,7 @@
         </md-card-actions>
         <md-divider class="md-inset"></md-divider>
         <md-card-header style="text-align:left">
-          <div class="md-title">Mappa Live</div>
+          <div class="md-title">Mappa</div>
         </md-card-header>
         <md-card-content>
           <l-map :center="map.center" :zoom="map.zoom" :v-resize="onResize" style="min-height:600px">
