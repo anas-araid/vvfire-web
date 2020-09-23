@@ -12,6 +12,8 @@
         <md-divider class="md-inset"></md-divider>
         <md-card-header style="text-align:left">
           <div class="md-title">Ultime posizioni</div>
+          <br>
+          Negli ultimi <input type="range" v-model.number="filtroMinuti" min="5" max="30" style="outline:none"> {{filtroMinuti}} minuti
         </md-card-header>
         <md-card-content>
           <l-map :center="map.center" :zoom="map.zoom" :v-resize="onResize" style="min-height:600px">
@@ -67,6 +69,7 @@
         posizioni: [],
         moment: moment,
         router: router,
+        filtroMinuti: 5,
         currentRicercaPersona: null,
         trentoLatLng: [46.074779,11.121749],
         map: {
@@ -86,8 +89,6 @@
     mounted(){
       console.log(L);
       this.idRicerca = this.$route.params.idRicerca;
-      console.log(this.idRicerca)
-      //this.getLatestPositions(this.idRicerca);
     },
     beforeCreate(){
       this.idRicerca = this.$route.params.idRicerca;
@@ -115,6 +116,11 @@
           }
         }
       });
+    },
+    watch: {
+      filtroMinuti: function (){
+        this.getLatestPositions(this.idRicerca);
+      }
     },
     methods: {
       getRicerca(idRicerca, idCorpo){
@@ -145,10 +151,10 @@
         });
       },
       getLatestPositions(idRicerca){
-        let time = moment().subtract(5, 'minutes').format();
+        this.posizioni = [];
+        let time = moment().subtract(this.filtroMinuti, 'minutes').format();
         positionController.getLatestUniquePosition(idRicerca, time).then((response) => {
           let rawPositions = response.data;
-          //console.log(rawPositions);
           if (rawPositions != []){
             for (let i = 0; i < rawPositions.length; i++){
               let idVigile = rawPositions[i].fkVigile;
