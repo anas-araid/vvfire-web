@@ -57,7 +57,7 @@ per testare la piattaforma è utilizzarla in locale:
 - scaricare l'api da [https://github.com/asdf1899/vvfire-api](https://github.com/asdf1899/vvfire-api) 
 - dentro */vvfire-api/* eseguire il comando *npm install*
 - aprire xampp far partire sia Apache che MySQL
-- dal browser aprire *phpmyadmin* ed eseguire questo [SQL]() per installare il database
+- dal browser aprire *phpmyadmin* ed eseguire questo [SQL](https://anasaraid.me/hosting/vvfire-web/my_vvfire-demo.sql) per installare il database
 - una volta completati i passaggi precedenti, eseguire il comando *sails lift*
 - se tutto va bene l'api verrà servita in *"http://localhost:1337"*
 - apire *vvfire-web* e all'interno del file *.env* sostituire l'url con *http://localhost:1337*
