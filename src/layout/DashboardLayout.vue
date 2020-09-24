@@ -54,7 +54,8 @@
 <script>
   import loginController from '../controllers/loginController.js';
   import DialogAlert from '../components/Dialog.vue'; 
-
+  import router from '../router/index.js';
+  
   export default {
     name: 'Dashboard',
     data(){
@@ -62,7 +63,8 @@
         showNavigation: false,
         navBarButton: null,
         navBarButtonLink: null,
-        message: {'active': false, 'content': null}
+        message: {'active': false, 'content': null},
+        router: router
       }
     },
     components: {
@@ -106,7 +108,7 @@
       },
       logout(){
         loginController.logout();
-        window.location.href = '/';
+        this.router.push({name: 'Login'});
       }
     }
   }
