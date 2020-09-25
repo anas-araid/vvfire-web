@@ -81,7 +81,6 @@
         .then((response) => {
           this.loading = false;
           let data = response.data[0];
-          //console.log(data);
           if (data['error'] === "401"){
             this.dialog('Errore', 'Credenziali non valide', '#/login');          
           }

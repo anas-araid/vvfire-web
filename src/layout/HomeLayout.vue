@@ -26,9 +26,9 @@
           <span class="md-list-item-text">Accedi</span>
         </md-list-item>
 
-        <md-list-item href="/#download">
-          <md-icon>get_app</md-icon>
-          <span class="md-list-item-text">Download app</span>
+        <md-list-item href="https://www.github.com/asdf1899/vvfire-web">
+          <md-icon>code</md-icon>
+          <span class="md-list-item-text">Github</span>
         </md-list-item>
       </md-list>
     </md-app-drawer>

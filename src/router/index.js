@@ -115,6 +115,8 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  // controlla se la route richiede l'auth, se si controlla se il token è valido
+  // se non è valido, reindirizza alla pagina di login
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!loginController.isTokenValid()) {
       next({

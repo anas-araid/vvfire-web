@@ -197,17 +197,16 @@
         this.updating = true;
         this.getRiepilogoMissione(this.idMissione);
       },
+      // getRiepilogoMissione sostituisce getPosizioniByMissione e groupPosizionByVigile
+      // tutte le operazioni che svolgevano queste funzioni, ora sono eseguite server-side
+      // in questo modo si è migliorata la velocità e la stabilità dell'applicativo
       getRiepilogoMissione(idMissione){
         missioniController.getRiepilogoMissione(idMissione).then((response) => {
           let raw = response.data[0];
           this.groupPositions = raw.data;
           this.updating = false;
-          console.log(this.groupPositions)
         });
       }
-      // getRiepilogoMissione sostituisce le funzioni getPosizioniByMissione e groupPosizionByVigile
-      // tutte le operazioni che svolgevano queste missioni, ora sono eseguite server-side
-      // in questo modo si è migliorata la velocità e la stabilità dell'applicativo
       /*,
       getPosizioniByMissione(idMissione){
         positionController.getPosizioniByMissione(idMissione).then((response) => {

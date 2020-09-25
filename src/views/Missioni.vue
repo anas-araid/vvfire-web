@@ -142,6 +142,7 @@
     },
     beforeCreate(){
       this.idRicerca = this.$route.params.idRicerca;
+      // controllo che l'id ricerca sia un numero
       if (!isFinite(String(this.idRicerca))){
         router.push({name: 'RicercaPersona'});
       }
@@ -187,6 +188,7 @@
           this.allMissioni = [];
           if (!raw['error']){
             this.allMissioni = raw.missioni;
+            // orderMissioniByDate restituisce tutte le missioni in un arrau suddiviso per giorno
             this.allMissioni = this.orderMissioniByDate(raw.missioni)
             this.datiPresenti = true;
             this.newMissione = false;

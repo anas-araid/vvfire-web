@@ -127,7 +127,6 @@
         this.loading = true;
         ricercapersonaController.getRicercaByID(idRicerca, idCorpo).then((response) => {
           let raw = response.data[0];
-          console.log(raw)
           if (!raw.error){
             this.datiPresenti = true;
             this.currentRicercaPersona = raw.ricerca;
