@@ -20,11 +20,6 @@
           <md-icon>home</md-icon>
           <span class="md-list-item-text">Home</span>
         </md-list-item>
-        
-        <md-list-item to="/impostazioni">
-          <md-icon>settings</md-icon>
-          <span class="md-list-item-text">Impostazioni</span>
-        </md-list-item>
 
         <md-list-item to="/vigili">
           <md-icon>account_circle</md-icon>
@@ -39,6 +34,11 @@
         <md-list-item to="/ricercapersona">
           <md-icon>explore</md-icon>
           <span class="md-list-item-text">Ricerca persona</span>
+        </md-list-item>
+        
+        <md-list-item to="/impostazioni">
+          <md-icon>settings</md-icon>
+          <span class="md-list-item-text">Impostazioni</span>
         </md-list-item>
       </md-list>
     </md-app-drawer>
