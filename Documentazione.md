@@ -13,7 +13,7 @@ I dati vengono gestiti dall'api scritta in SailsJS la quale comunica con il gest
 - *'/login'*
   - Pagina di login
 - *'/reperibilita'*
-  - Mostra un calendario interattivo il quale visualizza gli orari in cui c'è del personale disponiobile. Cliccando sull'evento mostrerà informazioni aggiuntive
+  - Mostra un calendario interattivo il quale visualizza gli orari in cui c'è del personale disponibile. Cliccando sull'evento mostrerà informazioni aggiuntive
 - *'/impostazioni'*
   - Permette eliminare o aggiornare le informazioni relative al corpo
 - *'/ricercapersona'*
@@ -37,7 +37,7 @@ I dati vengono gestiti dall'api scritta in SailsJS la quale comunica con il gest
   - assets
     - contiene immagini e un file css
   - components
-    - contiene alcuni componenti (soprattuto dialog)
+    - contiene alcuni componenti (soprattutto dialog)
   - controllers
     - all'interno ci sono tutte le funzioni che interagiscono con l'api
   - layout
